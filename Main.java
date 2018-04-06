@@ -13,11 +13,23 @@ public class Main {
         Main main = new Main();
 //        main.createNewDatabase("test.db");
 
-//        main.exeCompleteQuery(query);
 
+//        ArrayList<String> tempArray = main.readQueryFromFile("C:\\Users\\BaoThien\\Dropbox\\IdeaProjects\\src\\Oblig3\\oblig3v1_database.sql");
+//        for (String l : tempArray) {
+////            System.out.println(l);
+//            main.executeCompleteQuery(l);
+//        }
 
+        main.startUpFromSqlFile("C:\\Users\\BaoThien\\Dropbox\\IdeaProjects\\src\\Oblig3\\oblig3v1_database.sql");
 
+    }
 
+    public void startUpFromSqlFile (String path) {
+        ArrayList<String> tempArray = readQueryFromFile(path);
+        for (String l : tempArray) {
+//            System.out.println(l);
+            executeCompleteQuery(l);
+        }
     }
 
     public ArrayList<String> readQueryFromFile (String path) {
@@ -25,7 +37,6 @@ public class Main {
         BufferedReader br = null;
         StringBuilder sb = new StringBuilder();
         // C:\Users\BaoThien\Dropbox\IdeaProjects\src\Oblig3\oblig3v1_database.sql
-
 
         try {
             br = new BufferedReader(new FileReader(path));
@@ -40,6 +51,7 @@ public class Main {
             String stringSplitted[] = wholeString.split(";");
 
             for (String l : stringSplitted) {
+//                System.out.println(l);
                 arrayList.add(l);
             }
 
