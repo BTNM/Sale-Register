@@ -1,10 +1,15 @@
 package Oblig3;
 
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+
 import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class Main {
+public class Main extends Application {
     private static String databaseName = "SaleRegister.db";
 
     public static void main(String[] args) {
@@ -16,14 +21,27 @@ public class Main {
         }
 //        main.createNewDatabase("test.db");
 
+        //start javafx start() method
+        launch(args);
 
-//        ArrayList<String> tempArray = main.readQueryFromFile("C:\\Users\\BaoThien\\Dropbox\\IdeaProjects\\src\\Oblig3\\oblig3v1_database.sql");
-//        for (String l : tempArray) {
-////            System.out.println(l);
-//            main.executeCompleteQuery(l);
-//        }
 
     }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
+
+        GridPane startGrid = new GridPane();
+
+        Scene startScene = new Scene(startGrid,600,400);
+
+        primaryStage.setTitle("Sale Register System");
+        primaryStage.setScene(startScene);
+        primaryStage.show();
+
+    }
+
+
 
     public void startUpFromSqlFile (String path) {
         ArrayList<String> tempArray = readQueryFromFile(path);
@@ -38,7 +56,6 @@ public class Main {
         BufferedReader br = null;
         StringBuilder sb = new StringBuilder();
         // C:\Users\BaoThien\Dropbox\IdeaProjects\src\Oblig3\oblig3v1_database.sql
-
         try {
             br = new BufferedReader(new FileReader(path));
             String line;
@@ -47,7 +64,6 @@ public class Main {
                 sb.append(line);
 
             }
-
             String wholeString = sb.toString();
             String stringSplitted[] = wholeString.split(";");
 
@@ -64,11 +80,10 @@ public class Main {
     }
 
 
-
     public void executeCompleteQuery (String query) {
-        try {
-            Connection conn = this.connect(databaseName);
-            Statement statement = conn.createStatement();
+        // inside the try catch, auto close() of conn after use
+        try (Connection conn = this.connect(databaseName);
+             Statement statement = conn.createStatement();) {
 
             statement.execute(query);
 
@@ -89,27 +104,25 @@ public class Main {
 //        }
 //    }
 
-    public void createNewDatabase (String fileName) {
-        String url = "jdbc:sqlite:C:/Users/BaoThien/Dropbox/IdeaProjects/src/Oblig3/"+fileName;
+//    public void createNewDatabase (String fileName) {
+//        String url = "jdbc:sqlite:C:/Users/BaoThien/Dropbox/IdeaProjects/src/Oblig3/"+fileName;
+//
+//        try ( Connection conn = DriverManager.getConnection(url) ) {
+//            if (conn != null) {
+//                DatabaseMetaData dataMeta = conn.getMetaData();
+//                System.out.println("The driver is "+ dataMeta.getDriverName() +"\nA new database has been created");
+//            }
+//
+//
+//        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+//        }
+//
+//    }
 
-        try ( Connection conn = DriverManager.getConnection(url) ) {
-            if (conn != null) {
-                DatabaseMetaData dataMeta = conn.getMetaData();
-                System.out.println("The driver is "+ dataMeta.getDriverName() +"\nA new database has been created");
-            }
-
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-
-    }
-
-    private Connection connect(String fileName) {
+    private Connection connect(String fileName) throws SQLException {
         String url = "jdbc:sqlite:C:/Users/BaoThien/Dropbox/IdeaProjects/src/Oblig3/"+fileName;
         Connection conn = null;
-
-
 
         try {
             conn = DriverManager.getConnection(url);
@@ -117,10 +130,14 @@ public class Main {
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            conn.close();
         }
 
         return conn;
     }
+
+
 
 
 }
