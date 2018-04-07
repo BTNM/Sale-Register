@@ -8,18 +8,23 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
 public class Main extends Application {
     private static String databaseName = "SaleRegister.db";
+    private static String sqlQueryPath = "C:\\Users\\Bao Thien\\Dropbox\\IdeaProjects\\src\\Oblig3\\oblig3v1_database.sql"; // hjemmepc Bao Thien, skolepc BaoThien
+    private static String datebasePath = "jdbc:sqlite:C:/Users/Bao Thien/Dropbox/IdeaProjects/src/Oblig3/"+databaseName;
 
     public static void main(String[] args) {
         Main main = new Main();
 
-        File file = new File("jdbc:sqlite:C:/Users/BaoThien/Dropbox/IdeaProjects/src/Oblig3/"+databaseName);
+        File file = new File(datebasePath);
         if(!file.exists()){
-            main.startUpFromSqlFile("C:\\Users\\BaoThien\\Dropbox\\IdeaProjects\\src\\Oblig3\\oblig3v1_database.sql");
+            main.startUpFromSqlFile(sqlQueryPath);
+//            main.startUpFromSqlFile("C:\\Users\\Bao Thien\\Dropbox\\Skole\\UIB 8\\INFO233\\Oblig\\Oblig3\\oblig3v1_database.sql");
         }
-//        main.createNewDatabase("test.db");
 
         //start javafx start() method
         launch(args);
@@ -31,19 +36,18 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
 
 
-        GridPane startGrid = new GridPane();
-
-        Scene startScene = new Scene(startGrid,600,400);
-
-        primaryStage.setTitle("Sale Register System");
-        primaryStage.setScene(startScene);
-        primaryStage.show();
+//        GridPane startGrid = new GridPane();
+//
+//        Scene startScene = new Scene(startGrid,600,400);
+//
+//        primaryStage.setTitle("Sale Register System");
+//        primaryStage.setScene(startScene);
+//        primaryStage.show();
 
     }
 
 
-
-    public void startUpFromSqlFile (String path) {
+    private void startUpFromSqlFile(String path) {
         ArrayList<String> tempArray = readQueryFromFile(path);
         for (String l : tempArray) {
 //            System.out.println(l);
@@ -51,9 +55,9 @@ public class Main extends Application {
         }
     }
 
-    public ArrayList<String> readQueryFromFile (String path) {
+    private ArrayList<String> readQueryFromFile(String path) {
         ArrayList<String> arrayList = new ArrayList<>();
-        BufferedReader br = null;
+        BufferedReader br;
         StringBuilder sb = new StringBuilder();
         // C:\Users\BaoThien\Dropbox\IdeaProjects\src\Oblig3\oblig3v1_database.sql
         try {
@@ -67,10 +71,8 @@ public class Main extends Application {
             String wholeString = sb.toString();
             String stringSplitted[] = wholeString.split(";");
 
-            for (String l : stringSplitted) {
-//                System.out.println(l);
-                arrayList.add(l);
-            }
+            // add all splitted strings to temp arrayList
+            arrayList.addAll(Arrays.asList(stringSplitted));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -80,9 +82,9 @@ public class Main extends Application {
     }
 
 
-    public void executeCompleteQuery (String query) {
+    private void executeCompleteQuery(String query) {
         // inside the try catch, auto close() of conn after use
-        try (Connection conn = this.connect(databaseName);
+        try (Connection conn = this.connect();
              Statement statement = conn.createStatement();) {
 
             statement.execute(query);
@@ -120,24 +122,19 @@ public class Main extends Application {
 //
 //    }
 
-    private Connection connect(String fileName) throws SQLException {
-        String url = "jdbc:sqlite:C:/Users/BaoThien/Dropbox/IdeaProjects/src/Oblig3/"+fileName;
+    private Connection connect() {
+//        String url = "jdbc:sqlite:C:/Users/Bao Thien/Dropbox/IdeaProjects/src/Oblig3/"+fileName;
         Connection conn = null;
 
         try {
-            conn = DriverManager.getConnection(url);
-
+            conn = DriverManager.getConnection(datebasePath);
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } finally {
-            conn.close();
         }
 
         return conn;
     }
-
-
 
 
 }
