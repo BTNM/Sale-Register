@@ -1,16 +1,19 @@
 package Oblig3;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 
 public class Main {
+    private static String databaseName = "SaleRegister.db";
 
     public static void main(String[] args) {
         Main main = new Main();
+
+        File file = new File("jdbc:sqlite:C:/Users/BaoThien/Dropbox/IdeaProjects/src/Oblig3/"+databaseName);
+        if(!file.exists()){
+            main.startUpFromSqlFile("C:\\Users\\BaoThien\\Dropbox\\IdeaProjects\\src\\Oblig3\\oblig3v1_database.sql");
+        }
 //        main.createNewDatabase("test.db");
 
 
@@ -19,8 +22,6 @@ public class Main {
 ////            System.out.println(l);
 //            main.executeCompleteQuery(l);
 //        }
-
-        main.startUpFromSqlFile("C:\\Users\\BaoThien\\Dropbox\\IdeaProjects\\src\\Oblig3\\oblig3v1_database.sql");
 
     }
 
@@ -66,7 +67,7 @@ public class Main {
 
     public void executeCompleteQuery (String query) {
         try {
-            Connection conn = this.connect("test.db");
+            Connection conn = this.connect(databaseName);
             Statement statement = conn.createStatement();
 
             statement.execute(query);
@@ -108,8 +109,11 @@ public class Main {
         String url = "jdbc:sqlite:C:/Users/BaoThien/Dropbox/IdeaProjects/src/Oblig3/"+fileName;
         Connection conn = null;
 
+
+
         try {
             conn = DriverManager.getConnection(url);
+
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
