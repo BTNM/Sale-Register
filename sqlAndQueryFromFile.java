@@ -3,21 +3,57 @@ package Oblig3;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ReadQueryFromFile {
+public class sqlAndQueryFromFile {
     private static String databaseName = "SaleRegister.db";
     public static String sqlQueryPath = "C:\\Users\\Bao Thien\\Dropbox\\IdeaProjects\\src\\Oblig3\\oblig3v1_database.sql"; // hjemmepc Bao Thien, skolepc BaoThien
     public static String datebasePath = "jdbc:sqlite:C:/Users/Bao Thien/Dropbox/IdeaProjects/src/Oblig3/"+databaseName;
 
+    Connection conn;
+
+    String getAddressQuery = "";
+    String getCategoryQuery = "";
+    String getCustomerQuery = "SELECT * FROM main.customer";
+    String getInvoiceQuery = "";
+    String getInvoice_itemsQuery = "";
+    String getProductQuery = "";
+
+    PreparedStatement getCustomerById;
+
+    public sqlAndQueryFromFile () {
+        try {
+            conn = this.connect();
+
+            getCustomerById = conn.prepareStatement(getCustomerQuery);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
 
 
+    }
 
+    public ArrayList<String> getCustomer () {
+        ArrayList<String> tempArray = new ArrayList<>(); //make new class for every customer
+
+        try {
+//            getCustomerById.setString();
+            ResultSet rs = getCustomerById.executeQuery();
+
+            while (rs.next()) {
+//                rs.getString(0);
+
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return tempArray;
+    }
 
     public void startUpFromSqlFile(String path) {
         ArrayList<String> tempArray = readQueryFromFile(path);
@@ -96,7 +132,6 @@ public class ReadQueryFromFile {
 
     private Connection connect() {
 //        String url = "jdbc:sqlite:C:/Users/Bao Thien/Dropbox/IdeaProjects/src/Oblig3/"+fileName;
-        Connection conn = null;
 
         try {
             conn = DriverManager.getConnection(datebasePath);
