@@ -25,11 +25,21 @@ public class Main extends Application {
 //            main.startUpFromSqlFile("C:\\Users\\Bao Thien\\Dropbox\\Skole\\UIB 8\\INFO233\\Oblig\\Oblig3\\oblig3v1_database.sql");
         }
 
-        ArrayList<String> temp = readSql.getCustomer();
+//        ArrayList<String> temp = readSql.getCustomer();
+//
+//        for (String e : temp) {
+//            System.out.println(e);
+//        }
 
-        for (String e : temp) {
-            System.out.println(e);
+
+
+        ArrayList<Customer> tempList = readSql.getAllCustomer();
+
+        for (Customer c : tempList) {
+            System.out.println("id: "+c.getCustomer_id()+" name: "+ c.getCustomer_name()+ " phone nr: "+ c.getPhone_number() );
         }
+
+
 
         //start javafx start() method
 //        launch(args);
@@ -64,6 +74,7 @@ public class Main extends Application {
         Invoice invoice1;
         Invoice_items invoice_items;
         Product product;
+
 
 
 

@@ -36,8 +36,10 @@ public class SqlAndQueryFromFile {
 
     }
 
-    public Customer getCustomer () {
+    public ArrayList<Customer> getAllCustomer () {
 //        ArrayList<String> tempArray = new ArrayList<>(); //make new class for every customer
+
+        ArrayList<Customer> tempList = new ArrayList<>();
 
         try {
 //            getCustomerById.setString();
@@ -45,6 +47,8 @@ public class SqlAndQueryFromFile {
 
             int count = 0;
             while (rs.next()) {
+                Customer tempCustomer = new Customer(rs.getInt(1),rs.getString(2),rs.getInt(3),rs.getString(4),rs.getString(5));
+                tempList.add(tempCustomer);
 //                tempArray.add(rs.getString(count) );
 //                System.out.println(rs.getString(0));
 //                count++;
@@ -55,7 +59,7 @@ public class SqlAndQueryFromFile {
         }
 
 //        return tempArray;
-        return new Customer(0,"",0,"","");
+        return tempList;
     }
 
     public void startUpFromSqlFile(String path) {
