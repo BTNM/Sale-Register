@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class sqlAndQueryFromFile {
+public class SqlAndQueryFromFile {
     private static String databaseName = "SaleRegister.db";
     public static String sqlQueryPath = "C:\\Users\\Bao Thien\\Dropbox\\IdeaProjects\\src\\Oblig3\\oblig3v1_database.sql"; // hjemmepc Bao Thien, skolepc BaoThien
     public static String datebasePath = "jdbc:sqlite:C:/Users/Bao Thien/Dropbox/IdeaProjects/src/Oblig3/"+databaseName;
@@ -23,7 +23,7 @@ public class sqlAndQueryFromFile {
 
     PreparedStatement getCustomerById;
 
-    public sqlAndQueryFromFile () {
+    public SqlAndQueryFromFile() {
         try {
             conn = this.connect();
 
@@ -36,23 +36,26 @@ public class sqlAndQueryFromFile {
 
     }
 
-    public ArrayList<String> getCustomer () {
-        ArrayList<String> tempArray = new ArrayList<>(); //make new class for every customer
+    public Customer getCustomer () {
+//        ArrayList<String> tempArray = new ArrayList<>(); //make new class for every customer
 
         try {
 //            getCustomerById.setString();
             ResultSet rs = getCustomerById.executeQuery();
 
+            int count = 0;
             while (rs.next()) {
-//                rs.getString(0);
-
+//                tempArray.add(rs.getString(count) );
+//                System.out.println(rs.getString(0));
+//                count++;
             }
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
-        return tempArray;
+//        return tempArray;
+        return new Customer(0,"",0,"","");
     }
 
     public void startUpFromSqlFile(String path) {

@@ -9,23 +9,30 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class Main extends Application {
 
     public static void main(String[] args) {
 //        Main main = new Main();
-        sqlAndQueryFromFile readSql = new sqlAndQueryFromFile();
+        SqlAndQueryFromFile readSql = new SqlAndQueryFromFile();
 
-        File file = new File(sqlAndQueryFromFile.datebasePath);
+        File file = new File(SqlAndQueryFromFile.datebasePath);
         if(!file.exists()){
-            readSql.startUpFromSqlFile(sqlAndQueryFromFile.sqlQueryPath);
+            readSql.startUpFromSqlFile(SqlAndQueryFromFile.sqlQueryPath);
 
 //            main.startUpFromSqlFile(sqlQueryPath);
 //            main.startUpFromSqlFile("C:\\Users\\Bao Thien\\Dropbox\\Skole\\UIB 8\\INFO233\\Oblig\\Oblig3\\oblig3v1_database.sql");
         }
 
+        ArrayList<String> temp = readSql.getCustomer();
+
+        for (String e : temp) {
+            System.out.println(e);
+        }
+
         //start javafx start() method
-        launch(args);
+//        launch(args);
 
 
     }
@@ -50,6 +57,15 @@ public class Main extends Application {
         customerInfo.setSpacing(5); // gap between nodes
 
         customerInfo.getChildren().addAll();
+
+        Address address1;
+        Category category1;
+        Customer customer1;
+        Invoice invoice1;
+        Invoice_items invoice_items;
+        Product product;
+
+
 
         VBox fakturaInfo = new VBox();
         fakturaInfo.setSpacing(5);
