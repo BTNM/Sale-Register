@@ -2,15 +2,17 @@ package Oblig3;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class Main extends Application {
     static SqlAndQueryFromFile readSql = new SqlAndQueryFromFile();
@@ -66,25 +68,24 @@ public class Main extends Application {
 //        Invoice_items invoice_items;
 //        Product product;
 
-        Customer customer1 = readSql.getCustomerById(1);
+        Customer customer = readSql.getCustomerById(1);
+        Address address = readSql.getAddressById(customer.getAddress()); // 1
 
         VBox customerInfo = new VBox();
         customerInfo.setSpacing(5); // gap between nodes
 
-        Label customerName = new Label("");
-        Label customerStreetName = new Label("");
-        Label customerStreetNumber = new Label("");
-        Label customerPostalCode = new Label();
-        Label customerPostalTown = new Label();
+        Label customerName = new Label(customer.getCustomer_name());
+        Label customerStreetName = new Label(address.getStreet_name());
 
-        Label phoneNumber = new Label();
-        Label billingAccount = new Label();
+        Label customerStreetNumber = new Label(address.getStreet_number());
+        Label customerPostalCode = new Label(address.getPostal_code());
+        Label customerPostalTown = new Label(address.getPostal_town());
 
+        Label phoneNumber = new Label(customer.getPhone_number());
+        Label billingAccount = new Label(customer.getBilling_account());
 
-
-
-
-        customerInfo.getChildren().addAll();
+//        customerInfo.getChildren().addAll(customerName, customerStreetName, customerStreetNumber);
+        customerInfo.getChildren().addAll(customerName,customerStreetName,customerStreetNumber,customerPostalCode,customerPostalTown,phoneNumber,billingAccount);
 
 
 
@@ -103,16 +104,17 @@ public class Main extends Application {
         topGridLayout.add(fakturaInfo,2,0);
 
         BorderPane bp = new BorderPane();
+        bp.setTop(customerInfo);
 
         Scene fakturaScene = new Scene(bp,400,600);
 
         return fakturaScene;
     }
 
-    public VBox addCustomerInfoVbox () {
-
-
-
-    }
+//    public VBox addCustomerInfoVbox () {
+//
+//
+//
+//    }
 
 }
