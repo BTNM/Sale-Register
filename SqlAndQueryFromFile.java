@@ -14,26 +14,70 @@ public class SqlAndQueryFromFile {
 
     Connection conn;
 
-    String getAddressQuery = "";
+    String getAddressQuery = "SELECT * FROM main.address WHERE address_id = ?";
     String getCategoryQuery = "";
-    String getCustomerQuery = "SELECT * FROM main.customer";
+    String getCustomerQuery = "SELECT * FROM main.customer WHERE customer_id = ?";
     String getInvoiceQuery = "";
     String getInvoice_itemsQuery = "";
     String getProductQuery = "";
 
-    PreparedStatement getCustomerById;
+    PreparedStatement customerById;
+    PreparedStatement addressById;
+
 
     public SqlAndQueryFromFile() {
         try {
             conn = this.connect();
 
-            getCustomerById = conn.prepareStatement(getCustomerQuery);
+            customerById = conn.prepareStatement(getCustomerQuery);
+            addressById = conn.prepareStatement(getAddressQuery);
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
 
+    }
+
+    public Customer getCustomerById (int customer_id) {
+        Customer tempCustomer = null;
+
+        try {
+
+            customerById.setInt(1,customer_id);
+            ResultSet rs = customerById.executeQuery();
+
+            if (rs.next() ) {
+                tempCustomer = new Customer(rs.getInt(1),rs.getString(2),rs.getInt(3),rs.getString(4),rs.getString(5) );
+            } else {
+                System.out.println("Couldn't find any from customer database");
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return tempCustomer;
+    }
+
+    public Address getAddressById (int address_id) {
+        Address tempAddress = null;
+
+        try {
+            addressById.setInt(1, address_id);
+            ResultSet rs = addressById.executeQuery();
+
+            if (rs.next()) {
+                tempAddress = new Address(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5));
+            } else {
+                System.out.println("Couldn't find any from address database");
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return tempAddress;
     }
 
     public ArrayList<Customer> getAllCustomer () {
@@ -43,7 +87,7 @@ public class SqlAndQueryFromFile {
 
         try {
 //            getCustomerById.setString();
-            ResultSet rs = getCustomerById.executeQuery();
+            ResultSet rs = customerById.executeQuery();
 
             int count = 0;
             while (rs.next()) {

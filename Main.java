@@ -8,41 +8,38 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 
 public class Main extends Application {
+    static SqlAndQueryFromFile readSql = new SqlAndQueryFromFile();
+
 
     public static void main(String[] args) {
 //        Main main = new Main();
-        SqlAndQueryFromFile readSql = new SqlAndQueryFromFile();
+
+
 
         File file = new File(SqlAndQueryFromFile.datebasePath);
         if(!file.exists()){
             readSql.startUpFromSqlFile(SqlAndQueryFromFile.sqlQueryPath);
 
+
 //            main.startUpFromSqlFile(sqlQueryPath);
 //            main.startUpFromSqlFile("C:\\Users\\Bao Thien\\Dropbox\\Skole\\UIB 8\\INFO233\\Oblig\\Oblig3\\oblig3v1_database.sql");
         }
 
-//        ArrayList<String> temp = readSql.getCustomer();
+//        ArrayList<Customer> tempList = readSql.getAllCustomer();
 //
-//        for (String e : temp) {
-//            System.out.println(e);
+//        for (Customer c : tempList) {
+//            System.out.println("id: "+c.getCustomer_id()+" name: "+ c.getCustomer_name()+ " phone nr: "+ c.getPhone_number() );
 //        }
 
 
 
-        ArrayList<Customer> tempList = readSql.getAllCustomer();
-
-        for (Customer c : tempList) {
-            System.out.println("id: "+c.getCustomer_id()+" name: "+ c.getCustomer_name()+ " phone nr: "+ c.getPhone_number() );
-        }
-
-
-
         //start javafx start() method
-//        launch(args);
+        launch(args);
 
 
     }
@@ -62,18 +59,32 @@ public class Main extends Application {
     }
 
     public Scene getFaktura() {
+//        Address address1;
+//        Category category1;
+//        Customer customer1;
+//        Invoice invoice1;
+//        Invoice_items invoice_items;
+//        Product product;
+
+        Customer customer1 = readSql.getCustomerById(1);
 
         VBox customerInfo = new VBox();
         customerInfo.setSpacing(5); // gap between nodes
 
-        customerInfo.getChildren().addAll();
+        Label customerName = new Label("");
+        Label customerStreetName = new Label("");
+        Label customerStreetNumber = new Label("");
+        Label customerPostalCode = new Label();
+        Label customerPostalTown = new Label();
 
-        Address address1;
-        Category category1;
-        Customer customer1;
-        Invoice invoice1;
-        Invoice_items invoice_items;
-        Product product;
+        Label phoneNumber = new Label();
+        Label billingAccount = new Label();
+
+
+
+
+
+        customerInfo.getChildren().addAll();
 
 
 
@@ -98,6 +109,10 @@ public class Main extends Application {
         return fakturaScene;
     }
 
+    public VBox addCustomerInfoVbox () {
 
+
+
+    }
 
 }
