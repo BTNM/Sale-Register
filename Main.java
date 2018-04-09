@@ -2,11 +2,13 @@ package Oblig3;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -75,38 +77,62 @@ public class Main extends Application {
         customerInfo.setSpacing(5); // gap between nodes
 
         Label customerName = new Label(customer.getCustomer_name());
-        Label customerStreetName = new Label(address.getStreet_name());
 
-        Label customerStreetNumber = new Label(address.getStreet_number());
-        Label customerPostalCode = new Label(address.getPostal_code());
-        Label customerPostalTown = new Label(address.getPostal_town());
+        Label customerStreet = new Label(address.getStreet_name()+ " " + address.getStreet_number() );
+        Label customerPostal = new Label(address.getPostal_code()+ " " + address.getPostal_town() );
+//        Label customerStreetName = new Label(address.getStreet_name());
+//        Label customerStreetNumber = new Label(address.getStreet_number());
+//        Label customerPostalCode = new Label(address.getPostal_code());
+//        Label customerPostalTown = new Label(address.getPostal_town());
 
         Label phoneNumber = new Label(customer.getPhone_number());
         Label billingAccount = new Label(customer.getBilling_account());
 
-//        customerInfo.getChildren().addAll(customerName, customerStreetName, customerStreetNumber);
-        customerInfo.getChildren().addAll(customerName,customerStreetName,customerStreetNumber,customerPostalCode,customerPostalTown,phoneNumber,billingAccount);
+        customerInfo.getChildren().addAll(customerName, customerStreet, customerPostal, phoneNumber, billingAccount);
+//        customerInfo.getChildren().addAll(customerName,customerStreetName,customerStreetNumber,customerPostalCode,customerPostalTown,phoneNumber,billingAccount);
 
 
-
+        Invoice invoice = readSql.getInvoiceById(customer.getCustomer_id());
 
         VBox fakturaInfo = new VBox();
         fakturaInfo.setSpacing(5);
+//        fakturaInfo.setAlignment(Pos.TOP_RIGHT);
 
-        fakturaInfo.getChildren().addAll();
+        String.format("%-5s %-5s","CustomerId: ", invoice.getCustomer());
 
+        Label customerId = new Label("CustomerId: "+ invoice.getCustomer() );
+        Label invoiceId = new Label("InvoiceId: " + invoice.getInvoice_id() );
+        Label invoiceDate = new Label("InvoiceDate: " + invoice.getDato() );
+
+
+        fakturaInfo.getChildren().addAll(customerId, invoiceId, invoiceDate);
+
+//
         GridPane topGridLayout = new GridPane();
         topGridLayout.setHgap(4);
         topGridLayout.setVgap(4);
         topGridLayout.setPadding(new Insets(4)); // padding outer layer around the layout
 
         topGridLayout.add(customerInfo,0,0);
-        topGridLayout.add(fakturaInfo,2,0);
+        topGridLayout.add(fakturaInfo,3,0);
 
-        BorderPane bp = new BorderPane();
-        bp.setTop(customerInfo);
+        Product product = new Product();
 
-        Scene fakturaScene = new Scene(bp,400,600);
+        String.format("%s %s %s %s %s", product.getCategory(), product.getDescription(), "antall", product.getPrice() );
+        Label productDescription = new Label();
+
+
+        BorderPane mainBp = new BorderPane();
+        mainBp.setTop(topGridLayout);
+
+//        HBox topPart = new HBox();
+//        topPart.setPadding(new Insets(5,10,5,10));
+//        topPart.setSpacing(10);
+//        topPart.getChildren().addAll(customerInfo, fakturaInfo );
+//
+//        mainBp.setTop(topPart);
+
+        Scene fakturaScene = new Scene(mainBp,400,600);
 
         return fakturaScene;
     }

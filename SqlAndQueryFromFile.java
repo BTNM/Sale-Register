@@ -9,34 +9,57 @@ import java.util.Arrays;
 
 public class SqlAndQueryFromFile {
     private static String databaseName = "SaleRegister.db";
-    public static String sqlQueryPath = "C:\\Users\\Bao Thien\\Dropbox\\IdeaProjects\\src\\Oblig3\\oblig3v1_database.sql"; // hjemmepc Bao Thien, skolepc BaoThien
-    public static String datebasePath = "jdbc:sqlite:C:/Users/Bao Thien/Dropbox/IdeaProjects/src/Oblig3/"+databaseName;
+    public static String sqlQueryPath = "C:\\Users\\BaoThien\\Dropbox\\IdeaProjects\\src\\Oblig3\\oblig3v1_database.sql"; // hjemmepc Bao Thien, skolepc BaoThien
+    public static String datebasePath = "jdbc:sqlite:C:/Users/BaoThien/Dropbox/IdeaProjects/src/Oblig3/"+databaseName;
 
     Connection conn;
 
     String getAddressQuery = "SELECT * FROM main.address WHERE address_id = ?";
     String getCategoryQuery = "";
     String getCustomerQuery = "SELECT * FROM main.customer WHERE customer_id = ?";
-    String getInvoiceQuery = "";
+    String getInvoiceQuery = "SELECT * FROM main.invoice WHERE customer = ?";
     String getInvoice_itemsQuery = "";
     String getProductQuery = "";
 
-    PreparedStatement customerById;
     PreparedStatement addressById;
+    PreparedStatement customerById;
+    PreparedStatement invoiceById;
 
 
     public SqlAndQueryFromFile() {
         try {
             conn = this.connect();
 
-            customerById = conn.prepareStatement(getCustomerQuery);
             addressById = conn.prepareStatement(getAddressQuery);
+            customerById = conn.prepareStatement(getCustomerQuery);
+            invoiceById = conn.prepareStatement(getInvoiceQuery);
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
 
+    }
+
+    public Invoice getInvoiceById (int customer_id) {
+        Invoice tempInvoice = null;
+
+        try {
+
+            invoiceById.setInt(1, customer_id);
+            ResultSet rs = invoiceById.executeQuery();
+
+            if (rs.next() ) {
+                tempInvoice = new Invoice(rs.getInt(1), rs.getInt(2), rs.getString(3));
+            } else {
+                System.out.println("Couldn't find any from customer database");
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return tempInvoice;
     }
 
     public Customer getCustomerById (int customer_id) {
