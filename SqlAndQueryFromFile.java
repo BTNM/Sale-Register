@@ -9,30 +9,36 @@ import java.util.Arrays;
 
 public class SqlAndQueryFromFile {
     private static String databaseName = "SaleRegister.db";
-    public static String sqlQueryPath = "C:\\Users\\BaoThien\\Dropbox\\IdeaProjects\\src\\Oblig3\\oblig3v1_database.sql"; // hjemmepc Bao Thien, skolepc BaoThien
-    public static String datebasePath = "jdbc:sqlite:C:/Users/BaoThien/Dropbox/IdeaProjects/src/Oblig3/"+databaseName;
+    public static String sqlQueryPath = "C:\\Users\\Bao Thien\\Dropbox\\IdeaProjects\\src\\Oblig3\\oblig3v1_database.sql"; // hjemmepc Bao Thien, skolepc BaoThien
+    public static String datebasePath = "jdbc:sqlite:C:/Users/Bao Thien/Dropbox/IdeaProjects/src/Oblig3/"+databaseName;
 
     Connection conn;
 
     String getAddressQuery = "SELECT * FROM main.address WHERE address_id = ?";
-    String getCategoryQuery = "";
+    String getCategoryQuery = "SELECT * FROM category WHERE category_id = ?";
     String getCustomerQuery = "SELECT * FROM main.customer WHERE customer_id = ?";
     String getInvoiceQuery = "SELECT * FROM main.invoice WHERE customer = ?";
-    String getInvoice_itemsQuery = "";
-    String getProductQuery = "";
+    String getInvoiceItemsQuery = "SELECT * FROM main.invoice_items WHERE invoice = ?";
+    String getProductQuery = "SELECT * FROM product WHERE product_id = ?";
+    String getInvoiceQuantityQuery = "SELECT count(invoice_items.invoice) From invoice_items WHERE invoice = 1";
 
     PreparedStatement addressById;
+    PreparedStatement categoryById;
     PreparedStatement customerById;
     PreparedStatement invoiceById;
-
+    PreparedStatement invoiceItemsById;
+    PreparedStatement productById;
 
     public SqlAndQueryFromFile() {
         try {
             conn = this.connect();
 
             addressById = conn.prepareStatement(getAddressQuery);
+            categoryById = conn.prepareStatement(getCategoryQuery);
             customerById = conn.prepareStatement(getCustomerQuery);
             invoiceById = conn.prepareStatement(getInvoiceQuery);
+            invoiceItemsById = conn.prepareStatement(getInvoiceItemsQuery);
+            productById = conn.prepareStatement(getProductQuery);
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -40,6 +46,67 @@ public class SqlAndQueryFromFile {
 
 
     }
+
+    public Product getProductById(int product_id) {
+        Product tempProduct = null;
+
+        try {
+            productById.setInt(1,product_id);
+            ResultSet rs = productById.executeQuery();
+
+            if (rs.next() ) {
+                tempProduct = new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getFloat(4), rs.getInt(5));
+            } else {
+                System.out.println("Couldn't find any from customer database");
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return tempProduct;
+    }
+
+    public Category getCategoryById(int category_id ) {
+        Category tempCategory = null;
+
+        try {
+            categoryById.setInt(1, category_id);
+            ResultSet rs = categoryById.executeQuery();
+
+            if (rs.next()) {
+                tempCategory = new Category(rs.getInt(1), rs.getString(2));
+            } else {
+                System.out.println("Couldn't find any from customer database");
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return tempCategory;
+    }
+
+    public Invoice_items getInvoiceItemsById(int invoice) {
+        Invoice_items tempInvoiceItems = null;
+
+        try {
+            invoiceItemsById.setInt(1, invoice);
+            ResultSet rs = invoiceItemsById.executeQuery();
+
+            if (rs.next() ) {
+                tempInvoiceItems = new Invoice_items(rs.getInt(1), rs.getInt(2));
+            } else {
+                System.out.println("Couldn't find any from customer database");
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return tempInvoiceItems;
+    }
+
 
     public Invoice getInvoiceById (int customer_id) {
         Invoice tempInvoice = null;
@@ -61,6 +128,7 @@ public class SqlAndQueryFromFile {
 
         return tempInvoice;
     }
+
 
     public Customer getCustomerById (int customer_id) {
         Customer tempCustomer = null;
@@ -216,7 +284,6 @@ public class SqlAndQueryFromFile {
 
         return conn;
     }
-
 
 
 

@@ -2,19 +2,14 @@ package Oblig3;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collection;
 
 public class Main extends Application {
     static SqlAndQueryFromFile readSql = new SqlAndQueryFromFile();
@@ -23,11 +18,11 @@ public class Main extends Application {
     public static void main(String[] args) {
 //        Main main = new Main();
 
-
-
         File file = new File(SqlAndQueryFromFile.datebasePath);
         if(!file.exists()){
             readSql.startUpFromSqlFile(SqlAndQueryFromFile.sqlQueryPath);
+
+
 
 
 //            main.startUpFromSqlFile(sqlQueryPath);
@@ -40,7 +35,7 @@ public class Main extends Application {
 //            System.out.println("id: "+c.getCustomer_id()+" name: "+ c.getCustomer_name()+ " phone nr: "+ c.getPhone_number() );
 //        }
 
-
+        System.out.println(String.format("%10s %-10s %-2s", "hello","hello","hello" ) );
 
         //start javafx start() method
         launch(args);
@@ -63,13 +58,6 @@ public class Main extends Application {
     }
 
     public Scene getFaktura() {
-//        Address address1;
-//        Category category1;
-//        Customer customer1;
-//        Invoice invoice1;
-//        Invoice_items invoice_items;
-//        Product product;
-
         Customer customer = readSql.getCustomerById(1);
         Address address = readSql.getAddressById(customer.getAddress()); // 1
 
@@ -80,16 +68,11 @@ public class Main extends Application {
 
         Label customerStreet = new Label(address.getStreet_name()+ " " + address.getStreet_number() );
         Label customerPostal = new Label(address.getPostal_code()+ " " + address.getPostal_town() );
-//        Label customerStreetName = new Label(address.getStreet_name());
-//        Label customerStreetNumber = new Label(address.getStreet_number());
-//        Label customerPostalCode = new Label(address.getPostal_code());
-//        Label customerPostalTown = new Label(address.getPostal_town());
 
         Label phoneNumber = new Label(customer.getPhone_number());
         Label billingAccount = new Label(customer.getBilling_account());
 
         customerInfo.getChildren().addAll(customerName, customerStreet, customerPostal, phoneNumber, billingAccount);
-//        customerInfo.getChildren().addAll(customerName,customerStreetName,customerStreetNumber,customerPostalCode,customerPostalTown,phoneNumber,billingAccount);
 
 
         Invoice invoice = readSql.getInvoiceById(customer.getCustomer_id());
@@ -98,28 +81,31 @@ public class Main extends Application {
         fakturaInfo.setSpacing(5);
 //        fakturaInfo.setAlignment(Pos.TOP_RIGHT);
 
-        String.format("%-5s %-5s","CustomerId: ", invoice.getCustomer());
+//        String.format("%-5s %-5s","CustomerId: ", invoice.getCustomer());
 
-        Label customerId = new Label("CustomerId: "+ invoice.getCustomer() );
-        Label invoiceId = new Label("InvoiceId: " + invoice.getInvoice_id() );
-        Label invoiceDate = new Label("InvoiceDate: " + invoice.getDato() );
-
+        Label customerId = new Label(printLeftAdjusted("CustomerId: ", String.valueOf(invoice.getCustomer()) ));
+        Label invoiceId = new Label(printLeftAdjusted("InvoiceId: ",String.valueOf(invoice.getInvoice_id()) ));
+        Label invoiceDate = new Label(printLeftAdjusted("InvoiceDate: ",invoice.getDato() ));
 
         fakturaInfo.getChildren().addAll(customerId, invoiceId, invoiceDate);
 
-//
+        Product product = readSql.getProductById(customer.getAddress());
+
+        //category_id, description, quantity, price per unit, sum of quantity
+        String.format("%s %s %s %s %s", product.getCategory(), product.getDescription(), "0", product.getPrice(),"36" );
+//        Label productDescription = new Label();
+
+
+
         GridPane topGridLayout = new GridPane();
-        topGridLayout.setHgap(4);
-        topGridLayout.setVgap(4);
+        topGridLayout.setHgap(10);
+        topGridLayout.setVgap(10);
         topGridLayout.setPadding(new Insets(4)); // padding outer layer around the layout
 
         topGridLayout.add(customerInfo,0,0);
-        topGridLayout.add(fakturaInfo,3,0);
+        topGridLayout.add(fakturaInfo,8,0);
 
-        Product product = new Product();
 
-        String.format("%s %s %s %s %s", product.getCategory(), product.getDescription(), "antall", product.getPrice() );
-        Label productDescription = new Label();
 
 
         BorderPane mainBp = new BorderPane();
@@ -137,10 +123,18 @@ public class Main extends Application {
         return fakturaScene;
     }
 
-//    public VBox addCustomerInfoVbox () {
-//
-//
-//
-//    }
+    public String printLeftAdjusted(String name, String actual) {
+        int line = 25;
+        int arg1 = line - name.length();
+        int arg2 = line - actual.length();
+
+        return String.format("|%-"+arg1+"s %"+arg2+"s |",name,actual );
+    }
+
+    public GridPane addTopLayout () {
+
+
+
+    }
 
 }
