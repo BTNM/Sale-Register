@@ -2,20 +2,25 @@ package Oblig3;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.*;
 
 public class Main extends Application {
+    Stage mainWindow;
+
     static SqlAndQueryFromFile readSql = new SqlAndQueryFromFile();
 
 
@@ -23,10 +28,11 @@ public class Main extends Application {
 //        Main main = new Main();
 
 //        File file = new File(SqlAndQueryFromFile.datebasePath);
-//        if(!file.exists()){
-//            readSql.startUpFromSqlFile(SqlAndQueryFromFile.sqlQueryPath);
+//            if(!file.exists()) {
+//                readSql.startUpFromSqlFile(SqlAndQueryFromFile.sqlQueryPath);
+//            }
 
-
+        // design pattern observables, aito update
 
 
 //            main.startUpFromSqlFile(sqlQueryPath);
@@ -39,7 +45,8 @@ public class Main extends Application {
 //            System.out.println("id: "+c.getCustomer_id()+" name: "+ c.getCustomer_name()+ " phone nr: "+ c.getPhone_number() );
 //        }
 
-        System.out.println(String.format("%10s %-10s %-2s", "hello","hello","hello" ) );
+//        System.out.println(String.format("%10s %-10s %-2s", "hello","hello","hello" ) );
+
 
         //start javafx start() method
         launch(args);
@@ -49,6 +56,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+//        mainWindow = primaryStage;
 
 
 //        GridPane startGrid = new GridPane();
@@ -56,14 +64,59 @@ public class Main extends Application {
 //        Scene startScene = new Scene(startGrid,600,400);
 //
         primaryStage.setTitle("Sale Register System");
-        primaryStage.setScene(getFaktura());
+
+        primaryStage.setScene(getIntro());
+//        primaryStage.setScene(getFaktura() );
         primaryStage.show();
 
     }
 
-    public Scene getFaktura() {
-        
+    public Scene getIntro () {
+//        Label customers = new Label("Customers");
+//        Label productCategory = new Label("Product Categories");
+//        Label products = new Label("Products");
+//        Label invoices = new Label("Invoices");
+//        Label invoiceItems = new Label("Invoice Items");
 
+        Text title = new Text("Sale Register");
+        title.setFont(Font.font("Times new roman", FontWeight.BOLD, 20));
+
+        Button customers = new Button("Customers");
+        Button productCategory = new Button("Product Categories");
+        Button products = new Button("Products");
+        Button invoices = new Button("Invoices");
+        Button invoiceItems = new Button("Invoice Items");
+
+
+
+        HBox buttonRow = new HBox();
+
+        buttonRow.getChildren().addAll(customers, productCategory, products, invoices, invoiceItems);
+
+        FlowPane buttonFlow = new FlowPane();
+        buttonFlow.setPadding(new Insets(5,5,5,10));
+
+        buttonFlow.setVgap(10);
+        buttonFlow.setHgap(5);
+        buttonFlow.setPrefWrapLength(100);
+        buttonFlow.setStyle("-fx-background-color: DAE6F3");
+//        buttonFlow.setAlignment(Pos.TOP_CENTER);
+
+        buttonFlow.getChildren().addAll(customers, productCategory, products, invoices, invoiceItems);
+
+        BorderPane mainBp = new BorderPane();
+        mainBp.setTop(title);
+//        mainBp.setCenter(buttonRow);
+        mainBp.setLeft(buttonFlow);
+
+        Scene introScene = new Scene(mainBp, 800,800);
+        introScene.setFill(Color.LIGHTBLUE);
+
+        return introScene;
+    }
+
+
+    public Scene getFaktura() {
 
 
 
@@ -94,16 +147,19 @@ public class Main extends Application {
         TableColumn sumQuanityCol = new TableColumn("Sum of quantity");
 
         productTable.getColumns().addAll(categoryCol,descriptionCol,quantityCol,priceCol,sumQuanityCol);
+
+
+
         return productTable;
     }
 
-    public String printLeftAdjusted(String name, String actual) {
-        int line = 25;
-        int arg1 = line - name.length();
-        int arg2 = line - actual.length();
-
-        return String.format("|%-"+arg1+"s %"+arg2+"s |",name,actual );
-    }
+//    public String printLeftAdjusted(String name, String actual) {
+//        int line = 25;
+//        int arg1 = line - name.length();
+//        int arg2 = line - actual.length();
+//
+//        return String.format("|%-"+arg1+"s %"+arg2+"s |",name,actual );
+//    }
 
     public GridPane addTopLayout () {
         Customer customer = readSql.getCustomerById(1);
@@ -178,5 +234,6 @@ public class Main extends Application {
 
         return topGridLayout;
     }
+
 
 }

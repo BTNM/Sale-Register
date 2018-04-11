@@ -9,8 +9,8 @@ import java.util.Arrays;
 
 public class SqlAndQueryFromFile {
     private static String databaseName = "SaleRegister.db";
-    public static String sqlQueryPath = "C:\\Users\\BaoThien\\Dropbox\\IdeaProjects\\src\\Oblig3\\oblig3v1_database.sql"; // hjemmepc Bao Thien, skolepc BaoThien
-    public static String datebasePath = "jdbc:sqlite:C:/Users/BaoThien/Dropbox/IdeaProjects/src/Oblig3/"+databaseName;
+    public static String sqlQueryPath = "C:\\Users\\Bao Thien\\Dropbox\\IdeaProjects\\src\\Oblig3\\oblig3v1_database.sql"; // hjemmepc Bao Thien, skolepc BaoThien
+    public static String datebasePath = "jdbc:sqlite:C:/Users/Bao Thien/Dropbox/IdeaProjects/src/Oblig3/"+databaseName;
 
     Connection conn;
 
@@ -20,7 +20,7 @@ public class SqlAndQueryFromFile {
     String getInvoiceQuery = "SELECT * FROM main.invoice WHERE customer = ?";
     String getInvoiceItemsQuery = "SELECT * FROM main.invoice_items WHERE invoice = ?";
     String getProductQuery = "SELECT * FROM product WHERE product_id = ?";
-    String getInvoiceQuantityQuery = "SELECT count(invoice_items.invoice) From invoice_items WHERE invoice = 1";
+    String getInvoiceQuantityQuery = "SELECT count(invoice_items.invoice) From invoice_items WHERE invoice = ?";
 
     PreparedStatement addressById;
     PreparedStatement categoryById;
@@ -28,6 +28,8 @@ public class SqlAndQueryFromFile {
     PreparedStatement invoiceById;
     PreparedStatement invoiceItemsById;
     PreparedStatement productById;
+
+    PreparedStatement invoiceQuantityById;
 
     public SqlAndQueryFromFile() {
         try {
@@ -40,11 +42,34 @@ public class SqlAndQueryFromFile {
             invoiceItemsById = conn.prepareStatement(getInvoiceItemsQuery);
             productById = conn.prepareStatement(getProductQuery);
 
+            invoiceQuantityById = conn.prepareStatement(getInvoiceQuantityQuery);
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
 
+    }
+
+    public int getInvoiceQuantity (int invoice) {
+        int invoiceNr = 0;
+
+        try {
+            invoiceItemsById.setInt(1, invoice);
+            ResultSet rs = invoiceItemsById.executeQuery();
+
+            if (rs.next() ) {
+                invoiceNr = rs.getInt(1);
+
+            } else {
+                System.out.println("Couldn't find any from customer database");
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return invoiceNr;
     }
 
     public Product getProductById(int product_id) {
