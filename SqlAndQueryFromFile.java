@@ -1,5 +1,7 @@
 package Oblig3;
 
+import Oblig3.SQLReadFiles.*;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;

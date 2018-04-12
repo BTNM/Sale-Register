@@ -1,4 +1,4 @@
-package Oblig3;
+package Oblig3.SQLReadFiles;
 
 public class Customer {
     int customer_id;

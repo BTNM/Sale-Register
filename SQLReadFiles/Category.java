@@ -1,4 +1,4 @@
-package Oblig3;
+package Oblig3.SQLReadFiles;
 
 public class Category {
     int category_id;

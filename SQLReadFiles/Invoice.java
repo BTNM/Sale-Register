@@ -1,4 +1,4 @@
-package Oblig3;
+package Oblig3.SQLReadFiles;
 
 public class Invoice {
     int invoice_id;

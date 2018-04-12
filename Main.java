@@ -1,22 +1,25 @@
 package Oblig3;
 
+import Oblig3.SQLReadFiles.Address;
+import Oblig3.SQLReadFiles.Customer;
+import Oblig3.SQLReadFiles.Invoice;
+import Oblig3.SQLReadFiles.Product;
+import Oblig3.TableViewClass.InvoiceProducts;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-
-import java.io.*;
 
 public class Main extends Application {
     Stage mainWindow;
@@ -32,20 +35,13 @@ public class Main extends Application {
 //                readSql.startUpFromSqlFile(SqlAndQueryFromFile.sqlQueryPath);
 //            }
 
-        // design pattern observables, aito update
+        // design pattern observables, auto update tableview
 
 
 //            main.startUpFromSqlFile(sqlQueryPath);
 //            main.startUpFromSqlFile("C:\\Users\\Bao Thien\\Dropbox\\Skole\\UIB 8\\INFO233\\Oblig\\Oblig3\\oblig3v1_database.sql");
 //        }
 
-//        ArrayList<Customer> tempList = readSql.getAllCustomer();
-//
-//        for (Customer c : tempList) {
-//            System.out.println("id: "+c.getCustomer_id()+" name: "+ c.getCustomer_name()+ " phone nr: "+ c.getPhone_number() );
-//        }
-
-//        System.out.println(String.format("%10s %-10s %-2s", "hello","hello","hello" ) );
 
 
         //start javafx start() method
@@ -60,11 +56,10 @@ public class Main extends Application {
 
 
 //        GridPane startGrid = new GridPane();
-//
 //        Scene startScene = new Scene(startGrid,600,400);
 //
-        primaryStage.setTitle("Sale Register System");
 
+        primaryStage.setTitle("Sale Register System");
         primaryStage.setScene(getIntro());
 //        primaryStage.setScene(getFaktura() );
         primaryStage.show();
@@ -81,17 +76,18 @@ public class Main extends Application {
         Text title = new Text("Sale Register");
         title.setFont(Font.font("Times new roman", FontWeight.BOLD, 20));
 
+
         Button customers = new Button("Customers");
         Button productCategory = new Button("Product Categories");
         Button products = new Button("Products");
         Button invoices = new Button("Invoices");
         Button invoiceItems = new Button("Invoice Items");
 
+        TextField name = new TextField();
+        name.setPromptText("what name");
 
-
-        HBox buttonRow = new HBox();
-
-        buttonRow.getChildren().addAll(customers, productCategory, products, invoices, invoiceItems);
+//        HBox buttonRow = new HBox();
+//        buttonRow.getChildren().addAll(customers, productCategory, products, invoices, invoiceItems);
 
         FlowPane buttonFlow = new FlowPane();
         buttonFlow.setPadding(new Insets(5,5,5,10));
@@ -105,6 +101,7 @@ public class Main extends Application {
         buttonFlow.getChildren().addAll(customers, productCategory, products, invoices, invoiceItems);
 
         BorderPane mainBp = new BorderPane();
+        mainBp.setPadding(new Insets(5,5,10,5));
         mainBp.setTop(title);
 //        mainBp.setCenter(buttonRow);
         mainBp.setLeft(buttonFlow);
@@ -118,20 +115,26 @@ public class Main extends Application {
 
     public Scene getFaktura() {
 
+        GridPane bottomPart = new GridPane();
+        bottomPart.setVgap(5);
+        bottomPart.setHgap(5);
+        bottomPart.setPadding(new Insets(5));
 
+        Label t1 = new Label("test 1");
+        Label t2 = new Label("test 2");
+
+        HBox hBox = new HBox();
+        bottomPart.add(hBox,40,0);
+        hBox.getChildren().addAll(t1,t2);
 
         BorderPane mainBp = new BorderPane();
         mainBp.setTop(addTopLayout() );
         mainBp.setCenter(getMiddleTableView() );
+        mainBp.setBottom(bottomPart);
 
-//        HBox topPart = new HBox();
-//        topPart.setPadding(new Insets(5,10,5,10));
-//        topPart.setSpacing(10);
-//        topPart.getChildren().addAll(customerInfo, fakturaInfo );
-//
-//        mainBp.setTop(topPart);
 
-        Scene fakturaScene = new Scene(mainBp,400,600);
+
+        Scene fakturaScene = new Scene(mainBp,425,700);
 
 
         return fakturaScene;
@@ -139,13 +142,36 @@ public class Main extends Application {
 
     private TableView getMiddleTableView() {
         TableView productTable = new TableView();
-//        productTable.setEditable(true);
+        productTable.setEditable(true);
+
+        // table col names for the tableview
         TableColumn categoryCol = new TableColumn("Category Id");
         TableColumn descriptionCol = new TableColumn("Description");
         TableColumn quantityCol = new TableColumn("Quantity");
         TableColumn priceCol = new TableColumn("Price per unit");
         TableColumn sumQuanityCol = new TableColumn("Sum of quantity");
 
+        //associate data with the table columns, through the properties defined for each data element. referencing to the methods of the InvoiceProducts
+
+        categoryCol.setCellValueFactory(
+                new PropertyValueFactory<InvoiceProducts,String>("categoryId")
+        );
+        descriptionCol.setCellValueFactory(
+                new PropertyValueFactory<InvoiceProducts,String>("description")
+        );
+        quantityCol.setCellValueFactory(
+                new PropertyValueFactory<InvoiceProducts,Integer>("quantity")
+        );
+        priceCol.setCellValueFactory(
+                new PropertyValueFactory<InvoiceProducts,Integer>("pricePerUnit")
+        );
+        sumQuanityCol.setMaxWidth(100);
+        sumQuanityCol.setCellValueFactory(
+                new PropertyValueFactory<InvoiceProducts,Integer>("sumQuantity")
+        );
+
+        //  data model is defined, and the data is added and associated with the columns, you can add the data to the table by using the setItems()
+        productTable.setItems(getProductObservableTable() );
         productTable.getColumns().addAll(categoryCol,descriptionCol,quantityCol,priceCol,sumQuanityCol);
 
 
@@ -153,13 +179,15 @@ public class Main extends Application {
         return productTable;
     }
 
-//    public String printLeftAdjusted(String name, String actual) {
-//        int line = 25;
-//        int arg1 = line - name.length();
-//        int arg2 = line - actual.length();
-//
-//        return String.format("|%-"+arg1+"s %"+arg2+"s |",name,actual );
-//    }
+    public ObservableList<InvoiceProducts> getProductObservableTable () {
+        ObservableList<InvoiceProducts> table = FXCollections.observableArrayList(
+            new InvoiceProducts("test cate","test desc", 3, 5, 15),
+            new InvoiceProducts("test cate","test desc", 5, 5, 25)
+        );
+
+        return table;
+    }
+
 
     public GridPane addTopLayout () {
         Customer customer = readSql.getCustomerById(1);
@@ -223,7 +251,6 @@ public class Main extends Application {
 //        Label productDescription = new Label();
 
 
-
         GridPane topGridLayout = new GridPane();
         topGridLayout.setHgap(10);
         topGridLayout.setVgap(10);
@@ -234,6 +261,15 @@ public class Main extends Application {
 
         return topGridLayout;
     }
+
+    //    public String printLeftAdjusted(String name, String actual) {
+//        int line = 25;
+//        int arg1 = line - name.length();
+//        int arg2 = line - actual.length();
+//
+//        return String.format("|%-"+arg1+"s %"+arg2+"s |",name,actual );
+//    }
+
 
 
 }
