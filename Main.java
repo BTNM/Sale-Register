@@ -1,15 +1,18 @@
 package Oblig3;
 
 import Oblig3.SQLReadFiles.*;
+import Oblig3.TableViewClass.CustomerObservable;
 import Oblig3.TableViewClass.InvoiceProducts;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -56,13 +59,13 @@ public class Main extends Application {
 //
 
         primaryStage.setTitle("Sale Register System");
-//        primaryStage.setScene(getIntro() );
-        primaryStage.setScene(getFaktura() );
+//        primaryStage.setScene(getIntroScene() );
+        primaryStage.setScene(getFakturaScene() );
         primaryStage.show();
 
     }
 
-    public Scene getIntro () {
+    public Scene getIntroScene () {
 //        Label customers = new Label("Customers");
 //        Label productCategory = new Label("Product Categories");
 //        Label products = new Label("Products");
@@ -117,7 +120,7 @@ public class Main extends Application {
     }
 
 
-    public Scene getFaktura() {
+    public Scene getFakturaScene() {
 
         GridPane bottomPart = new GridPane();
         bottomPart.setVgap(5);
@@ -132,8 +135,8 @@ public class Main extends Application {
         hBox.getChildren().addAll(t1,t2);
 
         BorderPane mainBp = new BorderPane();
-        mainBp.setTop(addTopLayout() );
-        mainBp.setCenter(getMiddleInvoiceTableView() );
+        mainBp.setTop(addInvoiceProductsToplayout() );
+        mainBp.setCenter(getInvoiceProductsMiddleTableView() );
         mainBp.setBottom(bottomPart);
 
 
@@ -142,6 +145,27 @@ public class Main extends Application {
 
 
         return fakturaScene;
+    }
+
+    public Scene getCustomerScene () {
+
+        BorderPane mainBp = new BorderPane();
+
+
+        Scene customerScene = new Scene(mainBp,400,600);
+
+        return customerScene;
+    }
+
+
+    public Scene getAddressScene () {
+
+        BorderPane mainBp = new BorderPane();
+
+
+        Scene customerScene = new Scene(mainBp,400,600);
+
+        return customerScene;
     }
 
     private TableView getCustomerTableView () {
@@ -154,13 +178,26 @@ public class Main extends Application {
         TableColumn phoneCol = new TableColumn("Phone Nummer");
         TableColumn billingAccountCol = new TableColumn("Billing Account");
 
+        // reimplement the table cell as a text field with the textFieldTableCell, setOnEditCommit process edit and update value of corresponding cell
+        customerIdCol.setCellFactory(TextFieldTableCell.forTableColumn() );
+        customerIdCol.setOnEditCommit(
+                new EventHandler<TableColumn.CellEditEvent<CustomerObservable,String>>() {
+                    @Override
+                    public void handle (TableColumn.CellEditEvent<CustomerObservable,String> t) {
+                        ( (CustomerObservable) t.getTableView().getItems().get(
+                                t.getTablePosition().getRow())
+                        ).setCustomerId( Integer.valueOf(t.getNewValue() ) );
+                    }
+                }
+        );
+
 //        customerTable.setItems()  make method to put all values from database into observable list
         customerTable.getColumns().addAll(customerIdCol, customerNameCol, addressCol, phoneCol, billingAccountCol );
 
         return customerTable;
     }
 
-    private TableView getMiddleInvoiceTableView() {
+    private TableView getInvoiceProductsMiddleTableView() {
         TableView productTable = new TableView();
         productTable.setEditable(true);
 
@@ -173,7 +210,6 @@ public class Main extends Application {
         TableColumn sumQuanityCol = new TableColumn("Sum of quantity");
 
         //associate data with the table columns, through the properties defined for each data element. referencing to the methods of the InvoiceProducts
-
         categoryCol.setCellValueFactory(
                 new PropertyValueFactory<InvoiceProducts,String>("categoryId")
         );
@@ -192,7 +228,7 @@ public class Main extends Application {
         );
 
         //  data model is defined, and the data is added and associated with the columns, you can add the data to the table by using the setItems()
-        productTable.setItems(getProductObservableTable() );
+        productTable.setItems(getInvoiceProductObservableTable() );
         productTable.getColumns().addAll(categoryCol,descriptionCol,quantityCol,priceCol,sumQuanityCol);
 
 
@@ -200,12 +236,13 @@ public class Main extends Application {
         return productTable;
     }
 
-    public ObservableList<InvoiceProducts> getProductObservableTable () {
+    public ObservableList<InvoiceProducts> getInvoiceProductObservableTable () {
         ObservableList<InvoiceProducts> table = FXCollections.observableArrayList(
             new InvoiceProducts("test cate","test desc", 3, 5, 15),
             new InvoiceProducts("test cate","test desc", 5, 5, 25)
 
         );
+
 
         return table;
     }
@@ -222,7 +259,7 @@ public class Main extends Application {
 ////        return new InvoiceProducts();
 //    }
 
-    public GridPane addTopLayout () {
+    public GridPane addInvoiceProductsToplayout() {
         Customer customer = readSql.getCustomerById(1);
         Address address = readSql.getAddressById(customer.getAddress()); // 1
 
