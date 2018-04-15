@@ -1,9 +1,6 @@
 package Oblig3;
 
-import Oblig3.SQLReadFiles.Address;
-import Oblig3.SQLReadFiles.Customer;
-import Oblig3.SQLReadFiles.Invoice;
-import Oblig3.SQLReadFiles.Product;
+import Oblig3.SQLReadFiles.*;
 import Oblig3.TableViewClass.InvoiceProducts;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -18,7 +15,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -60,8 +56,8 @@ public class Main extends Application {
 //
 
         primaryStage.setTitle("Sale Register System");
-        primaryStage.setScene(getIntro());
-//        primaryStage.setScene(getFaktura() );
+//        primaryStage.setScene(getIntro() );
+        primaryStage.setScene(getFaktura() );
         primaryStage.show();
 
     }
@@ -76,15 +72,23 @@ public class Main extends Application {
         Text title = new Text("Sale Register");
         title.setFont(Font.font("Times new roman", FontWeight.BOLD, 20));
 
-
+        Button home = new Button("Home page");
         Button customers = new Button("Customers");
         Button productCategory = new Button("Product Categories");
         Button products = new Button("Products");
         Button invoices = new Button("Invoices");
         Button invoiceItems = new Button("Invoice Items");
 
-        TextField name = new TextField();
-        name.setPromptText("what name");
+//        home.setOnAction( e -> {
+//            mainWindow.setScene(getIntro() );
+//        });
+//        invoices.setOnAction(e -> {
+//            mainWindow.setScene(getFaktura());
+//        });
+
+
+//        TextField name = new TextField();
+//        name.setPromptText("what name");
 
 //        HBox buttonRow = new HBox();
 //        buttonRow.getChildren().addAll(customers, productCategory, products, invoices, invoiceItems);
@@ -98,7 +102,7 @@ public class Main extends Application {
         buttonFlow.setStyle("-fx-background-color: DAE6F3");
 //        buttonFlow.setAlignment(Pos.TOP_CENTER);
 
-        buttonFlow.getChildren().addAll(customers, productCategory, products, invoices, invoiceItems);
+        buttonFlow.getChildren().addAll(home, customers, productCategory, products, invoices, invoiceItems);
 
         BorderPane mainBp = new BorderPane();
         mainBp.setPadding(new Insets(5,5,10,5));
@@ -106,7 +110,7 @@ public class Main extends Application {
 //        mainBp.setCenter(buttonRow);
         mainBp.setLeft(buttonFlow);
 
-        Scene introScene = new Scene(mainBp, 800,800);
+        Scene introScene = new Scene(mainBp, 600,600);
         introScene.setFill(Color.LIGHTBLUE);
 
         return introScene;
@@ -129,7 +133,7 @@ public class Main extends Application {
 
         BorderPane mainBp = new BorderPane();
         mainBp.setTop(addTopLayout() );
-        mainBp.setCenter(getMiddleTableView() );
+        mainBp.setCenter(getMiddleInvoiceTableView() );
         mainBp.setBottom(bottomPart);
 
 
@@ -140,9 +144,26 @@ public class Main extends Application {
         return fakturaScene;
     }
 
-    private TableView getMiddleTableView() {
+    private TableView getCustomerTableView () {
+        TableView customerTable = new TableView();
+        customerTable.setEditable(true);
+
+        TableColumn customerIdCol = new TableColumn("Customer Id");
+        TableColumn customerNameCol = new TableColumn("Customer Name");
+        TableColumn addressCol = new TableColumn("Address");
+        TableColumn phoneCol = new TableColumn("Phone Nummer");
+        TableColumn billingAccountCol = new TableColumn("Billing Account");
+
+//        customerTable.setItems()  make method to put all values from database into observable list
+        customerTable.getColumns().addAll(customerIdCol, customerNameCol, addressCol, phoneCol, billingAccountCol );
+
+        return customerTable;
+    }
+
+    private TableView getMiddleInvoiceTableView() {
         TableView productTable = new TableView();
         productTable.setEditable(true);
+
 
         // table col names for the tableview
         TableColumn categoryCol = new TableColumn("Category Id");
@@ -183,11 +204,23 @@ public class Main extends Application {
         ObservableList<InvoiceProducts> table = FXCollections.observableArrayList(
             new InvoiceProducts("test cate","test desc", 3, 5, 15),
             new InvoiceProducts("test cate","test desc", 5, 5, 25)
+
         );
 
         return table;
     }
 
+//    public InvoiceProducts getSqlData () {
+//        Customer customer = readSql.getCustomerById(1);
+//        Category category = readSql.getCategoryById(1);
+//        Product product = readSql.getProductById(1);
+//        Invoice invoice = readSql.getInvoiceById(customer.getCustomer_id() );
+//        Invoice_items invoiceItems = readSql.getInvoiceItemsById(invoice.getInvoice_id());
+//
+//
+//
+////        return new InvoiceProducts();
+//    }
 
     public GridPane addTopLayout () {
         Customer customer = readSql.getCustomerById(1);
@@ -216,11 +249,14 @@ public class Main extends Application {
 
 //        String.format("%-5s %-5s","CustomerId: ", invoice.getCustomer());
 
-//        Label customerId = new Label(printLeftAdjusted("CustomerId: ", String.valueOf(invoice.getCustomer()) ));
+//        Label customerId = new Label(printLeftAdjusted("CustomerId: ", String .valueOf(invoice.getCustomer()) ));
 //        Label invoiceId = new Label(printLeftAdjusted("InvoiceId: ",String.valueOf(invoice.getInvoice_id()) ));
 //        Label invoiceDate = new Label(printLeftAdjusted("InvoiceDate: ",invoice.getDato() ));
 //
 //        fakturaInfo.getChildren().addAll(customerId, invoiceId, invoiceDate);
+
+        Label invoiceTitle = new Label("Invoice/Faktura");
+        invoiceTitle.setFont(Font.font("Times New Roman",FontWeight.BOLD,14));
 
         HBox row1 = new HBox();
         Label customerIdLabel = new Label("CustomerId: ");
@@ -242,7 +278,7 @@ public class Main extends Application {
         row3.getChildren().addAll(invoiceDateLabel, invoiceDateValue);
         row3.setAlignment(Pos.TOP_LEFT);
 
-        fakturaInfo.getChildren().addAll(row1,row2, row3);
+        fakturaInfo.getChildren().addAll(invoiceTitle, row1,row2, row3);
 
         Product product = readSql.getProductById(customer.getAddress());
 
