@@ -1,5 +1,6 @@
 package Oblig3;
 
+import Oblig3.DAOs.*;
 import Oblig3.SQLReadFiles.*;
 import Oblig3.TableViewClass.AllTableviews;
 import Oblig3.TableViewClass.CustomerObservable;
@@ -22,11 +23,14 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
+import java.io.File;
+
 public class Main extends Application {
     Stage mainWindow;
 
-    static SqlAndQueryFromFile readSql = new SqlAndQueryFromFile();
-    static AllTableviews allTableviews = new AllTableviews();
+//    static SqlAndQueryFromFile readSql = new SqlAndQueryFromFile();
+    static ConnectionAdapter adapter = new ConnectionAdapter();
+    static AllTableviews allTables = new AllTableviews();
 
 
     public static void main(String[] args) {
@@ -34,7 +38,8 @@ public class Main extends Application {
 
 //        File file = new File(SqlAndQueryFromFile.datebasePath);
 //            if(!file.exists()) {
-//                readSql.startUpFromSqlFile(SqlAndQueryFromFile.sqlQueryPath);
+////                readSql.startUpFromSqlFile(SqlAndQueryFromFile.sqlQueryPath);
+//                adapter.startUpFromSqlFile(ConnectionAdapter.sqlQueryPath);
 //            }
 
         // design pattern observables, auto update tableview
@@ -64,9 +69,9 @@ public class Main extends Application {
 //
 
         primaryStage.setTitle("Sale Register System");
-//        primaryStage.setScene(getIntroScene() );
+        primaryStage.setScene(getIntroScene() );
 //        primaryStage.setScene(getFakturaScene() );
-        primaryStage.setScene(getCustomerScene() );
+//        primaryStage.setScene(getCustomerScene() );
         primaryStage.show();
 
     }
@@ -142,7 +147,7 @@ public class Main extends Application {
 
         BorderPane mainBp = new BorderPane();
         mainBp.setTop(addInvoiceProductsToplayout() );
-        mainBp.setCenter(getInvoiceProductsMiddleTableView() );
+        mainBp.setCenter(allTables.getInvoiceProductsMiddleTableView() );
         mainBp.setBottom(bottomPart);
 
 
@@ -154,11 +159,11 @@ public class Main extends Application {
     }
 
     public Scene getCustomerScene () {
-        AllTableviews allT = new AllTableviews();
+//        AllTableviews allT = new AllTableviews();
 
         BorderPane mainBp = new BorderPane();
 //        mainBp.setCenter(getCustomerTableView() );
-        mainBp.setCenter(allT.getCustomerTableView() );
+        mainBp.setCenter(allTables.getCustomerTableView() );
 
         Scene customerScene = new Scene(mainBp,400,600);
 
@@ -295,156 +300,157 @@ public class Main extends Application {
 //    }
 
 
-    private TableView getInvoiceProductsMiddleTableView() {
-        TableView productTable = new TableView();
-        productTable.setEditable(true);
+//    private TableView getInvoiceProductsMiddleTableView() {
+//        TableView productTable = new TableView();
+//        productTable.setEditable(true);
+//
+//
+//        // table col names for the tableview
+//        TableColumn categoryCol = new TableColumn("Category Id");
+//        TableColumn descriptionCol = new TableColumn("Description");
+//        TableColumn quantityCol = new TableColumn("Quantity");
+//        TableColumn priceCol = new TableColumn("Price per unit");
+//        TableColumn sumQuanityCol = new TableColumn("Sum of quantity");
+//
+//        //associate data with the table columns, through the properties defined for each data element. referencing to the methods of the InvoiceProducts
+//        categoryCol.setCellValueFactory(
+//                new PropertyValueFactory<InvoiceProducts,String>("categoryId")
+//        );
+//        categoryCol.setCellFactory(TextFieldTableCell.forTableColumn());
+//        categoryCol.setOnEditCommit(
+//                new EventHandler<TableColumn.CellEditEvent<InvoiceProducts,String>>() {
+//                    @Override
+//                    public void handle (TableColumn.CellEditEvent<InvoiceProducts,String> t) {
+//                        ( (InvoiceProducts) t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).setCategoryId( t.getNewValue() );
+//                    }
+//                }
+//        );
+//        descriptionCol.setCellValueFactory(
+//                new PropertyValueFactory<InvoiceProducts,String>("description")
+//        );
+//        descriptionCol.setCellFactory(TextFieldTableCell.forTableColumn());
+//        descriptionCol.setOnEditCommit(
+//                new EventHandler<TableColumn.CellEditEvent<InvoiceProducts,String>>() {
+//                    @Override
+//                    public void handle (TableColumn.CellEditEvent<InvoiceProducts,String> t) {
+//                        ( (InvoiceProducts) t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).setCategoryId( t.getNewValue() );
+//                    }
+//                }
+//        );
+//        quantityCol.setCellValueFactory(
+//                new PropertyValueFactory<InvoiceProducts,Integer>("quantity")
+//        );
+//        quantityCol.setCellFactory(TextFieldTableCell.forTableColumn(
+//                new StringConverter<Integer>() {
+//                    @Override
+//                    public String toString(Integer object) {
+//                        return object.toString();
+//                    }
+//
+//                    @Override
+//                    public Integer fromString(String string) {
+//                        return Integer.parseInt(string);
+//                    }
+//                }
+//        ));
+//        quantityCol.setOnEditCommit(
+//                new EventHandler<TableColumn.CellEditEvent<InvoiceProducts,Integer>>() {
+//                    @Override
+//                    public void handle (TableColumn.CellEditEvent<InvoiceProducts,Integer> t) {
+//                        ( (InvoiceProducts) t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).setQuantity(t.getNewValue().intValue()  );
+//                    }
+//                }
+//        );
+//        priceCol.setCellValueFactory(
+//                new PropertyValueFactory<InvoiceProducts,Integer>("pricePerUnit")
+//        );
+//
+//        priceCol.setCellFactory(TextFieldTableCell.forTableColumn(
+//                new StringConverter<Integer>() {
+//                    @Override
+//                    public String toString(Integer object) {
+//                        return object.toString();
+//                    }
+//
+//                    @Override
+//                    public Integer fromString(String string) {
+//                        return Integer.parseInt(string);
+//                    }
+//                }
+//        ));
+//        priceCol.setOnEditCommit(
+//                new EventHandler<TableColumn.CellEditEvent<InvoiceProducts,Integer>>() {
+//                    @Override
+//                    public void handle (TableColumn.CellEditEvent<InvoiceProducts,Integer> t) {
+//                        ( (InvoiceProducts) t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).setPricePerUnit(t.getNewValue().intValue()  );
+//                    }
+//                }
+//        );
+//
+//        sumQuanityCol.setMaxWidth(100);
+//        sumQuanityCol.setCellValueFactory(
+//                new PropertyValueFactory<InvoiceProducts,Integer>("sumQuantity")
+//        );
+//        sumQuanityCol.setCellFactory(TextFieldTableCell.forTableColumn(
+//                new StringConverter<Integer>() {
+//                    @Override
+//                    public String toString(Integer object) {
+//                        return object.toString();
+//                    }
+//
+//                    @Override
+//                    public Integer fromString(String string) {
+//                        return Integer.parseInt(string);
+//                    }
+//                }
+//        ));
+//        sumQuanityCol.setOnEditCommit(
+//                new EventHandler<TableColumn.CellEditEvent<InvoiceProducts,Integer>>() {
+//                    @Override
+//                    public void handle (TableColumn.CellEditEvent<InvoiceProducts,Integer> t) {
+//                        ( (InvoiceProducts) t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).setSumQuantity(t.getNewValue().intValue()  );
+//                    }
+//                }
+//        );
+//
+//        //  data model is defined, and the data is added and associated with the columns, you can add the data to the table by using the setItems()
+//        productTable.setItems(getInvoiceProductObservableTable() );
+//        productTable.getColumns().addAll(categoryCol,descriptionCol,quantityCol,priceCol,sumQuanityCol);
+//
+//
+//
+//        return productTable;
+//    }
 
+//    public ObservableList<CustomerObservable> getCustomerObservableTable () {
+//        ObservableList<CustomerObservable> table = FXCollections.observableArrayList(
+//            new CustomerObservable(1,"test name",4,"0000 0000","test account")
+//        );
+//
+//        return table;
+//    }
+//
+//    public ObservableList<InvoiceProducts> getInvoiceProductObservableTable () {
+//        ObservableList<InvoiceProducts> table = FXCollections.observableArrayList(
+//            new InvoiceProducts("test cate","test desc", 3, 5, 15),
+//            new InvoiceProducts("test cate","test desc", 5, 5, 25)
+//
+//        );
+//
+//
+//        return table;
+//    }
 
-        // table col names for the tableview
-        TableColumn categoryCol = new TableColumn("Category Id");
-        TableColumn descriptionCol = new TableColumn("Description");
-        TableColumn quantityCol = new TableColumn("Quantity");
-        TableColumn priceCol = new TableColumn("Price per unit");
-        TableColumn sumQuanityCol = new TableColumn("Sum of quantity");
-
-        //associate data with the table columns, through the properties defined for each data element. referencing to the methods of the InvoiceProducts
-        categoryCol.setCellValueFactory(
-                new PropertyValueFactory<InvoiceProducts,String>("categoryId")
-        );
-        categoryCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        categoryCol.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<InvoiceProducts,String>>() {
-                    @Override
-                    public void handle (TableColumn.CellEditEvent<InvoiceProducts,String> t) {
-                        ( (InvoiceProducts) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setCategoryId( t.getNewValue() );
-                    }
-                }
-        );
-        descriptionCol.setCellValueFactory(
-                new PropertyValueFactory<InvoiceProducts,String>("description")
-        );
-        descriptionCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        descriptionCol.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<InvoiceProducts,String>>() {
-                    @Override
-                    public void handle (TableColumn.CellEditEvent<InvoiceProducts,String> t) {
-                        ( (InvoiceProducts) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setCategoryId( t.getNewValue() );
-                    }
-                }
-        );
-        quantityCol.setCellValueFactory(
-                new PropertyValueFactory<InvoiceProducts,Integer>("quantity")
-        );
-        quantityCol.setCellFactory(TextFieldTableCell.forTableColumn(
-                new StringConverter<Integer>() {
-                    @Override
-                    public String toString(Integer object) {
-                        return object.toString();
-                    }
-
-                    @Override
-                    public Integer fromString(String string) {
-                        return Integer.parseInt(string);
-                    }
-                }
-        ));
-        quantityCol.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<InvoiceProducts,Integer>>() {
-                    @Override
-                    public void handle (TableColumn.CellEditEvent<InvoiceProducts,Integer> t) {
-                        ( (InvoiceProducts) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setQuantity(t.getNewValue().intValue()  );
-                    }
-                }
-        );
-        priceCol.setCellValueFactory(
-                new PropertyValueFactory<InvoiceProducts,Integer>("pricePerUnit")
-        );
-
-        priceCol.setCellFactory(TextFieldTableCell.forTableColumn(
-                new StringConverter<Integer>() {
-                    @Override
-                    public String toString(Integer object) {
-                        return object.toString();
-                    }
-
-                    @Override
-                    public Integer fromString(String string) {
-                        return Integer.parseInt(string);
-                    }
-                }
-        ));
-        priceCol.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<InvoiceProducts,Integer>>() {
-                    @Override
-                    public void handle (TableColumn.CellEditEvent<InvoiceProducts,Integer> t) {
-                        ( (InvoiceProducts) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setPricePerUnit(t.getNewValue().intValue()  );
-                    }
-                }
-        );
-
-        sumQuanityCol.setMaxWidth(100);
-        sumQuanityCol.setCellValueFactory(
-                new PropertyValueFactory<InvoiceProducts,Integer>("sumQuantity")
-        );
-        sumQuanityCol.setCellFactory(TextFieldTableCell.forTableColumn(
-                new StringConverter<Integer>() {
-                    @Override
-                    public String toString(Integer object) {
-                        return object.toString();
-                    }
-
-                    @Override
-                    public Integer fromString(String string) {
-                        return Integer.parseInt(string);
-                    }
-                }
-        ));
-        sumQuanityCol.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<InvoiceProducts,Integer>>() {
-                    @Override
-                    public void handle (TableColumn.CellEditEvent<InvoiceProducts,Integer> t) {
-                        ( (InvoiceProducts) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setSumQuantity(t.getNewValue().intValue()  );
-                    }
-                }
-        );
-
-        //  data model is defined, and the data is added and associated with the columns, you can add the data to the table by using the setItems()
-        productTable.setItems(getInvoiceProductObservableTable() );
-        productTable.getColumns().addAll(categoryCol,descriptionCol,quantityCol,priceCol,sumQuanityCol);
-
-
-
-        return productTable;
-    }
-
-    public ObservableList<CustomerObservable> getCustomerObservableTable () {
-        ObservableList<CustomerObservable> table = FXCollections.observableArrayList(
-            new CustomerObservable(1,"test name",4,"0000 0000","test account")
-        );
-
-        return table;
-    }
-
-    public ObservableList<InvoiceProducts> getInvoiceProductObservableTable () {
-        ObservableList<InvoiceProducts> table = FXCollections.observableArrayList(
-            new InvoiceProducts("test cate","test desc", 3, 5, 15),
-            new InvoiceProducts("test cate","test desc", 5, 5, 25)
-
-        );
-
-
-        return table;
-    }
 
 //    public InvoiceProducts getSqlData () {
 //        Customer customer = readSql.getCustomerById(1);
@@ -459,8 +465,19 @@ public class Main extends Application {
 //    }
 
     public GridPane addInvoiceProductsToplayout() {
-        Customer customer = readSql.getCustomerById(1);
-        Address address = readSql.getAddressById(customer.getAddress()); // 1
+//        Customer customer = readSql.getCustomerById(1);
+//        Address address = readSql.getAddressById(customer.getAddress()); // 1
+//        Invoice invoice = readSql.getInvoiceById(customer.getCustomer_id());
+//        Product product = readSql.getProductById(customer.getAddress());
+
+        CustomerDAO customerDAO = new CustomerDAO();
+        AddressDao addressDao = new AddressDao();
+        InvoiceDao invoiceDao = new InvoiceDao();
+        ProductDao productDao = new ProductDao();
+
+        Customer customer = customerDAO.getCustomerById(1);
+        Address address = addressDao.getAddressById(customer.getCustomer_id() );
+
 
         VBox customerInfo = new VBox();
         customerInfo.setSpacing(5); // gap between nodes
@@ -476,7 +493,7 @@ public class Main extends Application {
         customerInfo.getChildren().addAll(customerName, customerStreet, customerPostal, phoneNumber, billingAccount);
 
 
-        Invoice invoice = readSql.getInvoiceById(customer.getCustomer_id());
+        Invoice invoice = invoiceDao.getInvoiceById(customer.getCustomer_id() );
 
         VBox fakturaInfo = new VBox();
         fakturaInfo.setSpacing(5);
@@ -516,7 +533,7 @@ public class Main extends Application {
 
         fakturaInfo.getChildren().addAll(invoiceTitle, row1,row2, row3);
 
-        Product product = readSql.getProductById(customer.getAddress());
+        Product product = productDao.getProductById(customer.getAddress() );
 
         //category_id, description, quantity, price per unit, sum of quantity
 //        String.format("%s %s %s %s %s", product.getCategory(), product.getDescription(), "0", product.getPrice(),"36" );

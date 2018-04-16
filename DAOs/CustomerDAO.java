@@ -9,20 +9,21 @@ import java.sql.SQLException;
 public class CustomerDAO {
     String getCustomerQuery = "SELECT * FROM main.customer WHERE customer_id = ?";
 
-    public void addCustomer(Customer customer)
-    {
 
-    }
+//    public void addCustomer(Customer customer) {
+//
+//    }
 
     public Customer getCustomerById (int customer_id) {
         ConnectionAdapter connectionAdapter = new ConnectionAdapter();
         connectionAdapter.startConnect();
+
         Customer tempCustomer = null;
 
         try {
             PreparedStatement customerById = connectionAdapter
-                            .getConnection()
-                            .prepareStatement(getCustomerQuery);
+                    .getConnection()
+                    .prepareStatement(getCustomerQuery);
 
             customerById.setInt(1,customer_id);
             ResultSet rs = customerById.executeQuery();
