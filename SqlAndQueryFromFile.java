@@ -11,8 +11,9 @@ import java.util.Arrays;
 
 public class SqlAndQueryFromFile {
     private static String databaseName = "SaleRegister.db";
-    public static String sqlQueryPath = "C:\\Users\\Bao Thien\\Dropbox\\IdeaProjects\\src\\Oblig3\\oblig3v1_database.sql"; // hjemmepc Bao Thien, skolepc BaoThien
-    public static String datebasePath = "jdbc:sqlite:C:/Users/Bao Thien/Dropbox/IdeaProjects/src/Oblig3/"+databaseName;
+    public static String sqlQueryPath = "C:\\Users\\BaoThien\\Dropbox\\IdeaProjects\\src\\Oblig3\\oblig3v1_database.sql"; // hjemmepc Bao Thien, skolepc BaoThien
+    public static String datebasePath = "jdbc:sqlite:C:/Users/BaoThien/Dropbox/IdeaProjects/src/Oblig3/"+databaseName;
+
 
     Connection conn;
 
@@ -24,6 +25,8 @@ public class SqlAndQueryFromFile {
     String getProductQuery = "SELECT * FROM product WHERE product_id = ?";
     String getInvoiceQuantityQuery = "SELECT count(invoice_items.invoice) From invoice_items WHERE invoice = ?";
 
+    String updateDatabaseQuery = "Update customer SET ? = ? WHERE customer_id = ?";
+
     PreparedStatement addressById;
     PreparedStatement categoryById;
     PreparedStatement customerById;
@@ -33,6 +36,9 @@ public class SqlAndQueryFromFile {
 
     PreparedStatement invoiceQuantityById;
 
+    PreparedStatement updateDatabaseById;
+
+    // mvc pattern
     public SqlAndQueryFromFile() {
         try {
             conn = this.connect();
@@ -45,7 +51,6 @@ public class SqlAndQueryFromFile {
             productById = conn.prepareStatement(getProductQuery);
 
             invoiceQuantityById = conn.prepareStatement(getInvoiceQuantityQuery);
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -72,6 +77,31 @@ public class SqlAndQueryFromFile {
         }
 
         return invoiceNr;
+    }
+
+    public void updataDatabaseFromTableView (String columnName, String columnValue, String id) {
+        System.out.println("ColumnName: "+ columnName);
+        System.out.println("ColumnValue: "+ columnValue);
+        System.out.println("id: "+ id);
+
+        try (Connection conn = this.connect();
+//             PreparedStatement statement = conn.prepareStatement(updateDatabaseQuery);
+             PreparedStatement statement = conn.prepareStatement("Update customer SET customer_id = ? WHERE customer_id = ?");
+
+             ) {
+//            statement.setString(1,columnName);
+//            statement.setString(2,columnValue);
+//            statement.setString(3,id);
+            statement.setString(1,columnValue);
+            statement.setString(2,id);
+
+            statement.execute();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage() );
+        }
+
+
     }
 
     public Product getProductById(int product_id) {
@@ -301,7 +331,7 @@ public class SqlAndQueryFromFile {
 
     private Connection connect() {
 //        String url = "jdbc:sqlite:C:/Users/Bao Thien/Dropbox/IdeaProjects/src/Oblig3/"+fileName;
-
+        Connection conn = null;
         try {
             conn = DriverManager.getConnection(datebasePath);
 
@@ -311,6 +341,7 @@ public class SqlAndQueryFromFile {
 
         return conn;
     }
+
 
 
 
