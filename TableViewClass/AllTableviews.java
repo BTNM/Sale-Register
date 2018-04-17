@@ -26,7 +26,32 @@ public class AllTableviews {
 //
 //    }
 
+    public TableView getAddressTableView () {
+        String databaseTableName = "address";
+        TableView addressTable = new TableView();
+        addressTable.setEditable(true);
 
+        TableColumn<CustomerObservable,Integer> customerIdCol = new TableColumn("Customer Id");
+        TableColumn customerNameCol = new TableColumn("Customer Name");
+        TableColumn<CustomerObservable,Integer>  addressCol = new TableColumn("Address");
+        TableColumn phoneCol = new TableColumn("Phone Nummer");
+        TableColumn billingAccountCol = new TableColumn("Billing Account");
+
+        return addressTable;
+    }
+    public TableView getCategoryTableView () {
+        String databaseTableName = "category";
+        TableView categoryTable = new TableView();
+        categoryTable.setEditable(true);
+
+        TableColumn<CustomerObservable,Integer> customerIdCol = new TableColumn("Customer Id");
+        TableColumn customerNameCol = new TableColumn("Customer Name");
+        TableColumn<CustomerObservable,Integer>  addressCol = new TableColumn("Address");
+        TableColumn phoneCol = new TableColumn("Phone Nummer");
+        TableColumn billingAccountCol = new TableColumn("Billing Account");
+
+        return categoryTable;
+    }
 
     public TableView getCustomerTableView () {
         String databaseTableName = "customer";
@@ -61,14 +86,13 @@ public class AllTableviews {
                 new EventHandler<TableColumn.CellEditEvent<CustomerObservable,Integer>>() {
                     @Override
                     public void handle (TableColumn.CellEditEvent<CustomerObservable,Integer> t) {
-
                         sqlAdapter.updataDatabaseFromTableView(databaseTableName ,"customer_id", String.valueOf(t.getNewValue()), String.valueOf(t.getOldValue() ));
 
-                        ( (CustomerObservable) t.getTableView()
+                        ( (CustomerObservable) t.getTableView() // The TableView control upon which this event occurred.
                                 .getItems()
-                                .get( // The TableView control upon which this event occurred. //The position upon which this event occurred.
-                                    t.getTablePosition()
-                                            .getRow()
+                                .get( // Returns the element at the specified position in this list.
+                                        t.getTablePosition() //The position upon which this event occurred.
+                                            .getRow() // The row that this TablePosition represents in the TableView.
                                     )
                         ).setCustomerId(t.getNewValue().intValue() ); // set new value input by user in the cell
 
@@ -149,6 +173,48 @@ public class AllTableviews {
         customerTable.getColumns().addAll(customerIdCol, customerNameCol, addressCol, phoneCol, billingAccountCol );
 
         return customerTable;
+    }
+
+    public TableView getInvoiceTableView () {
+        String databaseTableName = "invoice";
+        TableView invoiceTable = new TableView();
+        invoiceTable.setEditable(true);
+
+        TableColumn<CustomerObservable,Integer> customerIdCol = new TableColumn("Customer Id");
+        TableColumn customerNameCol = new TableColumn("Customer Name");
+        TableColumn<CustomerObservable,Integer>  addressCol = new TableColumn("Address");
+        TableColumn phoneCol = new TableColumn("Phone Nummer");
+        TableColumn billingAccountCol = new TableColumn("Billing Account");
+
+        return invoiceTable;
+    }
+
+    public TableView getInvoiceItemsTableView () {
+        String databaseTableName = "invoice_items";
+        TableView invoiceItemsTable = new TableView();
+        invoiceItemsTable.setEditable(true);
+
+        TableColumn<CustomerObservable,Integer> customerIdCol = new TableColumn("Customer Id");
+        TableColumn customerNameCol = new TableColumn("Customer Name");
+        TableColumn<CustomerObservable,Integer>  addressCol = new TableColumn("Address");
+        TableColumn phoneCol = new TableColumn("Phone Nummer");
+        TableColumn billingAccountCol = new TableColumn("Billing Account");
+
+        return invoiceItemsTable;
+    }
+
+    public TableView getProductTableView () {
+        String databaseTableName = "product";
+        TableView productTable = new TableView();
+        productTable.setEditable(true);
+
+        TableColumn<CustomerObservable,Integer> customerIdCol = new TableColumn("Customer Id");
+        TableColumn customerNameCol = new TableColumn("Customer Name");
+        TableColumn<CustomerObservable,Integer>  addressCol = new TableColumn("Address");
+        TableColumn phoneCol = new TableColumn("Phone Nummer");
+        TableColumn billingAccountCol = new TableColumn("Billing Account");
+
+        return pr
     }
 
 

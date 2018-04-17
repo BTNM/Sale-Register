@@ -3,27 +3,19 @@ package Oblig3;
 import Oblig3.DAOs.*;
 import Oblig3.SQLReadFiles.*;
 import Oblig3.TableViewClass.AllTableviews;
-import Oblig3.TableViewClass.CustomerObservable;
-import Oblig3.TableViewClass.InvoiceProducts;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
-
-import java.io.File;
 
 public class Main extends Application {
     Stage mainWindow;
@@ -44,14 +36,9 @@ public class Main extends Application {
 
         // design pattern observables, auto update tableview
 
-
-//            main.startUpFromSqlFile(sqlQueryPath);
-//            main.startUpFromSqlFile("C:\\Users\\Bao Thien\\Dropbox\\Skole\\UIB 8\\INFO233\\Oblig\\Oblig3\\oblig3v1_database.sql");
 //        }
 
-
         // i hver scene kan lage filter methode/knapp etc som filtrerer eks all invoice til en kunde eller alle produktene til hver kategori
-
 
         //start javafx start() method
         launch(args);
@@ -63,13 +50,13 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
 //        mainWindow = primaryStage;
 
-
-//        GridPane startGrid = new GridPane();
-//        Scene startScene = new Scene(startGrid,600,400);
-//
+        Parent root = FXMLLoader.load(getClass().getResource("FxmlFiles/intro.fxml"));
+        Scene startScene = new Scene(root,600,400);
 
         primaryStage.setTitle("Sale Register System");
-        primaryStage.setScene(getIntroScene() );
+        primaryStage.setScene(startScene);
+
+//        primaryStage.setScene(getIntroScene() );
 //        primaryStage.setScene(getFakturaScene() );
 //        primaryStage.setScene(getCustomerScene() );
         primaryStage.show();

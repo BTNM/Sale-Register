@@ -1,5 +1,7 @@
 package Oblig3.DAOs;
 
+import javafx.collections.ObservableList;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -58,6 +60,8 @@ public class ConnectionAdapter {
 
 
     }
+
+
 
 
     public void startUpFromSqlFile(String path) {

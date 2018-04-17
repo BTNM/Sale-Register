@@ -10,6 +10,9 @@ public class AddressDao {
     String getAddressQuery = "SELECT * FROM main.address WHERE address_id = ?";
 
 
+
+
+
     public Address getAddressById (int address_id) {
         ConnectionAdapter connectionAdapter = new ConnectionAdapter();
         connectionAdapter.startConnect();
