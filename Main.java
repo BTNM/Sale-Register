@@ -40,6 +40,8 @@ public class Main extends Application {
 
         // i hver scene kan lage filter methode/knapp etc som filtrerer eks all invoice til en kunde eller alle produktene til hver kategori
 
+        //invoice list i eget vindu og bare oppdaterer invoice info som etter du blar gjennom
+
         //start javafx start() method
         launch(args);
 

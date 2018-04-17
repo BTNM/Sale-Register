@@ -7,7 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -23,6 +23,8 @@ public class categoryController implements Initializable {
     public Button products;
     public Button invoiceItems;
 
+    public TableView testTableview;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -30,13 +32,7 @@ public class categoryController implements Initializable {
 
     public void homeClicked(ActionEvent event) {
         try {
-//            FXMLLoader loadFxml = new FXMLLoader(getClass().getResource("intro.fxml"));
-//            Stage stage = (Stage) homepage.getScene().getWindow();
-//            Scene scene = new Scene(loadFxml.load());
-//
-//            stage.setScene(scene);
-
-            Parent homeParent = FXMLLoader.load(getClass().getResource("intro.fxml"));
+            Parent homeParent = FXMLLoader.load(getClass().getResource("../FxmlFiles/intro.fxml"));
             Scene homeScene = new Scene(homeParent);
 
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();

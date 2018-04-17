@@ -214,7 +214,7 @@ public class AllTableviews {
         TableColumn phoneCol = new TableColumn("Phone Nummer");
         TableColumn billingAccountCol = new TableColumn("Billing Account");
 
-        return pr
+        return productTable;
     }
 
 
