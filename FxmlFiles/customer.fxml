@@ -21,25 +21,25 @@
             </padding>
         </Label>
     </top>
-    <!--<left>-->
-        <!--<fx:include source="buttonList.fxml" />-->
-    <!--</left>-->
+    <left>
+        <fx:include source="buttonList.fxml"/>
+    </left>
    <center>
       <TableView fx:id="customerTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-        <columns>
+          <columns>
           <TableColumn fx:id="customerIdCol" prefWidth="75.0" text="customer_id" />
             <!--<cellValueFactory><PropertyValueFactory property="customer_id"/> </cellValueFactory>-->
-          <TableColumn prefWidth="75.0" text="customer_name" />
+          <TableColumn prefWidth="75.0" text="customer_name"  />
           <TableColumn prefWidth="75.0" text="address" />
           <TableColumn prefWidth="75.0" text="phone_number" />
           <TableColumn prefWidth="75.0" text="billing_account" />
         </columns>
-          <items>
-              <FXCollections fx:id="dataList" fx:factory="observableArrayList">
+          <!--<items>-->
+              <!--<FXCollections fx:id="dataList" fx:factory="observableArrayList">-->
 
 
-              </FXCollections>
-          </items>
+              <!--</FXCollections>-->
+          <!--</items>-->
       </TableView>
    </center>
 </BorderPane>

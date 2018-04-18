@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class AddressObservable {
     private final SimpleIntegerProperty addressId;
-    private final SimpleStringProperty streetnumber;
+    private final SimpleStringProperty streetNumber;
     private final SimpleStringProperty streetName;
     private final SimpleStringProperty postalCode;
     private final SimpleStringProperty postalTown;
@@ -13,7 +13,7 @@ public class AddressObservable {
 
     public AddressObservable(int addressId, String streetNumber, String streetName, String postalCode, String postalTown) {
         this.addressId = new SimpleIntegerProperty(addressId);
-        this.streetnumber = new SimpleStringProperty(streetNumber);
+        this.streetNumber = new SimpleStringProperty(streetNumber);
         this.streetName = new SimpleStringProperty(streetName);
         this.postalCode = new SimpleStringProperty(postalCode);
         this.postalTown = new SimpleStringProperty(postalTown);
@@ -27,12 +27,12 @@ public class AddressObservable {
         this.addressId.set(addressId);
     }
 
-    public String getStreetnumber() {
-        return streetnumber.get();
+    public String getStreetNumber() {
+        return streetNumber.get();
     }
 
-    public void setStreetnumber(String streetnumber) {
-        this.streetnumber.set(streetnumber);
+    public void setStreetNumber(String streetNumber) {
+        this.streetNumber.set(streetNumber);
     }
 
     public String getStreetName() {

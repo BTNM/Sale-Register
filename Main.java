@@ -7,8 +7,10 @@ import Oblig3.TableViewClass.CustomerObservable;
 import Oblig3.TableViewClass.InvoiceProducts;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -18,21 +20,26 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.File;
+
 public class Main extends Application {
     static ConnectionAdapter adapter = new ConnectionAdapter();
     static AllTableviews allTables = new AllTableviews();
 
+    // prøvde å begynne med all logic delen forså å gjøre GUI senere, deretter begynte jeg å bruke Fxml men da greide jeg ikke å koble begge delene sammen
+    // det ble litt rot når jeg prøvde å koble logikk delen med fxml som opererte med litt forkjellig måte
+    // så getCustomerScene() og getFakturaScene() logikken virker såpass, der man kan endre direkte i tabbleview og endringene blir sent tilbake til databasen
+    // trenger bare å copy paste de virkende delene til tableview til de andre klassene, men får ikke koblet det til fxml så venter med å implementere de andre scenene
 
     public static void main(String[] args) {
 //        File file = new File(SqlAndQueryFromFile.datebasePath);
-//        if(!file.exists()) {
-//            adapter.startUpFromSqlFile(ConnectionAdapter.sqlQueryPath);
-//        }
+        File file = new File(ConnectionAdapter.datebasePath);
+        if(!file.exists()) {
+            adapter.startUpFromSqlFile(ConnectionAdapter.sqlQueryPath);
+        }
 
 
-        // design pattern observables, auto update tableview
         // i hver scene kan lage filter methode/knapp etc som filtrerer eks all invoice til en kunde eller alle produktene til hver kategori
-        //invoice list i eget vindu og bare oppdaterer invoice info som etter du blar gjennom
 
         //start javafx start() method
         launch(args);
@@ -42,28 +49,24 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // prøvde å begynne med all logic delen forså å gjøre GUI senere, deretter begynte jeg å bruke Fxml men da greide jeg ikke å koble begge delene sammen
-        // øvre del er fxml med user interaction, og nedre delen er individuelle scener med mesteparten av logikk og atferden i programmet. Fikk ikke nok tid til å kombinere de men de virker individuelt
-
 //        Parent root = FXMLLoader.load(getClass().getResource("FxmlFiles/intro.fxml"));
 //        Scene startScene = new Scene(root,600,400);
 //        primaryStage.setScene(startScene);
         primaryStage.setTitle("Sale Register System");
 
+        // øvre del er fxml med user interaction, og nedre delen er individuelle scener med mesteparten av logikk og atferden i programmet. Der man kan endre info i tableview direkte i det grafiske grensesnittet og endringene blir sendt tilbake til databasen
+        // klarte ikke å kombinere UI og logikken sammen, men de virker individuelt,
+        // introScene() er tom scene siden jeg prøvde å bruke fxml til å løse UI midtvei, så du sjekke scenene individuelt
+
 //        primaryStage.setScene(getIntroScene() );
-        primaryStage.setScene(getFakturaScene() );
-//        primaryStage.setScene(getCustomerScene() );
+        primaryStage.setScene(getCustomerScene() );
+//        primaryStage.setScene(getAddressScene() );
+//        primaryStage.setScene(getFakturaScene() );
         primaryStage.show();
 
     }
 
     public Scene getIntroScene () {
-//        Label customers = new Label("Customers");
-//        Label productCategory = new Label("Product Categories");
-//        Label products = new Label("Products");
-//        Label invoices = new Label("Invoices");
-//        Label invoiceItems = new Label("Invoice Items");
-
         Text title = new Text("Sale Register");
         title.setFont(Font.font("Times new roman", FontWeight.BOLD, 20));
 
@@ -241,6 +244,7 @@ public class Main extends Application {
     public Scene getAddressScene () {
 
         BorderPane mainBp = new BorderPane();
+        mainBp.setCenter(allTables.getAddressTableView());
 
 
         Scene customerScene = new Scene(mainBp,400,600);

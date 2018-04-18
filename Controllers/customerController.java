@@ -22,14 +22,17 @@ public class customerController implements Initializable {
     AllTableviews allTables = new AllTableviews();
 
     @FXML TableView customerTable;
-    @FXML FXCollections dataList;
+//    @FXML FXCollections dataList;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 //        customerTable = allTables.getCustomerTableView();
         CustomerDAO c = new CustomerDAO();
-        customerTable.setItems(c.allCustomerObservableList());
+        customerTable = allTables.getCustomerTableView();
+
+
+//        customerTable.setItems(c.allCustomerObservableList());
 //        dataList = FXCollections.observableArrayList(c.allCustomerObservableList() ):
 
     }
