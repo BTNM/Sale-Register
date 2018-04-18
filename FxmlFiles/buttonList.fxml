@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="400.0" prefWidth="600.0" spacing="8.0" xmlns="http://javafx.com/javafx/8.0.121" fx:controller="Oblig3.Controllers.buttonListController" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <Button fx:id="homepage" onAction="#homeClicked" text="Home page" />
+        <Button fx:id="customers" onAction="#customerClicked" text="Customers" />
+        <Button fx:id="address" onAction="#addressClicked" text="Address" />
+        <Button fx:id="category" onAction="#categoryClicked" text="Product categories" />
+        <Button fx:id="invoice" onAction="#invoiceClicked" text="Invoice" />
+        <Button fx:id="products" onAction="#productsClicked" text="Products" />
+        <Button fx:id="detailInvoice" text="Detailed Invoice Sample" />
+    </children>
+   <padding>
+      <Insets bottom="5.0" left="8.0" right="5.0" top="5.0" />
+   </padding>
+</VBox>

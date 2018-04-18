@@ -1,6 +1,7 @@
 package Oblig3.TableViewClass;
 
 import Oblig3.DAOs.ConnectionAdapter;
+import Oblig3.DAOs.CustomerDAO;
 import Oblig3.SqlAndQueryFromFile;
 import com.sun.xml.internal.bind.v2.runtime.output.SAXOutput;
 import javafx.collections.FXCollections;
@@ -15,9 +16,8 @@ import javafx.util.StringConverter;
 
 
 public class AllTableviews {
-//    TableView generalTableview;
-//    static SqlAndQueryFromFile readSql = new SqlAndQueryFromFile();
     ConnectionAdapter sqlAdapter = new ConnectionAdapter();
+    TableView mainTable;
 
 //    static AllTableviews allTableviews = new AllTableviews();
 
@@ -55,8 +55,9 @@ public class AllTableviews {
 
     public TableView getCustomerTableView () {
         String databaseTableName = "customer";
-        TableView customerTable = new TableView();
-        customerTable.setEditable(true);
+
+        mainTable = new TableView();
+        mainTable.setEditable(true);
 
         TableColumn<CustomerObservable,Integer> customerIdCol = new TableColumn("Customer Id");
         TableColumn customerNameCol = new TableColumn("Customer Name");
@@ -108,6 +109,8 @@ public class AllTableviews {
                 new EventHandler<TableColumn.CellEditEvent<CustomerObservable,String>>() {
                     @Override
                     public void handle (TableColumn.CellEditEvent<CustomerObservable,String> t) {
+                        sqlAdapter.updataDatabaseFromTableView(databaseTableName ,"customer_name", String.valueOf(t.getNewValue()), String.valueOf(t.getOldValue() ));
+
                         ( (CustomerObservable) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())
                         ).setCustomerName( t.getNewValue() );
@@ -134,6 +137,8 @@ public class AllTableviews {
                 new EventHandler<TableColumn.CellEditEvent<CustomerObservable,Integer>>() {
                     @Override
                     public void handle (TableColumn.CellEditEvent<CustomerObservable,Integer> t) {
+                        sqlAdapter.updataDatabaseFromTableView(databaseTableName ,"address", String.valueOf(t.getNewValue()), String.valueOf(t.getOldValue() ));
+
                         ( (CustomerObservable) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())
                         ).setAddressId(t.getNewValue().intValue()  );
@@ -148,6 +153,8 @@ public class AllTableviews {
                 new EventHandler<TableColumn.CellEditEvent<CustomerObservable,String>>() {
                     @Override
                     public void handle (TableColumn.CellEditEvent<CustomerObservable,String> t) {
+                        sqlAdapter.updataDatabaseFromTableView(databaseTableName ,"phone_number", String.valueOf(t.getNewValue()), String.valueOf(t.getOldValue() ));
+
                         ( (CustomerObservable) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())
                         ).setPhoneNumber( t.getNewValue() );
@@ -162,6 +169,8 @@ public class AllTableviews {
                 new EventHandler<TableColumn.CellEditEvent<CustomerObservable,String>>() {
                     @Override
                     public void handle (TableColumn.CellEditEvent<CustomerObservable,String> t) {
+                        sqlAdapter.updataDatabaseFromTableView(databaseTableName ,"billing_account", String.valueOf(t.getNewValue()), String.valueOf(t.getOldValue() ));
+
                         ( (CustomerObservable) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())
                         ).setBillingAccount( t.getNewValue() );
@@ -169,10 +178,13 @@ public class AllTableviews {
                 }
         );
 
-        customerTable.setItems(getCustomerObservableTable() );  //make method to put all values from database into observable list
-        customerTable.getColumns().addAll(customerIdCol, customerNameCol, addressCol, phoneCol, billingAccountCol );
+        CustomerDAO customerDAO = new CustomerDAO();
 
-        return customerTable;
+//        table.setItems(getCustomerObservableTable() );  //make method to put all values from database into observable list
+        mainTable.setItems(customerDAO.allCustomerObservableList());
+        mainTable.getColumns().addAll(customerIdCol, customerNameCol, addressCol, phoneCol, billingAccountCol );
+
+        return mainTable;
     }
 
     public TableView getInvoiceTableView () {
@@ -219,16 +231,15 @@ public class AllTableviews {
 
 
     public TableView getInvoiceProductsMiddleTableView() {
-        TableView productTable = new TableView();
-        productTable.setEditable(true);
-
+        mainTable = new TableView();
+        mainTable.setEditable(true);
 
         // table col names for the tableview
-        TableColumn categoryCol = new TableColumn("Category Id");
+        TableColumn categoryCol = new TableColumn("Category");
         TableColumn descriptionCol = new TableColumn("Description");
-        TableColumn quantityCol = new TableColumn("Quantity");
-        TableColumn priceCol = new TableColumn("Price per unit");
-        TableColumn sumQuanityCol = new TableColumn("Sum of quantity");
+        TableColumn<InvoiceProducts,Integer> quantityCol = new TableColumn("Quantity");
+        TableColumn<InvoiceProducts,Integer> priceCol = new TableColumn("Price per unit");
+        TableColumn<InvoiceProducts,Integer> sumQuanityCol = new TableColumn("Sum of quantity");
 
         //associate data with the table columns, through the properties defined for each data element. referencing to the methods of the InvoiceProducts
         categoryCol.setCellValueFactory(
@@ -342,26 +353,37 @@ public class AllTableviews {
         );
 
         //  data model is defined, and the data is added and associated with the columns, you can add the data to the table by using the setItems()
-        productTable.setItems(getInvoiceProductObservableTable() );
-        productTable.getColumns().addAll(categoryCol,descriptionCol,quantityCol,priceCol,sumQuanityCol);
+        mainTable.setItems(getTestInvoiceProductObservableTable() );
+        mainTable.getColumns().addAll(categoryCol,descriptionCol,quantityCol,priceCol,sumQuanityCol);
 
 
-
-        return productTable;
+        return mainTable;
     }
 
 
+//    public ObservableList<CustomerObservable> addToCustomerObservableTable (CustomerObservable customer) {
+    public void addToCustomerObservableTable (CustomerObservable customer) {
+//        CustomerDAO customerDAO = new CustomerDAO();
+//        ObservableList<CustomerObservable> table = customerDAO.allCustomerObservableList();
 
+        mainTable.getItems().add(customer);
 
-    public ObservableList<CustomerObservable> getCustomerObservableTable () {
-        ObservableList<CustomerObservable> table = FXCollections.observableArrayList(
-                new CustomerObservable(77,"test name",4,"0040 0000","test account")
-        );
+//        ObservableList<CustomerObservable> table = FXCollections.observableArrayList(
+//                new CustomerObservable(77,"test name",4,"0040 0000","test account")
+//        );
 
-        return table;
+//        return table;
     }
 
-    public ObservableList<InvoiceProducts> getInvoiceProductObservableTable () {
+    public TableView getMainTable () {
+        return mainTable;
+    }
+
+    public void addInvoiceProductObservableTable (InvoiceProducts invoiceProducts) {
+        mainTable.getItems().add(invoiceProducts);
+    }
+
+    public ObservableList<InvoiceProducts> getTestInvoiceProductObservableTable () {
         ObservableList<InvoiceProducts> table = FXCollections.observableArrayList(
                 new InvoiceProducts("test cate","test desc", 3, 5, 15),
                 new InvoiceProducts("test cate","test desc", 5, 5, 25)
@@ -371,6 +393,5 @@ public class AllTableviews {
 
         return table;
     }
-
 
 }

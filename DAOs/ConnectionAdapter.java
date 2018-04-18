@@ -35,19 +35,14 @@ public class ConnectionAdapter {
 
 
     public void updataDatabaseFromTableView (String tableName ,String columnName, String columnValue, String id) {
-        System.out.println("ColumnName: "+ columnName);
-        System.out.println("ColumnValue: "+ columnValue);
-        System.out.println("id: "+ id);
+//        System.out.println("ColumnName: "+ columnName);
+//        System.out.println("ColumnValue: "+ columnValue);
+//        System.out.println("id: "+ id);
 
-        System.out.println("table: "+ tableName+ " columnName : "+columnName+" columnValue : "+ columnValue + " id : "+id);
         try (Connection conn = this.createConnection();
 //             PreparedStatement statement = conn.prepareStatement(updateDatabaseQuery);
              PreparedStatement statement = conn.prepareStatement("Update "+tableName+" SET "+columnName+" = ? WHERE customer_id = ?");
         ) {
-//            statement.setString(1,tableName);
-//            statement.setString(2,columnName);
-//            statement.setString(3,columnValue);
-//            statement.setString(4,id);
 
             statement.setString(1,columnValue);
             statement.setString(2,id);
@@ -58,8 +53,28 @@ public class ConnectionAdapter {
             System.out.println(e.getMessage() );
         }
 
+    }
+
+    public void insertCustomerIntoDatabase(String tableName, int col1, String col2, int col3, String col4, String col5) {
+        try (Connection conn = this.createConnection();
+//             PreparedStatement statement = conn.prepareStatement(updateDatabaseQuery);
+             PreparedStatement statement = conn.prepareStatement("INSERT INTO "+tableName+" (customer_id,customer_name,address,phone_number,billing_account) "+"VALUES (?,?,?,?,?)");
+        ) {
+            statement.setInt(1,col1);
+            statement.setString(2,col2);
+            statement.setInt(3,col3);
+            statement.setString(4,col4);
+            statement.setString(5,col5);
+
+            statement.execute();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage() );
+        }
 
     }
+
+
 
 
 

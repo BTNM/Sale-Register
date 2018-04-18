@@ -24,7 +24,7 @@ public class introController implements Initializable{
 
     @FXML public Button homepage;
     @FXML public Button customers;
-    @FXML public Button productCategory;
+    @FXML public Button category;
     @FXML public Button invoice;
     @FXML public Button products;
     @FXML public Button invoiceItems;
@@ -38,50 +38,8 @@ public class introController implements Initializable{
         rootBp.setBottom(table);
     }
 
-    public void homeClicked(MouseEvent mouseEvent) {
-//        try {
-////            FXMLLoader loadFxml = new FXMLLoader(getClass().getResource("intro.fxml"));
-////            Stage stage = (Stage) homepage.getScene().getWindow();
-////            Scene scene = new Scene(loadFxml.load());
-////
-////            stage.setScene(scene);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-    }
-
-    public void categoryClicked(ActionEvent event) {
-        try {
-//            FXMLLoader loadFxml = new FXMLLoader(getClass().getResource("/FxmlFiles/category.fxml"));
-//            Stage stage = (Stage) homepage.getScene().getWindow();
-//            Scene scene = new Scene(loadFxml.load());
-//            stage.setScene(scene);
-
-//            Scene scene = productCategory.getScene();
-//            Window window = scene.getWindow();
-//            Stage stage = (Stage) window;
-//
-//            FXMLLoader loader = FXMLLoader.load(getClass().getResource("C:\\Users\\BaoThien\\Dropbox\\IdeaProjects\\src\\Oblig3\\FxmlFiles\\category.fxml"));
-//            Stage stage = (Stage) productCategory.getScene().getWindow();
-//            Scene scene = new Scene(loader.getRoot() );
-//            stage.setScene(scene);
-//            stage.show();
 
 
 
-            Parent categoryParent = FXMLLoader.load(getClass().getResource("../FxmlFiles/category.fxml"));
-            Scene categoryScene = new Scene(categoryParent);
-//            Scene categoryScene = new Scene(loadFxml.load());
-
-            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
-            window.setScene(categoryScene);
-            window.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
 
 }

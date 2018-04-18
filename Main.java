@@ -3,11 +3,12 @@ package Oblig3;
 import Oblig3.DAOs.*;
 import Oblig3.SQLReadFiles.*;
 import Oblig3.TableViewClass.AllTableviews;
+import Oblig3.TableViewClass.CustomerObservable;
+import Oblig3.TableViewClass.InvoiceProducts;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -18,28 +19,19 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-    Stage mainWindow;
-
-//    static SqlAndQueryFromFile readSql = new SqlAndQueryFromFile();
     static ConnectionAdapter adapter = new ConnectionAdapter();
     static AllTableviews allTables = new AllTableviews();
 
 
     public static void main(String[] args) {
-//        Main main = new Main();
-
 //        File file = new File(SqlAndQueryFromFile.datebasePath);
-//            if(!file.exists()) {
-////                readSql.startUpFromSqlFile(SqlAndQueryFromFile.sqlQueryPath);
-//                adapter.startUpFromSqlFile(ConnectionAdapter.sqlQueryPath);
-//            }
-
-        // design pattern observables, auto update tableview
-
+//        if(!file.exists()) {
+//            adapter.startUpFromSqlFile(ConnectionAdapter.sqlQueryPath);
 //        }
 
-        // i hver scene kan lage filter methode/knapp etc som filtrerer eks all invoice til en kunde eller alle produktene til hver kategori
 
+        // design pattern observables, auto update tableview
+        // i hver scene kan lage filter methode/knapp etc som filtrerer eks all invoice til en kunde eller alle produktene til hver kategori
         //invoice list i eget vindu og bare oppdaterer invoice info som etter du blar gjennom
 
         //start javafx start() method
@@ -50,16 +42,16 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-//        mainWindow = primaryStage;
+        // prøvde å begynne med all logic delen forså å gjøre GUI senere, deretter begynte jeg å bruke Fxml men da greide jeg ikke å koble begge delene sammen
+        // øvre del er fxml med user interaction, og nedre delen er individuelle scener med mesteparten av logikk og atferden i programmet. Fikk ikke nok tid til å kombinere de men de virker individuelt
 
-        Parent root = FXMLLoader.load(getClass().getResource("FxmlFiles/intro.fxml"));
-        Scene startScene = new Scene(root,600,400);
-
+//        Parent root = FXMLLoader.load(getClass().getResource("FxmlFiles/intro.fxml"));
+//        Scene startScene = new Scene(root,600,400);
+//        primaryStage.setScene(startScene);
         primaryStage.setTitle("Sale Register System");
-        primaryStage.setScene(startScene);
 
 //        primaryStage.setScene(getIntroScene() );
-//        primaryStage.setScene(getFakturaScene() );
+        primaryStage.setScene(getFakturaScene() );
 //        primaryStage.setScene(getCustomerScene() );
         primaryStage.show();
 
@@ -122,22 +114,41 @@ public class Main extends Application {
 
     public Scene getFakturaScene() {
 
-        GridPane bottomPart = new GridPane();
-        bottomPart.setVgap(5);
-        bottomPart.setHgap(5);
-        bottomPart.setPadding(new Insets(5));
+        TextField cateIdInput = new TextField();
+        cateIdInput.setPromptText("Category Id");
 
-        Label t1 = new Label("test 1");
-        Label t2 = new Label("test 2");
+        TextField descInput = new TextField();
+        descInput.setPromptText("Description");
 
-        HBox hBox = new HBox();
-        bottomPart.add(hBox,40,0);
-        hBox.getChildren().addAll(t1,t2);
+        TextField quantityInput = new TextField();
+        quantityInput.setPromptText("Quantity");
+
+        TextField pericePerUnitInput = new TextField();
+        pericePerUnitInput.setPromptText("Price Per Unit");
+
+        TextField sumOfQuantityInout = new TextField();
+        sumOfQuantityInout.setPromptText("Billing Account");
+
+        Button addBtn = new Button("Add");
+        addBtn.setOnAction(e -> addDetailedInvoice(cateIdInput.getText(),descInput.getText(),Integer.valueOf(quantityInput.getText()),Integer.valueOf(pericePerUnitInput.getText() ),Integer.valueOf(sumOfQuantityInout.getText()  )));
+
+        Button deleteBtn = new Button("Delete");
+        deleteBtn.setOnAction(e -> deleteInvoiceProductsFromTable());
+
+        HBox bottomLayout1 = new HBox();
+        HBox bottomLayout2 = new HBox();
+        bottomLayout1.setPadding(new Insets(5));
+        bottomLayout2.setPadding(new Insets(5));
+        bottomLayout1.getChildren().addAll(cateIdInput,descInput,quantityInput );
+        bottomLayout2.getChildren().addAll(pericePerUnitInput,sumOfQuantityInout,addBtn ,deleteBtn);
+
+        VBox bottomContainer = new VBox();
+        bottomContainer.getChildren().addAll(bottomLayout1, bottomLayout2);
 
         BorderPane mainBp = new BorderPane();
         mainBp.setTop(addInvoiceProductsToplayout() );
         mainBp.setCenter(allTables.getInvoiceProductsMiddleTableView() );
-        mainBp.setBottom(bottomPart);
+        mainBp.setBottom(bottomContainer);
 
 
 
@@ -148,16 +159,83 @@ public class Main extends Application {
     }
 
     public Scene getCustomerScene () {
-//        AllTableviews allT = new AllTableviews();
+
+        TextField customerIdInput = new TextField();
+        customerIdInput.setPromptText("Customer Id");
+
+        TextField customerNameInput = new TextField();
+        customerNameInput.setPromptText("Customer Name");
+
+        TextField addressInput = new TextField();
+        addressInput.setPromptText("Address");
+
+        TextField phoneNrInput = new TextField();
+        phoneNrInput.setPromptText("Phone Number");
+
+        TextField billingAccountInput = new TextField();
+        billingAccountInput.setPromptText("Billing Account");
+
+        CustomerObservable table;
+
+        Button addBtn = new Button("Add");
+        addBtn.setOnAction(e -> addCustomerFromTable(Integer.valueOf(customerIdInput.getText()),customerNameInput.getText(),Integer.valueOf(addressInput.getText()),phoneNrInput.getText(),billingAccountInput.getText() ));
+
+        Button deleteBtn = new Button("Delete");
+        deleteBtn.setOnAction(e -> deleteCustomerFromTable());
+
+        HBox bottomLayout1 = new HBox();
+        HBox bottomLayout2 = new HBox();
+        bottomLayout1.setPadding(new Insets(5));
+        bottomLayout2.setPadding(new Insets(5));
+        bottomLayout1.getChildren().addAll(customerIdInput,customerNameInput,addressInput );
+        bottomLayout2.getChildren().addAll(phoneNrInput,billingAccountInput,addBtn ,deleteBtn);
+
+        VBox bottomContainer = new VBox();
+        bottomContainer.getChildren().addAll(bottomLayout1, bottomLayout2);
 
         BorderPane mainBp = new BorderPane();
-//        mainBp.setCenter(getCustomerTableView() );
         mainBp.setCenter(allTables.getCustomerTableView() );
+        mainBp.setBottom(bottomContainer);
 
-        Scene customerScene = new Scene(mainBp,400,600);
+        Scene customerScene = new Scene(mainBp,600,600);
 
         return customerScene;
     }
+
+    private void addDetailedInvoice (String cId, String desc, int qty, int ppu, int sum) {
+        InvoiceProducts detailedInvoice = new InvoiceProducts(cId,desc,qty,ppu,sum);
+        allTables.addInvoiceProductObservableTable(detailedInvoice);
+
+    }
+    private void deleteInvoiceProductsFromTable() {
+        TableView mainTable = allTables.getMainTable();
+        ObservableList<InvoiceProducts> invoiceSelected, allInvoices;
+        allInvoices = mainTable.getItems();
+        invoiceSelected = mainTable.getSelectionModel().getSelectedItems();
+
+        invoiceSelected.forEach(allInvoices::remove);
+
+    }
+
+    private void addCustomerFromTable(int cId, String cName,int add, String phone, String bAccount) {
+        CustomerObservable c  = new CustomerObservable(cId,cName,add,phone,bAccount);
+        adapter.insertCustomerIntoDatabase("customer",cId,cName,add, phone,bAccount);
+        allTables.addToCustomerObservableTable(c);
+
+    }
+
+    private void deleteCustomerFromTable() {
+        TableView mainTable = allTables.getMainTable();
+        ObservableList<CustomerObservable> customerSelected, allCustomer;
+        allCustomer = mainTable.getItems();
+        customerSelected = mainTable.getSelectionModel().getSelectedItems();
+
+        customerSelected.forEach(allCustomer::remove);
+
+    }
+
+
+
 
 
     public Scene getAddressScene () {

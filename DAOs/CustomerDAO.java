@@ -28,9 +28,6 @@ public class CustomerDAO {
 //        connectionAdapter.stopConnect();
     }
 
-//    public void addCustomer(Customer customer) {
-//
-//    }
 
     public ObservableList<CustomerObservable> allCustomerObservableList() {
         ObservableList<CustomerObservable> list = FXCollections.observableArrayList();
@@ -48,10 +45,15 @@ public class CustomerDAO {
                         rs.getString("customer_name"),
                         rs.getInt("address"),
                         rs.getString("phone_number"),
-                        rs.getString("billing_account") );
+                        rs.getString("billing_account")
+                );
 
                 list.add(customerOb);
             }
+
+//            for (CustomerObservable c : list) {
+//                System.out.println(c.getCustomerName());
+//            }
 
         } catch (SQLException e) {
             System.out.println(e.getMessage() );
@@ -59,6 +61,16 @@ public class CustomerDAO {
         connectionAdapter.stopConnect();
 
         return list;
+    }
+
+    public ObservableList<CustomerObservable> getTestObservableTable () {
+        ObservableList<CustomerObservable> table = FXCollections.observableArrayList(
+                new CustomerObservable(2,"test name2",8,"0200 0000","test account"),
+                new CustomerObservable(3,"test name3",7,"0030 0000","test account"),
+                new CustomerObservable(4,"test name4",6,"0004 0000","test account")
+        );
+
+        return table;
     }
 
     public Customer getCustomerById (int customer_id) {

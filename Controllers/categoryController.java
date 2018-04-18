@@ -16,13 +16,6 @@ import java.util.ResourceBundle;
 
 public class categoryController implements Initializable {
 
-    public Button homepage;
-    public Button customers;
-    public Button productCategory;
-    public Button invoice;
-    public Button products;
-    public Button invoiceItems;
-
     public TableView testTableview;
 
     @Override
@@ -30,18 +23,6 @@ public class categoryController implements Initializable {
 
     }
 
-    public void homeClicked(ActionEvent event) {
-        try {
-            Parent homeParent = FXMLLoader.load(getClass().getResource("../FxmlFiles/intro.fxml"));
-            Scene homeScene = new Scene(homeParent);
 
-            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
-            window.setScene(homeScene);
-            window.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
 }

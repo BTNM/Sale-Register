@@ -1,26 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
+<?import Oblig3.TableViewClass.*?>
 <?import javafx.geometry.Insets?>
-<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="Oblig3.Controllers.customerController" prefHeight="400.0" prefWidth="600.0">
-    <left>
-        <VBox spacing="10.0">
-            <children>
-                <Button fx:id="homepage" text="Home page" />
-                <Button fx:id="customers" text="Customers" />
-                <Button fx:id="productCategory" text="Product categories" />
-                <Button fx:id="invoice" text="Invoice" />
-                <Button fx:id="products" text="Products" />
-                <Button fx:id="invoiceItems" text="Invoice Items" />
-                <Button fx:id="detailInvoice" text="Detailed Invoice Sample" />
-            </children>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.collections.*?>
+<?import javafx.collections.FXCollections?>
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Oblig3.Controllers.customerController">
+    <top>
+        <Label fx:id="title" text="Customer" textAlignment="CENTER" BorderPane.alignment="TOP_LEFT">
+            <font>
+                <Font name="Book Antiqua Bold" size="24.0" />
+            </font>
             <padding>
-                <Insets left="15.0" right="5.0" top="5.0" />
-            </padding></VBox>
-    </left>
+                <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
+            </padding>
+        </Label>
+    </top>
+    <!--<left>-->
+        <!--<fx:include source="buttonList.fxml" />-->
+    <!--</left>-->
+   <center>
+      <TableView fx:id="customerTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn fx:id="customerIdCol" prefWidth="75.0" text="customer_id" />
+            <!--<cellValueFactory><PropertyValueFactory property="customer_id"/> </cellValueFactory>-->
+          <TableColumn prefWidth="75.0" text="customer_name" />
+          <TableColumn prefWidth="75.0" text="address" />
+          <TableColumn prefWidth="75.0" text="phone_number" />
+          <TableColumn prefWidth="75.0" text="billing_account" />
+        </columns>
+          <items>
+              <FXCollections fx:id="dataList" fx:factory="observableArrayList">
+
+
+              </FXCollections>
+          </items>
+      </TableView>
+   </center>
 </BorderPane>
