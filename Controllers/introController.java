@@ -34,8 +34,8 @@ public class introController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         AllTableviews allT = new AllTableviews();
-        TableView  table = allT.getCustomerTableView();
-        rootBp.setBottom(table);
+//        TableView  table = allT.getCustomerTableView();
+//        rootBp.setBottom(table);
     }
 
 

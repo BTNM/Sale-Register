@@ -10,7 +10,7 @@
 <?import javafx.scene.control.cell.*?>
 <?import javafx.collections.*?>
 <?import javafx.collections.FXCollections?>
-<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Oblig3.Controllers.customerController">
+<BorderPane fx:id="root" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Oblig3.Controllers.customerController">
     <top>
         <Label fx:id="title" text="Customer" textAlignment="CENTER" BorderPane.alignment="TOP_LEFT">
             <font>
@@ -24,22 +24,22 @@
     <left>
         <fx:include source="buttonList.fxml"/>
     </left>
-   <center>
-      <TableView fx:id="customerTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-          <columns>
-          <TableColumn fx:id="customerIdCol" prefWidth="75.0" text="customer_id" />
-            <!--<cellValueFactory><PropertyValueFactory property="customer_id"/> </cellValueFactory>-->
-          <TableColumn prefWidth="75.0" text="customer_name"  />
-          <TableColumn prefWidth="75.0" text="address" />
-          <TableColumn prefWidth="75.0" text="phone_number" />
-          <TableColumn prefWidth="75.0" text="billing_account" />
-        </columns>
-          <!--<items>-->
-              <!--<FXCollections fx:id="dataList" fx:factory="observableArrayList">-->
+   <!--<center>-->
+      <!--&lt;!&ndash;<TableView fx:id="customerTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">&ndash;&gt;-->
+          <!--&lt;!&ndash;<columns>&ndash;&gt;-->
+          <!--&lt;!&ndash;<TableColumn fx:id="customerIdCol" prefWidth="75.0" text="customer_id" />&ndash;&gt;-->
+            <!--&lt;!&ndash;&lt;!&ndash;<cellValueFactory><PropertyValueFactory property="customer_id"/> </cellValueFactory>&ndash;&gt;&ndash;&gt;-->
+          <!--&lt;!&ndash;<TableColumn prefWidth="75.0" text="customer_name"  />&ndash;&gt;-->
+          <!--&lt;!&ndash;<TableColumn prefWidth="75.0" text="address" />&ndash;&gt;-->
+          <!--&lt;!&ndash;<TableColumn prefWidth="75.0" text="phone_number" />&ndash;&gt;-->
+          <!--&lt;!&ndash;<TableColumn prefWidth="75.0" text="billing_account" />&ndash;&gt;-->
+        <!--&lt;!&ndash;</columns>&ndash;&gt;-->
+          <!--&lt;!&ndash;&lt;!&ndash;<items>&ndash;&gt;&ndash;&gt;-->
+              <!--&lt;!&ndash;&lt;!&ndash;<FXCollections fx:id="dataList" fx:factory="observableArrayList">&ndash;&gt;&ndash;&gt;-->
 
 
-              <!--</FXCollections>-->
-          <!--</items>-->
-      </TableView>
-   </center>
+              <!--&lt;!&ndash;&lt;!&ndash;</FXCollections>&ndash;&gt;&ndash;&gt;-->
+          <!--&lt;!&ndash;&lt;!&ndash;</items>&ndash;&gt;&ndash;&gt;-->
+      <!--&lt;!&ndash;</TableView>&ndash;&gt;-->
+   <!--</center>-->
 </BorderPane>

@@ -4,7 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="400.0" prefWidth="600.0" spacing="8.0" xmlns="http://javafx.com/javafx/8.0.121" fx:controller="Oblig3.Controllers.buttonListController" xmlns:fx="http://javafx.com/fxml/1">
+<VBox spacing="8.0" xmlns="http://javafx.com/javafx/8.0.121" fx:controller="Oblig3.Controllers.buttonListController" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <Button fx:id="homepage" onAction="#homeClicked" text="Home page" />
         <Button fx:id="customers" onAction="#customerClicked" text="Customers" />
