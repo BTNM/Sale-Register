@@ -49,17 +49,17 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FxmlFiles/intro.fxml"));
-        Scene startScene = new Scene(root,600,400);
-        primaryStage.setScene(startScene);
-        primaryStage.setTitle("Sale Register System");
+//        Parent root = FXMLLoader.load(getClass().getResource("FxmlFiles/intro.fxml"));
+//        Scene startScene = new Scene(root,800,600);
+//        primaryStage.setScene(startScene);
+//        primaryStage.setTitle("Sale Register System");
 
         // øvre del er fxml med user interaction, og nedre delen er individuelle scener med mesteparten av logikk og atferden i programmet. Der man kan endre info i tableview direkte i det grafiske grensesnittet og endringene blir sendt tilbake til databasen
         // klarte ikke å kombinere UI og logikken sammen, men de virker individuelt,
         // introScene() er tom scene siden jeg prøvde å bruke fxml til å løse UI midtvei, så du sjekke scenene individuelt
 
 //        primaryStage.setScene(getIntroScene() );
-//        primaryStage.setScene(getCustomerScene() );
+        primaryStage.setScene(getCustomerScene() );
 //        primaryStage.setScene(getAddressScene() );
 //        primaryStage.setScene(getFakturaScene() );
         primaryStage.show();
