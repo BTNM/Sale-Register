@@ -7,7 +7,11 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
+<?import javafx.scene.control.cell.*?>
+<?import javafx.collections.*?>
+<?import javafx.collections.FXCollections?>
+<?import Oblig3.TableViewClass.ProductObservable?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Oblig3.Controllers.productController">
     <top>
         <Label fx:id="title" text="Products" textAlignment="CENTER" BorderPane.alignment="TOP_LEFT">
@@ -20,11 +24,40 @@
         </Label>
     </top>
    <center>
-      <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="productTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
+            <TableColumn fx:id="pId" prefWidth="75.0" text="Product ID">
+                <cellValueFactory>
+                    <PropertyValueFactory property="productId"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="pName" prefWidth="75.0" text="Product Name">
+                <cellValueFactory>
+                    <PropertyValueFactory property="productName"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="desc" prefWidth="75.0" text="Description">
+                <cellValueFactory>
+                    <PropertyValueFactory property="description"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="price" prefWidth="75.0" text="Price">
+                <cellValueFactory>
+                    <PropertyValueFactory property="price"/>
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="category" prefWidth="75.0" text="Category">
+                <cellValueFactory>
+                    <PropertyValueFactory property="categoryId"/>
+                </cellValueFactory>
+            </TableColumn>
         </columns>
+          <!--<items>-->
+              <!--<FXCollections fx:factory="observableArrayList">-->
+                  <!--<ProductObservable productId="3" productName="Math book" description="A new book about math for universities" price="385.90" categoryId="4"/>-->
+                  <!--<ProductObservable productId="4" productName="Geography book" description="A new book about geography for universities" price="599.90" categoryId="7"/>-->
+              <!--</FXCollections>-->
+          <!--</items>-->
       </TableView>
    </center>
    <left>
