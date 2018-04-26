@@ -160,50 +160,50 @@ public class Main extends Application {
 
         return fakturaScene;
     }
-
-    public Scene getCustomerScene () {
-
-        TextField customerIdInput = new TextField();
-        customerIdInput.setPromptText("Customer Id");
-
-        TextField customerNameInput = new TextField();
-        customerNameInput.setPromptText("Customer Name");
-
-        TextField addressInput = new TextField();
-        addressInput.setPromptText("Address");
-
-        TextField phoneNrInput = new TextField();
-        phoneNrInput.setPromptText("Phone Number");
-
-        TextField billingAccountInput = new TextField();
-        billingAccountInput.setPromptText("Billing Account");
-
-        CustomerObservable table;
-
-        Button addBtn = new Button("Add");
-        addBtn.setOnAction(e -> addCustomerFromTable(Integer.valueOf(customerIdInput.getText()),customerNameInput.getText(),Integer.valueOf(addressInput.getText()),phoneNrInput.getText(),billingAccountInput.getText() ));
-
-        Button deleteBtn = new Button("Delete");
-        deleteBtn.setOnAction(e -> deleteCustomerFromTable());
-
-        HBox bottomLayout1 = new HBox();
-        HBox bottomLayout2 = new HBox();
-        bottomLayout1.setPadding(new Insets(5));
-        bottomLayout2.setPadding(new Insets(5));
-        bottomLayout1.getChildren().addAll(customerIdInput,customerNameInput,addressInput );
-        bottomLayout2.getChildren().addAll(phoneNrInput,billingAccountInput,addBtn ,deleteBtn);
-
-        VBox bottomContainer = new VBox();
-        bottomContainer.getChildren().addAll(bottomLayout1, bottomLayout2);
-
-        BorderPane mainBp = new BorderPane();
-        mainBp.setCenter(allTables.getCustomerTableView() );
-        mainBp.setBottom(bottomContainer);
-
-        Scene customerScene = new Scene(mainBp,600,600);
-
-        return customerScene;
-    }
+//
+//    public Scene getCustomerScene () {
+//
+//        TextField customerIdInput = new TextField();
+//        customerIdInput.setPromptText("Customer Id");
+//
+//        TextField customerNameInput = new TextField();
+//        customerNameInput.setPromptText("Customer Name");
+//
+//        TextField addressInput = new TextField();
+//        addressInput.setPromptText("Address");
+//
+//        TextField phoneNrInput = new TextField();
+//        phoneNrInput.setPromptText("Phone Number");
+//
+//        TextField billingAccountInput = new TextField();
+//        billingAccountInput.setPromptText("Billing Account");
+//
+//        CustomerObservable table;
+//
+//        Button addBtn = new Button("Add");
+//        addBtn.setOnAction(e -> addCustomerFromTable(Integer.valueOf(customerIdInput.getText()),customerNameInput.getText(),Integer.valueOf(addressInput.getText()),phoneNrInput.getText(),billingAccountInput.getText() ));
+//
+//        Button deleteBtn = new Button("Delete");
+//        deleteBtn.setOnAction(e -> deleteCustomerFromTable());
+//
+//        HBox bottomLayout1 = new HBox();
+//        HBox bottomLayout2 = new HBox();
+//        bottomLayout1.setPadding(new Insets(5));
+//        bottomLayout2.setPadding(new Insets(5));
+//        bottomLayout1.getChildren().addAll(customerIdInput,customerNameInput,addressInput );
+//        bottomLayout2.getChildren().addAll(phoneNrInput,billingAccountInput,addBtn ,deleteBtn);
+//
+//        VBox bottomContainer = new VBox();
+//        bottomContainer.getChildren().addAll(bottomLayout1, bottomLayout2);
+//
+//        BorderPane mainBp = new BorderPane();
+//        mainBp.setCenter(allTables.getCustomerTableView() );
+//        mainBp.setBottom(bottomContainer);
+//
+//        Scene customerScene = new Scene(mainBp,600,600);
+//
+//        return customerScene;
+//    }
 
     private void addDetailedInvoice (String cId, String desc, int qty, int ppu, int sum) {
         InvoiceProducts detailedInvoice = new InvoiceProducts(cId,desc,qty,ppu,sum);

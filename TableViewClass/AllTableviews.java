@@ -155,140 +155,140 @@ public class AllTableviews {
 
         return categoryTable;
     }
-
-    public TableView getCustomerTableView () {
-        String databaseTableName = "customer";
-
-        mainTable = new TableView();
-        mainTable.setEditable(true);
-
-        TableColumn<CustomerObservable,Integer> customerIdCol = new TableColumn("Customer Id");
-        TableColumn customerNameCol = new TableColumn("Customer Name");
-        TableColumn<CustomerObservable,Integer>  addressCol = new TableColumn("Address");
-        TableColumn phoneCol = new TableColumn("Phone Nummer");
-        TableColumn billingAccountCol = new TableColumn("Billing Account");
-
-        customerIdCol.setCellValueFactory(
-                new PropertyValueFactory<CustomerObservable,Integer>("customerId")
-        );
-        // reimplement the table cell as a text field with the textFieldTableCell, setOnEditCommit process edit and update value of corresponding cell
-        //Provides a TextField that allows editing of the cell content when the cell is double-clicked
-        customerIdCol.setCellFactory(TextFieldTableCell.forTableColumn(
-                new StringConverter<Integer>() {
-                    @Override
-                    public String toString(Integer object) {
-                        return object.toString();
-                    }
-
-                    @Override
-                    public Integer fromString(String string) {
-                        return Integer.parseInt(string);
-                    }
-                }
-        ));
-        customerIdCol.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<CustomerObservable,Integer>>() {
-                    @Override
-                    public void handle (TableColumn.CellEditEvent<CustomerObservable,Integer> t) {
-                        sqlAdapter.updataDatabaseFromTableView(databaseTableName ,"customer_id", String.valueOf(t.getNewValue()), String.valueOf(t.getOldValue() ));
-
-                        ( (CustomerObservable) t.getTableView() // The TableView control upon which this event occurred.
-                                .getItems()
-                                .get( // Returns the element at the specified position in this list.
-                                        t.getTablePosition() //The position upon which this event occurred.
-                                            .getRow() // The row that this TablePosition represents in the TableView.
-                                    )
-                        ).setCustomerId(t.getNewValue().intValue() ); // set new value input by user in the cell
-
-                    }
-                }
-        );
-
-        customerNameCol.setCellValueFactory(
-                new PropertyValueFactory<CustomerObservable,String>("customerName")
-        );
-        customerNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        customerNameCol.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<CustomerObservable,String>>() {
-                    @Override
-                    public void handle (TableColumn.CellEditEvent<CustomerObservable,String> t) {
-                        sqlAdapter.updataDatabaseFromTableView(databaseTableName ,"customer_name", String.valueOf(t.getNewValue()), String.valueOf(t.getOldValue() ));
-
-                        ( (CustomerObservable) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setCustomerName( t.getNewValue() );
-                    }
-                }
-        );
-        addressCol.setCellValueFactory(
-                new PropertyValueFactory<CustomerObservable,Integer>("addressId")
-        );
-        addressCol.setCellFactory(TextFieldTableCell.forTableColumn(
-                new StringConverter<Integer>() {
-                    @Override
-                    public String toString(Integer object) {
-                        return object.toString();
-                    }
-
-                    @Override
-                    public Integer fromString(String string) {
-                        return Integer.parseInt(string);
-                    }
-                }
-        ));
-        addressCol.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<CustomerObservable,Integer>>() {
-                    @Override
-                    public void handle (TableColumn.CellEditEvent<CustomerObservable,Integer> t) {
-                        sqlAdapter.updataDatabaseFromTableView(databaseTableName ,"address", String.valueOf(t.getNewValue()), String.valueOf(t.getOldValue() ));
-
-                        ( (CustomerObservable) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setAddressId(t.getNewValue().intValue()  );
-                    }
-                }
-        );
-        phoneCol.setCellValueFactory(
-                new PropertyValueFactory<CustomerObservable,String>("phoneNumber")
-        );
-        phoneCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        phoneCol.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<CustomerObservable,String>>() {
-                    @Override
-                    public void handle (TableColumn.CellEditEvent<CustomerObservable,String> t) {
-                        sqlAdapter.updataDatabaseFromTableView(databaseTableName ,"phone_number", String.valueOf(t.getNewValue()), String.valueOf(t.getOldValue() ));
-
-                        ( (CustomerObservable) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setPhoneNumber( t.getNewValue() );
-                    }
-                }
-        );
-        billingAccountCol.setCellValueFactory(
-                new PropertyValueFactory<CustomerObservable,String>("billingAccount")
-        );
-        billingAccountCol.setCellFactory(TextFieldTableCell.forTableColumn() );
-        billingAccountCol.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<CustomerObservable,String>>() {
-                    @Override
-                    public void handle (TableColumn.CellEditEvent<CustomerObservable,String> t) {
-                        sqlAdapter.updataDatabaseFromTableView(databaseTableName ,"billing_account", String.valueOf(t.getNewValue()), String.valueOf(t.getOldValue() ));
-
-                        ( (CustomerObservable) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setBillingAccount( t.getNewValue() );
-                    }
-                }
-        );
-
-        CustomerDAO customerDAO = new CustomerDAO();
-
-//        table.setItems(getCustomerObservableTable() );  //make method to put all values from database into observable list
-        mainTable.setItems(customerDAO.allCustomerObservableList());
-        mainTable.getColumns().addAll(customerIdCol, customerNameCol, addressCol, phoneCol, billingAccountCol );
-
-        return mainTable;
-    }
+//
+//    public TableView getCustomerTableView () {
+//        String databaseTableName = "customer";
+//
+//        mainTable = new TableView();
+//        mainTable.setEditable(true);
+//
+//        TableColumn<CustomerObservable,Integer> customerIdCol = new TableColumn("Customer Id");
+//        TableColumn customerNameCol = new TableColumn("Customer Name");
+//        TableColumn<CustomerObservable,Integer>  addressCol = new TableColumn("Address");
+//        TableColumn phoneCol = new TableColumn("Phone Nummer");
+//        TableColumn billingAccountCol = new TableColumn("Billing Account");
+//
+//        customerIdCol.setCellValueFactory(
+//                new PropertyValueFactory<CustomerObservable,Integer>("customerId")
+//        );
+//        // reimplement the table cell as a text field with the textFieldTableCell, setOnEditCommit process edit and update value of corresponding cell
+//        //Provides a TextField that allows editing of the cell content when the cell is double-clicked
+//        customerIdCol.setCellFactory(TextFieldTableCell.forTableColumn(
+//                new StringConverter<Integer>() {
+//                    @Override
+//                    public String toString(Integer object) {
+//                        return object.toString();
+//                    }
+//
+//                    @Override
+//                    public Integer fromString(String string) {
+//                        return Integer.parseInt(string);
+//                    }
+//                }
+//        ));
+//        customerIdCol.setOnEditCommit(
+//                new EventHandler<TableColumn.CellEditEvent<CustomerObservable,Integer>>() {
+//                    @Override
+//                    public void handle (TableColumn.CellEditEvent<CustomerObservable,Integer> t) {
+//                        sqlAdapter.updataDatabaseFromTableView(databaseTableName ,"customer_id", String.valueOf(t.getNewValue()), String.valueOf(t.getOldValue() ));
+//
+//                        ( (CustomerObservable) t.getTableView() // The TableView control upon which this event occurred.
+//                                .getItems()
+//                                .get( // Returns the element at the specified position in this list.
+//                                        t.getTablePosition() //The position upon which this event occurred.
+//                                            .getRow() // The row that this TablePosition represents in the TableView.
+//                                    )
+//                        ).setCustomerId(t.getNewValue().intValue() ); // set new value input by user in the cell
+//
+//                    }
+//                }
+//        );
+//
+//        customerNameCol.setCellValueFactory(
+//                new PropertyValueFactory<CustomerObservable,String>("customerName")
+//        );
+//        customerNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
+//        customerNameCol.setOnEditCommit(
+//                new EventHandler<TableColumn.CellEditEvent<CustomerObservable,String>>() {
+//                    @Override
+//                    public void handle (TableColumn.CellEditEvent<CustomerObservable,String> t) {
+//                        sqlAdapter.updataDatabaseFromTableView(databaseTableName ,"customer_name", String.valueOf(t.getNewValue()), String.valueOf(t.getOldValue() ));
+//
+//                        ( (CustomerObservable) t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).setCustomerName( t.getNewValue() );
+//                    }
+//                }
+//        );
+//        addressCol.setCellValueFactory(
+//                new PropertyValueFactory<CustomerObservable,Integer>("addressId")
+//        );
+//        addressCol.setCellFactory(TextFieldTableCell.forTableColumn(
+//                new StringConverter<Integer>() {
+//                    @Override
+//                    public String toString(Integer object) {
+//                        return object.toString();
+//                    }
+//
+//                    @Override
+//                    public Integer fromString(String string) {
+//                        return Integer.parseInt(string);
+//                    }
+//                }
+//        ));
+//        addressCol.setOnEditCommit(
+//                new EventHandler<TableColumn.CellEditEvent<CustomerObservable,Integer>>() {
+//                    @Override
+//                    public void handle (TableColumn.CellEditEvent<CustomerObservable,Integer> t) {
+//                        sqlAdapter.updataDatabaseFromTableView(databaseTableName ,"address", String.valueOf(t.getNewValue()), String.valueOf(t.getOldValue() ));
+//
+//                        ( (CustomerObservable) t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).setAddressId(t.getNewValue().intValue()  );
+//                    }
+//                }
+//        );
+//        phoneCol.setCellValueFactory(
+//                new PropertyValueFactory<CustomerObservable,String>("phoneNumber")
+//        );
+//        phoneCol.setCellFactory(TextFieldTableCell.forTableColumn());
+//        phoneCol.setOnEditCommit(
+//                new EventHandler<TableColumn.CellEditEvent<CustomerObservable,String>>() {
+//                    @Override
+//                    public void handle (TableColumn.CellEditEvent<CustomerObservable,String> t) {
+//                        sqlAdapter.updataDatabaseFromTableView(databaseTableName ,"phone_number", String.valueOf(t.getNewValue()), String.valueOf(t.getOldValue() ));
+//
+//                        ( (CustomerObservable) t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).setPhoneNumber( t.getNewValue() );
+//                    }
+//                }
+//        );
+//        billingAccountCol.setCellValueFactory(
+//                new PropertyValueFactory<CustomerObservable,String>("billingAccount")
+//        );
+//        billingAccountCol.setCellFactory(TextFieldTableCell.forTableColumn() );
+//        billingAccountCol.setOnEditCommit(
+//                new EventHandler<TableColumn.CellEditEvent<CustomerObservable,String>>() {
+//                    @Override
+//                    public void handle (TableColumn.CellEditEvent<CustomerObservable,String> t) {
+//                        sqlAdapter.updataDatabaseFromTableView(databaseTableName ,"billing_account", String.valueOf(t.getNewValue()), String.valueOf(t.getOldValue() ));
+//
+//                        ( (CustomerObservable) t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).setBillingAccount( t.getNewValue() );
+//                    }
+//                }
+//        );
+//
+//        CustomerDAO customerDAO = new CustomerDAO();
+//
+////        table.setItems(getCustomerObservableTable() );  //make method to put all values from database into observable list
+//        mainTable.setItems(customerDAO.allCustomerObservableList());
+//        mainTable.getColumns().addAll(customerIdCol, customerNameCol, addressCol, phoneCol, billingAccountCol );
+//
+//        return mainTable;
+//    }
 
     public TableView getInvoiceTableView () {
         String databaseTableName = "invoice";

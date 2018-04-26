@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class CustomerDAO {
     String getCustomerQuery = "SELECT * FROM main.customer WHERE customer_id = ?";
@@ -29,8 +30,10 @@ public class CustomerDAO {
     }
 
 
-    public ObservableList<CustomerObservable> allCustomerObservableList() {
-        ObservableList<CustomerObservable> list = FXCollections.observableArrayList();
+    public ArrayList<CustomerObservable> allCustomerObservableList() {
+//        ObservableList<CustomerObservable> list = FXCollections.observableArrayList();
+        ArrayList<CustomerObservable> list = new ArrayList<>();
+
         PreparedStatement statement = null;
         connectionAdapter.startConnect();
 

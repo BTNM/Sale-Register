@@ -10,9 +10,13 @@ public class CustomerObservable {
     private final SimpleStringProperty phoneNumber;
     private final SimpleStringProperty billingAccount;
 
-//    public CustomerObservable () {
-//        this(0,"",0,"","");
-//    }
+    public CustomerObservable(CustomerObservable customerObservable) {
+        this.customerId = new SimpleIntegerProperty(customerObservable.getCustomerId() );
+        this.customerName = new SimpleStringProperty(customerObservable.getCustomerName() );
+        this.addressId = new SimpleIntegerProperty(customerObservable.getAddressId());
+        this.phoneNumber = new SimpleStringProperty(customerObservable.getPhoneNumber());
+        this.billingAccount = new SimpleStringProperty(customerObservable.getBillingAccount() );
+    }
 
     public CustomerObservable(int customerId, String customerName, int addressId, String phoneNumber, String billingAccount) {
         this.customerId = new SimpleIntegerProperty(customerId );

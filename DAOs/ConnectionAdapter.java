@@ -41,7 +41,7 @@ public class ConnectionAdapter {
 
         try (Connection conn = this.createConnection();
 //             PreparedStatement statement = conn.prepareStatement(updateDatabaseQuery);
-             PreparedStatement statement = conn.prepareStatement("Update "+tableName+" SET "+columnName+" = ? WHERE customer_id = ?");
+             PreparedStatement statement = conn.prepareStatement("Update "+tableName+" SET "+columnName+" = ? WHERE "+columnName+" = ?");
         ) {
 
             statement.setString(1,columnValue);

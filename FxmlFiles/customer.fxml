@@ -24,22 +24,35 @@
     <left>
         <fx:include source="buttonList.fxml"/>
     </left>
-   <!--<center>-->
-      <!--&lt;!&ndash;<TableView fx:id="customerTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">&ndash;&gt;-->
-          <!--&lt;!&ndash;<columns>&ndash;&gt;-->
-          <!--&lt;!&ndash;<TableColumn fx:id="customerIdCol" prefWidth="75.0" text="customer_id" />&ndash;&gt;-->
-            <!--&lt;!&ndash;&lt;!&ndash;<cellValueFactory><PropertyValueFactory property="customer_id"/> </cellValueFactory>&ndash;&gt;&ndash;&gt;-->
-          <!--&lt;!&ndash;<TableColumn prefWidth="75.0" text="customer_name"  />&ndash;&gt;-->
-          <!--&lt;!&ndash;<TableColumn prefWidth="75.0" text="address" />&ndash;&gt;-->
-          <!--&lt;!&ndash;<TableColumn prefWidth="75.0" text="phone_number" />&ndash;&gt;-->
-          <!--&lt;!&ndash;<TableColumn prefWidth="75.0" text="billing_account" />&ndash;&gt;-->
-        <!--&lt;!&ndash;</columns>&ndash;&gt;-->
-          <!--&lt;!&ndash;&lt;!&ndash;<items>&ndash;&gt;&ndash;&gt;-->
-              <!--&lt;!&ndash;&lt;!&ndash;<FXCollections fx:id="dataList" fx:factory="observableArrayList">&ndash;&gt;&ndash;&gt;-->
-
-
-              <!--&lt;!&ndash;&lt;!&ndash;</FXCollections>&ndash;&gt;&ndash;&gt;-->
-          <!--&lt;!&ndash;&lt;!&ndash;</items>&ndash;&gt;&ndash;&gt;-->
-      <!--&lt;!&ndash;</TableView>&ndash;&gt;-->
-   <!--</center>-->
+   <center>
+      <TableView fx:id="customerTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+          <columns>
+              <TableColumn fx:id="customerIdCol" prefWidth="75.0" text="Customer ID">
+                  <cellValueFactory>
+                      <PropertyValueFactory property="customerId"/>
+                  </cellValueFactory>
+              </TableColumn>
+              <TableColumn fx:id="customerNameCol" prefWidth="75.0" text="Customer Name">
+                  <cellValueFactory>
+                      <PropertyValueFactory property="customerName"/>
+                  </cellValueFactory>
+              </TableColumn>
+              <TableColumn fx:id="addressCol" prefWidth="75.0" text="Address ID">
+                  <cellValueFactory>
+                      <PropertyValueFactory property="addressId"/>
+                  </cellValueFactory>
+              </TableColumn>
+              <TableColumn fx:id="phoneNumberCol" prefWidth="75.0" text="Phone Number">
+                  <cellValueFactory>
+                      <PropertyValueFactory property="phoneNumber"/>
+                  </cellValueFactory>
+              </TableColumn>
+              <TableColumn fx:id="billingAccountCol" prefWidth="75.0" text="Billing Account">
+                  <cellValueFactory>
+                      <PropertyValueFactory property="billingAccount"/>
+                  </cellValueFactory>
+              </TableColumn>
+        </columns>
+      </TableView>
+   </center>
 </BorderPane>
