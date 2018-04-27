@@ -9,7 +9,7 @@
         <Button fx:id="homepage" onAction="#homeClicked" text="Home page" />
         <Button fx:id="customers" onAction="#customerClicked" text="Customers" />
         <Button fx:id="address" onAction="#addressClicked" text="Address" />
-        <Button fx:id="category" onAction="#categoryClicked" text="Product categories" />
+        <Button fx:id="category" onAction="#categoryClicked" text="Categories" />
         <Button fx:id="invoice" onAction="#invoiceClicked" text="Invoice" />
         <Button fx:id="products" onAction="#productsClicked" text="Products" />
         <Button fx:id="detailInvoice" text="Detailed Invoice Sample" />

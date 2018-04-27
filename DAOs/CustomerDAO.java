@@ -66,15 +66,15 @@ public class CustomerDAO {
         return list;
     }
 
-    public ObservableList<CustomerObservable> getTestObservableTable () {
-        ObservableList<CustomerObservable> table = FXCollections.observableArrayList(
-                new CustomerObservable(2,"test name2",8,"0200 0000","test account"),
-                new CustomerObservable(3,"test name3",7,"0030 0000","test account"),
-                new CustomerObservable(4,"test name4",6,"0004 0000","test account")
-        );
-
-        return table;
-    }
+//    public ObservableList<CustomerObservable> getTestObservableTable () {
+//        ObservableList<CustomerObservable> table = FXCollections.observableArrayList(
+//                new CustomerObservable(2,"test name2",8,"0200 0000","test account"),
+//                new CustomerObservable(3,"test name3",7,"0030 0000","test account"),
+//                new CustomerObservable(4,"test name4",6,"0004 0000","test account")
+//        );
+//
+//        return table;
+//    }
 
     public Customer getCustomerById (int customer_id) {
 //        ConnectionAdapter connectionAdapter = new ConnectionAdapter();

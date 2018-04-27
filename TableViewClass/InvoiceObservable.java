@@ -8,6 +8,12 @@ public class InvoiceObservable {
     private final SimpleIntegerProperty customerId;
     private final SimpleStringProperty dato;
 
+    public InvoiceObservable(InvoiceObservable invoiceObservable) {
+        this.invoiceId = new SimpleIntegerProperty(invoiceObservable.getInvoiceId());
+        this.customerId = new SimpleIntegerProperty(invoiceObservable.getCustomerId());
+        this.dato = new SimpleStringProperty(invoiceObservable.getDato());
+    }
+
     public InvoiceObservable(int invoiceId, int customerId, String dato) {
         this.invoiceId = new SimpleIntegerProperty(invoiceId);
         this.customerId = new SimpleIntegerProperty(customerId);

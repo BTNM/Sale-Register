@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class CategoryDao {
     String getCategoryQuery = "SELECT * FROM category WHERE category_id = ?";
@@ -29,8 +30,10 @@ public class CategoryDao {
 //        connectionAdapter.stopConnect();
     }
 
-    public ObservableList<CategoryObservable> allCategoryObservableList() {
-        ObservableList<CategoryObservable> list = FXCollections.observableArrayList();
+    public ArrayList<CategoryObservable> allCategoryObservableList() {
+//        ObservableList<CategoryObservable> list = FXCollections.observableArrayList();
+        ArrayList<CategoryObservable> list = new ArrayList<>();
+
         PreparedStatement statement = null;
         connectionAdapter.startConnect();
 

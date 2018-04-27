@@ -55,6 +55,61 @@ public class ConnectionAdapter {
 
     }
 
+    public void insertIntoDatabase(String tableName, String col1, String col2, String col3, String col4, String col5) {
+        try (Connection conn = this.createConnection() ) {
+            PreparedStatement statement = null;
+
+            switch (tableName) {
+                case "customer":
+                    statement = conn.prepareStatement("INSERT INTO "+tableName+" (customer_id,customer_name,address,phone_number,billing_account) "+"VALUES (?,?,?,?,?)");
+                    statement.setInt(1,Integer.valueOf(col1));
+                    statement.setString(2,col2);
+                    statement.setInt(3,Integer.valueOf(col3));
+                    statement.setString(4,col4);
+                    statement.setString(5,col5);
+                    break;
+                case "address":
+                    statement = conn.prepareStatement("INSERT INTO "+tableName+" (address_id,street_number,street_name,postal_code,postal_town) "+"VALUES (?,?,?,?,?)");
+                    statement.setInt(1,Integer.valueOf(col1));
+                    statement.setString(2,col2);
+                    statement.setString(3,col3);
+                    statement.setString(4,col4);
+                    statement.setString(5,col5);
+                    break;
+                case "category":
+                    statement = conn.prepareStatement("INSERT INTO "+tableName+" (category_id,category_name) "+"VALUES (?,?)");
+                    statement.setInt(1,Integer.valueOf(col1));
+                    statement.setString(2,col2);
+                    break;
+                case "invoice":
+                    statement = conn.prepareStatement("INSERT INTO "+tableName+" (invoice_id,customer,dato) "+"VALUES (?,?,?)");
+                    statement.setInt(1,Integer.valueOf(col1));
+                    statement.setInt(2,Integer.valueOf(col2));
+                    statement.setString(3,col3);
+                    break;
+                case "invoice_items":
+                    statement = conn.prepareStatement("INSERT INTO "+tableName+" (invoice,product) "+"VALUES (?,?)");
+                    statement.setInt(1,Integer.valueOf(col1));
+                    statement.setInt(2,Integer.valueOf(col2));
+                    break;
+                case "product":
+                    statement = conn.prepareStatement("INSERT INTO "+tableName+" (product_id,product_name,description,price,category) "+"VALUES (?,?,?,?,?)");
+                    statement.setInt(1,Integer.valueOf(col1));
+                    statement.setString(2,col2);
+                    statement.setString(3,col3);
+                    statement.setFloat(4,Float.valueOf(col4));
+                    statement.setInt(5,Integer.valueOf(col5));
+                    break;
+            }
+
+            statement.execute();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage() );
+        }
+
+    }
+
     public void insertCustomerIntoDatabase(String tableName, int col1, String col2, int col3, String col4, String col5) {
         try (Connection conn = this.createConnection();
 //             PreparedStatement statement = conn.prepareStatement(updateDatabaseQuery);
@@ -74,9 +129,35 @@ public class ConnectionAdapter {
 
     }
 
+    public void insertAddress () {
 
+    }
+    public void insertCategory () {
 
+    }
+    public void insertInvoice () {
 
+    }
+    public void insertInvoiceItems () {
+
+    }
+    public void insertProduct () {
+
+    }
+
+//    public void deleteFromDatabase(String tableName) {
+//        try (Connection conn = this.createConnection();
+////             PreparedStatement statement = conn.prepareStatement(updateDatabaseQuery);
+//             PreparedStatement statement = conn.prepareStatement("DELETE FROM "+tableName+" WHERE ");
+//        ) {
+//
+//
+//            statement.execute();
+//
+//        } catch (SQLException e) {
+//            System.out.println(e.getMessage() );
+//        }
+//    }
 
 
     public void startUpFromSqlFile(String path) {

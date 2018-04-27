@@ -2,19 +2,20 @@ package Oblig3.Controllers;
 
 import Oblig3.DAOs.ConnectionAdapter;
 import Oblig3.DAOs.CustomerDAO;
-import Oblig3.TableViewClass.AllTableviews;
+
 import Oblig3.TableViewClass.CustomerObservable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
+
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.layout.BorderPane;
+
 import javafx.util.StringConverter;
 
 import java.net.URL;
@@ -22,14 +23,12 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class customerController implements Initializable {
+//    AllTableviews allTables = new AllTableviews();
     ConnectionAdapter sqlAdapter = new ConnectionAdapter();
-    AllTableviews allTables = new AllTableviews();
     CustomerDAO customerDAO = new CustomerDAO();
     String databaseTableName = "customer";
 
-    TableView centerTable;
-
-    @FXML BorderPane mainPane;
+//    @FXML BorderPane mainPane;
     @FXML TableView customerTable;
 
     @FXML TableColumn<CustomerObservable, Integer> customerIdCol;
@@ -40,13 +39,14 @@ public class customerController implements Initializable {
 
     ObservableList<CustomerObservable> data = FXCollections.observableArrayList();
 
-//    @FXML TextField customerIdInput = new TextField();
-//    @FXML TextField customerNameInput = new TextField();
-//    @FXML TextField addressInput = new TextField();
-//    @FXML TextField phoneNrInput = new TextField();
-//    @FXML TextField billingAccountInput = new TextField();
+    @FXML TextField customerIdInput = new TextField();
+    @FXML TextField customerNameInput = new TextField();
+    @FXML TextField addressInput = new TextField();
+    @FXML TextField phoneNrInput = new TextField();
+    @FXML TextField billingAccountInput = new TextField();
 
-
+    @FXML Button addBtn;
+    @FXML Button deleteBtn;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -66,6 +66,8 @@ public class customerController implements Initializable {
         setupPhoneNumberCol();
         setupBillingAccoount();
 
+        addBtn.setOnAction(event -> addCustomer(customerIdInput.getText(),customerNameInput.getText(),addressInput.getText(),phoneNrInput.getText(),billingAccountInput.getText() ) );
+        deleteBtn.setOnAction(event -> deleteCustomer());
     }
 
     private void fillTable(ArrayList<CustomerObservable> customer) {
@@ -135,7 +137,7 @@ public class customerController implements Initializable {
 
                 ((CustomerObservable) t.getTableView().getItems().get(
                         t.getTablePosition().getRow())
-                ).setAddressId(t.getNewValue().intValue());
+                ).setAddressId(t.getNewValue().intValue() );
             });
     }
 
@@ -162,7 +164,32 @@ public class customerController implements Initializable {
         });
     }
 
+    private void addCustomer(String cId, String cName,String add, String phone, String bAccount) {
+        sqlAdapter.insertIntoDatabase("customer",cId,cName,add, phone,bAccount);
 
+        CustomerObservable c  = new CustomerObservable(Integer.valueOf(cId),cName,Integer.valueOf(add),phone,bAccount);
+        // have to write a check so that the unique primary keys dont overlap in the database
+        data.add(c);
+        customerIdInput.clear();
+        customerNameInput.clear();
+        addressInput.clear();
+        phoneNrInput.clear();
+        billingAccountInput.clear();
+
+//        allTables.addToCustomerObservableTable(c);
+
+    }
+
+    private void deleteCustomer() {
+        ObservableList<CustomerObservable> customerSelected, allCustomer;
+        allCustomer = customerTable.getItems();
+        customerSelected = customerTable.getSelectionModel().getSelectedItems();
+
+        // have to delete from database, for now it only removes from tableview
+        customerSelected.forEach(allCustomer::remove);
+
+
+    }
 
 
 }
