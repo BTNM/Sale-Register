@@ -10,6 +10,13 @@ public class AddressObservable {
     private final SimpleStringProperty postalCode;
     private final SimpleStringProperty postalTown;
 
+    public AddressObservable(AddressObservable addressObservable) {
+        this.addressId = new SimpleIntegerProperty(addressObservable.getAddressId() );
+        this.streetNumber = new SimpleStringProperty(addressObservable.getStreetNumber());
+        this.streetName = new SimpleStringProperty(addressObservable.getStreetName());
+        this.postalCode = new SimpleStringProperty(addressObservable.getPostalCode());
+        this.postalTown = new SimpleStringProperty(addressObservable.getPostalTown());
+    }
 
     public AddressObservable(int addressId, String streetNumber, String streetName, String postalCode, String postalTown) {
         this.addressId = new SimpleIntegerProperty(addressId);

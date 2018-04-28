@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class ProductDao {
     String getProductQuery = "SELECT * FROM product WHERE product_id = ?";
@@ -29,8 +30,10 @@ public class ProductDao {
     }
 
 
-    public ObservableList<ProductObservable> allProductObservableList() {
-        ObservableList<ProductObservable> list = FXCollections.observableArrayList();
+    public ArrayList<ProductObservable> allProductObservableList() {
+//        ObservableList<ProductObservable> list = FXCollections.observableArrayList();
+        ArrayList<ProductObservable> list = new ArrayList<>();
+
         PreparedStatement statement = null;
         connectionAdapter.startConnect();
 

@@ -10,10 +10,12 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Oblig3.Controllers.invoiceController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Oblig3.Controllers.invoiceController">
     <top>
         <Label fx:id="title" text="Invoice" textAlignment="CENTER" BorderPane.alignment="TOP_LEFT">
             <font>
@@ -27,35 +29,18 @@
     <left>
         <fx:include source="buttonList.fxml" />
     </left>
-    <center>
-        <TableView fx:id="invoiceTable" prefHeight="200.0" prefWidth="356.0" BorderPane.alignment="CENTER">
-            <columns>
-                <TableColumn fx:id="invoiceIdCol" prefWidth="75.0" text="Invoice ID">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="invoiceId" />
-                    </cellValueFactory>
-                </TableColumn>
-                <TableColumn fx:id="customerCol" prefWidth="100.0" text="Customer ID">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="customerId" />
-                    </cellValueFactory>
-                </TableColumn>
-                <TableColumn fx:id="datoCol" prefWidth="100.0" text="Dato">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="dato" />
-                    </cellValueFactory>
-                </TableColumn>
-            </columns>
-        </TableView>
-    </center>
     <bottom>
         <GridPane id="bottomGridpane" hgap="5.0" vgap="2.0" BorderPane.alignment="CENTER">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="147.0" minWidth="10.0" prefWidth="139.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="233.0" minWidth="10.0" prefWidth="127.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="293.0" minWidth="10.0" prefWidth="99.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="317.0" minWidth="10.0" prefWidth="194.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="201.0" minWidth="10.0" prefWidth="201.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="147.0" minWidth="10.0" prefWidth="91.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="147.0" minWidth="10.0" prefWidth="87.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="233.0" minWidth="0.0" prefWidth="78.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="293.0" minWidth="0.0" prefWidth="77.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="201.0" minWidth="10.0" prefWidth="69.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="201.0" minWidth="3.0" prefWidth="89.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="315.0" minWidth="10.0" prefWidth="72.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="315.0" minWidth="10.0" prefWidth="77.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="352.0" minWidth="10.0" prefWidth="100.0" />
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -65,29 +50,48 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Label text="Invoice ID">
+                <Label text="Invoice ID" GridPane.columnIndex="1">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <Label text="Customer" GridPane.rowIndex="1">
+                <Label text="Customer" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <Label text="Dato" GridPane.rowIndex="2">
+                <Label text="Dato" GridPane.columnIndex="1" GridPane.rowIndex="2">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <TextField fx:id="invoiceIdInput" GridPane.columnIndex="1" />
-                <TextField fx:id="customerInput" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <TextField fx:id="datoInput" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <Button fx:id="addBtn" mnemonicParsing="false" text="Add" GridPane.columnIndex="2">
+                <TextField fx:id="invoiceIdInput" GridPane.columnIndex="2" />
+                <TextField fx:id="customerInput" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                <TextField fx:id="datoInput" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                <Button fx:id="addInvoiceBtn" mnemonicParsing="false" text="Add" GridPane.columnIndex="3">
                     <font>
                         <Font size="14.0" />
                     </font></Button>
-                <Button fx:id="deleteBtn" mnemonicParsing="false" text="Delete" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                <Button fx:id="deleteInvoiceBtn" mnemonicParsing="false" text="Delete" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                    <font>
+                        <Font size="14.0" />
+                    </font></Button>
+
+                <Label text="Invoice ID" GridPane.columnIndex="5">
+                    <font>
+                        <Font size="14.0" />
+                    </font></Label>
+                <Label text="Product ID" GridPane.columnIndex="5" GridPane.rowIndex="1">
+                    <font>
+                        <Font size="14.0" />
+                    </font></Label>
+                <TextField fx:id="IIInvoiceInput" GridPane.columnIndex="6" />
+                <TextField fx:id="IIProductInput" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                <Button fx:id="addInvoiceItemsBtn" mnemonicParsing="false" text="Add" GridPane.columnIndex="7">
+                    <font>
+                        <Font size="14.0" />
+                    </font></Button>
+                <Button fx:id="deleteInvoiceItemsBtn" mnemonicParsing="false" text="Delete" GridPane.columnIndex="7" GridPane.rowIndex="1">
                     <font>
                         <Font size="14.0" />
                     </font></Button>
@@ -97,4 +101,46 @@
             </padding>
         </GridPane>
     </bottom>
+   <right>
+      <VBox prefHeight="381.0" prefWidth="156.0" BorderPane.alignment="CENTER" />
+   </right>
+   <center>
+      <HBox prefHeight="100.0" prefWidth="200.0" spacing="15.0" BorderPane.alignment="CENTER">
+         <children>
+              <TableView fx:id="invoiceTable" onMouseClicked="#clickDetailInvoice" prefHeight="200.0" prefWidth="356.0">
+                  <columns>
+                      <TableColumn fx:id="invoiceIdCol" prefWidth="75.0" text="Invoice ID">
+                          <cellValueFactory>
+                              <PropertyValueFactory property="invoiceId" />
+                          </cellValueFactory>
+                      </TableColumn>
+                      <TableColumn fx:id="customerCol" prefWidth="100.0" text="Customer ID">
+                          <cellValueFactory>
+                              <PropertyValueFactory property="customerId" />
+                          </cellValueFactory>
+                      </TableColumn>
+                      <TableColumn fx:id="datoCol" prefWidth="100.0" text="Dato">
+                          <cellValueFactory>
+                              <PropertyValueFactory property="dato" />
+                          </cellValueFactory>
+                      </TableColumn>
+                  </columns>
+              </TableView>
+            <TableView fx:id="invoiceItemsTable" prefHeight="200.0" prefWidth="200.0">
+              <columns>
+                  <TableColumn fx:id="IIInvoiceCol" prefWidth="75.0" text="Invoice ID">
+                      <cellValueFactory>
+                          <PropertyValueFactory property="invoiceId" />
+                      </cellValueFactory>
+                  </TableColumn>
+                  <TableColumn fx:id="IIProductCol" prefWidth="100.0" text="Product ID">
+                      <cellValueFactory>
+                          <PropertyValueFactory property="productId" />
+                      </cellValueFactory>
+                  </TableColumn>
+              </columns>
+            </TableView>
+         </children>
+      </HBox>
+   </center>
 </BorderPane>

@@ -23,125 +23,126 @@ public class AllTableviews {
 //
 //    }
 
-    public TableView getAddressTableView () {
-        String databaseTableName = "address";
-        mainTable = new TableView();
-        mainTable.setEditable(true);
+//    public TableView getAddressTableView () {
+//        String databaseTableName = "address";
+//        mainTable = new TableView();
+//        mainTable.setEditable(true);
+//
+//        TableColumn<AddressObservable,Integer> addressIdCol = new TableColumn("Address Id");
+//        TableColumn streetNumberCol = new TableColumn("Street Number");
+//        TableColumn streetNameCol = new TableColumn("Street Name");
+//        TableColumn postalCodeCol = new TableColumn("Postal Code");
+//        TableColumn postalTownCol = new TableColumn("Postal Town");
+//
+//        addressIdCol.setCellValueFactory(
+//                new PropertyValueFactory<AddressObservable,Integer>("addressId")
+//        );
+//        addressIdCol.setCellFactory(TextFieldTableCell.forTableColumn(
+//                new StringConverter<Integer>() {
+//                    @Override
+//                    public String toString(Integer object) {
+//                        return object.toString();
+//                    }
+//
+//                    @Override
+//                    public Integer fromString(String string) {
+//                        return Integer.parseInt(string);
+//                    }
+//                }
+//        ));
+//        addressIdCol.setOnEditCommit(
+//                new EventHandler<TableColumn.CellEditEvent<AddressObservable,Integer>>() {
+//                    @Override
+//                    public void handle (TableColumn.CellEditEvent<AddressObservable,Integer> t) {
+//                        sqlAdapter.updataDatabaseFromTableView(databaseTableName ,"address_id", String.valueOf(t.getNewValue()), String.valueOf(t.getOldValue() ));
+//
+//                        ( (AddressObservable) t.getTableView() // The TableView control upon which this event occurred.
+//                                .getItems()
+//                                .get( // Returns the element at the specified position in this list.
+//                                        t.getTablePosition() //The position upon which this event occurred.
+//                                                .getRow() // The row that this TablePosition represents in the TableView.
+//                                )
+//                        ).setAddressId (t.getNewValue().intValue() ); // set new value input by user in the cell
+//                    }
+//                }
+//        );
+//
+//        streetNumberCol.setCellValueFactory(
+//                new PropertyValueFactory<AddressObservable,String>("streetNumber")
+//        );
+//        streetNumberCol.setCellFactory(TextFieldTableCell.forTableColumn());
+//        streetNumberCol.setOnEditCommit(
+//                new EventHandler<TableColumn.CellEditEvent<AddressObservable,String>>() {
+//                    @Override
+//                    public void handle (TableColumn.CellEditEvent<AddressObservable,String> t) {
+//                        sqlAdapter.updataDatabaseFromTableView(databaseTableName ,"street_number", String.valueOf(t.getNewValue()), String.valueOf(t.getOldValue() ));
+//
+//                        ( (AddressObservable) t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).setStreetNumber( t.getNewValue() );
+//                    }
+//                }
+//        );
+//
+//        streetNameCol.setCellValueFactory(
+//                new PropertyValueFactory<AddressObservable,String>("streetName")
+//        );
+//        streetNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
+//        streetNameCol.setOnEditCommit(
+//                new EventHandler<TableColumn.CellEditEvent<AddressObservable,String>>() {
+//                    @Override
+//                    public void handle (TableColumn.CellEditEvent<AddressObservable,String> t) {
+//                        sqlAdapter.updataDatabaseFromTableView(databaseTableName ,"street_name", String.valueOf(t.getNewValue()), String.valueOf(t.getOldValue() ));
+//
+//                        ( (AddressObservable) t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).setStreetName( t.getNewValue() );
+//                    }
+//                }
+//        );
+//
+//        postalCodeCol.setCellValueFactory(
+//                new PropertyValueFactory<AddressObservable,String>("postalCode")
+//        );
+//        postalCodeCol.setCellFactory(TextFieldTableCell.forTableColumn());
+//        postalCodeCol.setOnEditCommit(
+//                new EventHandler<TableColumn.CellEditEvent<AddressObservable,String>>() {
+//                    @Override
+//                    public void handle (TableColumn.CellEditEvent<AddressObservable,String> t) {
+//                        sqlAdapter.updataDatabaseFromTableView(databaseTableName ,"postal_code", String.valueOf(t.getNewValue()), String.valueOf(t.getOldValue() ));
+//
+//                        ( (AddressObservable) t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).setPostalCode( t.getNewValue() );
+//                    }
+//                }
+//        );
+//        postalTownCol.setCellValueFactory(
+//                new PropertyValueFactory<AddressObservable,String>("postalTown")
+//        );
+//        postalTownCol.setCellFactory(TextFieldTableCell.forTableColumn());
+//        postalTownCol.setOnEditCommit(
+//                new EventHandler<TableColumn.CellEditEvent<AddressObservable,String>>() {
+//                    @Override
+//                    public void handle (TableColumn.CellEditEvent<AddressObservable,String> t) {
+//                        sqlAdapter.updataDatabaseFromTableView(databaseTableName ,"postal_town", String.valueOf(t.getNewValue()), String.valueOf(t.getOldValue() ));
+//
+//                        ( (AddressObservable) t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).setPostalTown( t.getNewValue() );
+//                    }
+//                }
+//        );
+//
+//        AddressDao addressDao = new AddressDao();
+//
+//        mainTable.setItems(addressDao.allAddressObservableList() );
+//        mainTable.getColumns().addAll(addressIdCol, streetNumberCol, streetNameCol,postalCodeCol,postalTownCol );
+//
+//       return mainTable;
+//
+//    }
 
-        TableColumn<AddressObservable,Integer> addressIdCol = new TableColumn("Address Id");
-        TableColumn streetNumberCol = new TableColumn("Street Number");
-        TableColumn streetNameCol = new TableColumn("Street Name");
-        TableColumn postalCodeCol = new TableColumn("Postal Code");
-        TableColumn postalTownCol = new TableColumn("Postal Town");
-
-        addressIdCol.setCellValueFactory(
-                new PropertyValueFactory<AddressObservable,Integer>("addressId")
-        );
-        addressIdCol.setCellFactory(TextFieldTableCell.forTableColumn(
-                new StringConverter<Integer>() {
-                    @Override
-                    public String toString(Integer object) {
-                        return object.toString();
-                    }
-
-                    @Override
-                    public Integer fromString(String string) {
-                        return Integer.parseInt(string);
-                    }
-                }
-        ));
-        addressIdCol.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<AddressObservable,Integer>>() {
-                    @Override
-                    public void handle (TableColumn.CellEditEvent<AddressObservable,Integer> t) {
-                        sqlAdapter.updataDatabaseFromTableView(databaseTableName ,"address_id", String.valueOf(t.getNewValue()), String.valueOf(t.getOldValue() ));
-
-                        ( (AddressObservable) t.getTableView() // The TableView control upon which this event occurred.
-                                .getItems()
-                                .get( // Returns the element at the specified position in this list.
-                                        t.getTablePosition() //The position upon which this event occurred.
-                                                .getRow() // The row that this TablePosition represents in the TableView.
-                                )
-                        ).setAddressId (t.getNewValue().intValue() ); // set new value input by user in the cell
-                    }
-                }
-        );
-
-        streetNumberCol.setCellValueFactory(
-                new PropertyValueFactory<AddressObservable,String>("streetNumber")
-        );
-        streetNumberCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        streetNumberCol.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<AddressObservable,String>>() {
-                    @Override
-                    public void handle (TableColumn.CellEditEvent<AddressObservable,String> t) {
-                        sqlAdapter.updataDatabaseFromTableView(databaseTableName ,"street_number", String.valueOf(t.getNewValue()), String.valueOf(t.getOldValue() ));
-
-                        ( (AddressObservable) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setStreetNumber( t.getNewValue() );
-                    }
-                }
-        );
-
-        streetNameCol.setCellValueFactory(
-                new PropertyValueFactory<AddressObservable,String>("streetName")
-        );
-        streetNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        streetNameCol.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<AddressObservable,String>>() {
-                    @Override
-                    public void handle (TableColumn.CellEditEvent<AddressObservable,String> t) {
-                        sqlAdapter.updataDatabaseFromTableView(databaseTableName ,"street_name", String.valueOf(t.getNewValue()), String.valueOf(t.getOldValue() ));
-
-                        ( (AddressObservable) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setStreetName( t.getNewValue() );
-                    }
-                }
-        );
-
-        postalCodeCol.setCellValueFactory(
-                new PropertyValueFactory<AddressObservable,String>("postalCode")
-        );
-        postalCodeCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        postalCodeCol.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<AddressObservable,String>>() {
-                    @Override
-                    public void handle (TableColumn.CellEditEvent<AddressObservable,String> t) {
-                        sqlAdapter.updataDatabaseFromTableView(databaseTableName ,"postal_code", String.valueOf(t.getNewValue()), String.valueOf(t.getOldValue() ));
-
-                        ( (AddressObservable) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setPostalCode( t.getNewValue() );
-                    }
-                }
-        );
-        postalTownCol.setCellValueFactory(
-                new PropertyValueFactory<AddressObservable,String>("postalTown")
-        );
-        postalTownCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        postalTownCol.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<AddressObservable,String>>() {
-                    @Override
-                    public void handle (TableColumn.CellEditEvent<AddressObservable,String> t) {
-                        sqlAdapter.updataDatabaseFromTableView(databaseTableName ,"postal_town", String.valueOf(t.getNewValue()), String.valueOf(t.getOldValue() ));
-
-                        ( (AddressObservable) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setPostalTown( t.getNewValue() );
-                    }
-                }
-        );
-
-        AddressDao addressDao = new AddressDao();
-
-        mainTable.setItems(addressDao.allAddressObservableList() );
-        mainTable.getColumns().addAll(addressIdCol, streetNumberCol, streetNameCol,postalCodeCol,postalTownCol );
-
-       return mainTable;
-
-    }
     public TableView getCategoryTableView () {
         String databaseTableName = "category";
         TableView categoryTable = new TableView();

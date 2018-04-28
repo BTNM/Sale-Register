@@ -11,8 +11,11 @@ import java.util.Arrays;
 
 public class ConnectionAdapter {
     private static String databaseName = "SaleRegister.db";
-    public static String sqlQueryPath = "C:\\Users\\Bao Thien\\Dropbox\\IdeaProjects\\src\\Oblig3\\oblig3v1_database.sql"; // hjemmepc Bao Thien, skolepc BaoThien
-    public static String datebasePath = "jdbc:sqlite:C:/Users/Bao Thien/Dropbox/IdeaProjects/src/Oblig3/"+databaseName;
+//    public static String sqlQueryPath = "C:\\Users\\BaoThien\\Dropbox\\IdeaProjects\\src\\Oblig3\\oblig3v1_database.sql"; // hjemmepc Bao Thien, skolepc BaoThien
+//    public static String datebasePath = "jdbc:sqlite:C:/Users/BaoThien/Dropbox/IdeaProjects/src/Oblig3/"+databaseName;
+    public static String sqlQueryPath = "src\\Oblig3\\oblig3v1_database.sql"; // hjemmepc Bao Thien, skolepc BaoThien
+    public static String datebasePath = "src/Oblig3/"+databaseName;
+    public static String datebasePathSqlite = "jdbc:sqlite:src/Oblig3/"+databaseName;
 
     private Connection connection;
 
@@ -181,6 +184,14 @@ public class ConnectionAdapter {
     }
 
     private ArrayList<String> readQueryFromFile(String path) {
+//        String current = null;
+//        try {
+//            current = new java.io.File( "." ).getCanonicalPath();
+//            System.out.println("Current dir:"+current);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
         ArrayList<String> arrayList = new ArrayList<>();
         BufferedReader br;
         StringBuilder sb = new StringBuilder();
@@ -211,7 +222,7 @@ public class ConnectionAdapter {
 //        String url = "jdbc:sqlite:C:/Users/Bao Thien/Dropbox/IdeaProjects/src/Oblig3/"+fileName;
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection(datebasePath);
+            conn = DriverManager.getConnection(datebasePathSqlite);
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());

@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class AddressDao {
     String getAddressQuery = "SELECT * FROM main.address WHERE address_id = ?";
@@ -30,8 +31,10 @@ public class AddressDao {
     }
 
 
-    public ObservableList<AddressObservable> allAddressObservableList() {
-        ObservableList<AddressObservable> list = FXCollections.observableArrayList();
+    public ArrayList<AddressObservable> allAddressObservableList() {
+//        ObservableList<AddressObservable> list = FXCollections.observableArrayList();
+        ArrayList<AddressObservable> list = new ArrayList<>();
+
         PreparedStatement statement = null;
         connectionAdapter.startConnect();
 

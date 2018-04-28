@@ -2,6 +2,8 @@ package Oblig3.Controllers;
 
 import Oblig3.DAOs.ConnectionAdapter;
 import Oblig3.DAOs.InvoiceDao;
+import Oblig3.DAOs.InvoiceItemsDao;
+import Oblig3.TableViewClass.InvoiceItemsObservable;
 import Oblig3.TableViewClass.InvoiceObservable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,6 +14,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseEvent;
 import javafx.util.StringConverter;
 
 import java.net.URL;
@@ -21,7 +24,9 @@ import java.util.ResourceBundle;
 public class invoiceController implements Initializable {
     ConnectionAdapter sqlAdapter = new ConnectionAdapter();
     InvoiceDao dao = new InvoiceDao();
+    InvoiceItemsDao daoII = new InvoiceItemsDao();
     String databaseTableName = "invoice";
+    String databaseIITableName = "invoice_items";
 
     @FXML TableView invoiceTable;
     @FXML TableColumn<InvoiceObservable, Integer> invoiceIdCol;
@@ -31,29 +36,126 @@ public class invoiceController implements Initializable {
     @FXML TextField invoiceIdInput;
     @FXML TextField customerInput;
     @FXML TextField datoInput;
-    @FXML Button addBtn;
-    @FXML Button deleteBtn;
+    @FXML Button addInvoiceBtn;
+    @FXML Button deleteInvoiceBtn;
 
-    ObservableList<InvoiceObservable> data = FXCollections.observableArrayList();
+    @FXML TableView invoiceItemsTable;
+    @FXML TableColumn<InvoiceItemsObservable, Integer> IIInvoiceCol;
+    @FXML TableColumn<InvoiceItemsObservable, Integer> IIProductCol;
+
+    @FXML TextField IIInvoiceInput;
+    @FXML TextField IIProductInput;
+    @FXML Button addInvoiceItemsBtn;
+    @FXML Button deleteInvoiceItemsBtn;
+
+    ObservableList<InvoiceObservable> invoiceData = FXCollections.observableArrayList();
+    ObservableList<InvoiceItemsObservable> invoiceItemsData = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        invoiceTable.setItems(data);
+        invoiceTable.setItems(invoiceData);
+        invoiceItemsTable.setItems(invoiceItemsData);
 
         fillTable(dao.allInvoiceObservableList() );
+        fillTableII(daoII.allInvoiceItemsObservableList() );
 
         invoiceTable.setEditable(true);
         setupInvoiceIdCol();
         setupCustomerCol();
         setupDatoCol();
 
-        addBtn.setOnAction(event -> addInvoice(invoiceIdInput.getText(), customerInput.getText(),datoInput.getText() ));
-        deleteBtn.setOnAction(event -> deleteCustomer());
+        invoiceItemsTable.setEditable(true);
+        setupIIInvoiceCol();
+        setupIIProductCol();
+
+        invoiceTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        invoiceItemsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+//        invoiceIdCol.setMaxWidth(1f * Integer.MAX_VALUE * 20);
+//        customerCol.setMaxWidth(1f * Integer.MAX_VALUE * 20);
+//        datoCol.setMaxWidth(1f * Integer.MAX_VALUE * 20);
+
+        addInvoiceBtn.setOnAction(event -> addInvoice(invoiceIdInput.getText(), customerInput.getText(),datoInput.getText() ));
+        deleteInvoiceBtn.setOnAction(event -> delete());
+
+        addInvoiceItemsBtn.setOnAction(event -> addInvoiceItems(IIInvoiceInput.getText(), IIProductInput.getText()) );
+        deleteInvoiceItemsBtn.setOnAction(event -> deleteII());
+    }
+
+    private void fillTableII(ArrayList<InvoiceItemsObservable> element) {
+        element.forEach(e -> invoiceItemsData.add(new InvoiceItemsObservable(e)) );
+    }
+
+    private void setupIIInvoiceCol () {
+        IIInvoiceCol.setCellFactory(TextFieldTableCell.forTableColumn(
+                new StringConverter<Integer>() {
+                    @Override
+                    public String toString(Integer object) {
+                        return object.toString();
+                    }
+
+                    @Override
+                    public Integer fromString(String string) {
+                        return Integer.parseInt(string);
+                    }
+                }
+        ));
+        IIInvoiceCol.setOnEditCommit( t -> {
+            sqlAdapter.updataDatabaseFromTableView(databaseIITableName, "invoice", String.valueOf(t.getNewValue()), String.valueOf(t.getOldValue()));
+
+            ((InvoiceItemsObservable) t.getTableView().getItems().get(
+                    t.getTablePosition().getRow())
+            ).setInvoiceId(t.getNewValue().intValue() );
+        });
+    }
+
+    private void setupIIProductCol () {
+        IIProductCol.setCellFactory(TextFieldTableCell.forTableColumn(
+                new StringConverter<Integer>() {
+                    @Override
+                    public String toString(Integer object) {
+                        return object.toString();
+                    }
+
+                    @Override
+                    public Integer fromString(String string) {
+                        return Integer.parseInt(string);
+                    }
+                }
+        ));
+        IIProductCol.setOnEditCommit( t -> {
+            sqlAdapter.updataDatabaseFromTableView(databaseIITableName, "product", String.valueOf(t.getNewValue()), String.valueOf(t.getOldValue()));
+
+            ((InvoiceItemsObservable) t.getTableView().getItems().get(
+                    t.getTablePosition().getRow())
+            ).setProductId(t.getNewValue().intValue() );
+        });
+    }
+
+    private void addInvoiceItems(String col1, String col2) {
+        sqlAdapter.insertIntoDatabase("invoice_items",col1,col2,"","","");
+
+        InvoiceItemsObservable e  = new InvoiceItemsObservable(Integer.valueOf(col1),Integer.valueOf(col2) );
+        // have to write a check so that the unique primary keys dont overlap in the database
+        invoiceItemsData.add(e);
+        IIInvoiceInput.clear();
+        IIProductInput.clear();
 
     }
 
+    private void deleteII() {
+        ObservableList<InvoiceItemsObservable> selected, all;
+        all = invoiceItemsTable.getItems();
+        selected = invoiceItemsTable.getSelectionModel().getSelectedItems();
+
+        // have to delete from database, for now it only removes from tableview
+        selected.forEach(all::remove);
+
+    }
+
+
+
     private void fillTable(ArrayList<InvoiceObservable> element) {
-        element.forEach(e -> data.add(new InvoiceObservable(e)) );
+        element.forEach(e -> invoiceData.add(new InvoiceObservable(e)) );
     }
 
     private void setupInvoiceIdCol () {
@@ -120,17 +222,14 @@ public class invoiceController implements Initializable {
 
         InvoiceObservable c  = new InvoiceObservable(Integer.valueOf(col1),Integer.valueOf(col2), col3);
         // have to write a check so that the unique primary keys dont overlap in the database
-        data.add(c);
+        invoiceData.add(c);
         invoiceIdInput.clear();
         customerInput.clear();
         datoInput.clear();
 
-
-//        allTables.addToCustomerObservableTable(c);
-
     }
 
-    private void deleteCustomer() {
+    private void delete() {
         ObservableList<InvoiceObservable> customerSelected, allCustomer;
         allCustomer = invoiceTable.getItems();
         customerSelected = invoiceTable.getSelectionModel().getSelectedItems();
@@ -138,8 +237,12 @@ public class invoiceController implements Initializable {
         // have to delete from database, for now it only removes from tableview
         customerSelected.forEach(allCustomer::remove);
 
-
     }
 
 
+    public void clickDetailInvoice(MouseEvent mouseEvent) {
+
+
+
+    }
 }

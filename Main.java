@@ -21,6 +21,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 
 public class Main extends Application {
     static ConnectionAdapter adapter = new ConnectionAdapter();
@@ -32,11 +33,20 @@ public class Main extends Application {
     // trenger bare å copy paste de virkende delene til tableview til de andre klassene, men får ikke koblet det til fxml så venter med å implementere de andre scenene
 
     public static void main(String[] args) {
-//        File file = new File(SqlAndQueryFromFile.datebasePath);
+//        File file = new File("src\\Oblig3\\SaleRegister.db");
         File file = new File(ConnectionAdapter.datebasePath);
-        if(!file.exists()) {
-            adapter.startUpFromSqlFile(ConnectionAdapter.sqlQueryPath);
-        }
+        System.out.println(file.exists());
+//        String current = null;
+//        try {
+//            current = new java.io.File( "." ).getCanonicalPath();
+//            System.out.println("Current dir:"+current);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+//        if(!file.exists()) {
+//            adapter.startUpFromSqlFile(ConnectionAdapter.sqlQueryPath);
+//        }
 
 
         // i hver scene kan lage filter methode/knapp etc som filtrerer eks all invoice til en kunde eller alle produktene til hver kategori
@@ -244,7 +254,7 @@ public class Main extends Application {
     public Scene getAddressScene () {
 
         BorderPane mainBp = new BorderPane();
-        mainBp.setCenter(allTables.getAddressTableView());
+//        mainBp.setCenter(allTables.getAddressTableView());
 
 
         Scene customerScene = new Scene(mainBp,400,600);

@@ -11,12 +11,12 @@ public class ProductObservable {
     private final SimpleFloatProperty price;
     private final SimpleIntegerProperty categoryId;
 
-    public ProductObservable(String produktId, String produktName, String description, String price, String categoryId) {
-        this.productId = new SimpleIntegerProperty(Integer.valueOf(produktId) );
-        this.productName = new SimpleStringProperty(produktName);
-        this.description = new SimpleStringProperty(description);
-        this.price = new SimpleFloatProperty(Float.valueOf(price) );
-        this.categoryId = new SimpleIntegerProperty(Integer.valueOf(categoryId) );
+    public ProductObservable(ProductObservable productObservable) {
+        this.productId = new SimpleIntegerProperty(productObservable.getProductId() );
+        this.productName = new SimpleStringProperty(productObservable.getProductName() );
+        this.description = new SimpleStringProperty(productObservable.getDescription() );
+        this.price = new SimpleFloatProperty(productObservable.getPrice() );
+        this.categoryId = new SimpleIntegerProperty(productObservable.getCategoryId() );
     }
 
     public ProductObservable(int produktId, String produktName, String description, float price, int categoryId) {
@@ -26,6 +26,8 @@ public class ProductObservable {
         this.price = new SimpleFloatProperty(price);
         this.categoryId = new SimpleIntegerProperty(categoryId);
     }
+
+
 
     public int getProductId() {
         return productId.get();

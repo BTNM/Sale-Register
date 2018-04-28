@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class InvoiceItemsDao {
     String getInvoiceItemsQuery = "SELECT * FROM main.invoice_items WHERE invoice = ?";
@@ -29,8 +30,9 @@ public class InvoiceItemsDao {
     }
 
 
-    public ObservableList<InvoiceItemsObservable> allInvoiceItemsObservableList() {
-        ObservableList<InvoiceItemsObservable> list = FXCollections.observableArrayList();
+    public ArrayList<InvoiceItemsObservable> allInvoiceItemsObservableList() {
+//        ObservableList<InvoiceItemsObservable> list = FXCollections.observableArrayList();
+        ArrayList<InvoiceItemsObservable> list = new ArrayList<>();
         PreparedStatement statement = null;
         connectionAdapter.startConnect();
 
