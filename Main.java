@@ -35,7 +35,8 @@ public class Main extends Application {
     public static void main(String[] args) {
 //        File file = new File("src\\Oblig3\\SaleRegister.db");
         File file = new File(ConnectionAdapter.datebasePath);
-        System.out.println(file.exists());
+
+//        System.out.println(file.exists());
 //        String current = null;
 //        try {
 //            current = new java.io.File( "." ).getCanonicalPath();
@@ -246,9 +247,6 @@ public class Main extends Application {
         customerSelected.forEach(allCustomer::remove);
 
     }
-
-
-
 
 
     public Scene getAddressScene () {

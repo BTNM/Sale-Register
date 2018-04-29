@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="mainPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Oblig3.Controllers.customerController">
@@ -119,4 +120,21 @@
          </padding>
       </GridPane>
    </bottom>
+   <right>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Filter">
+               <font>
+                  <Font name="Baskerville Old Face" size="16.0" />
+               </font>
+               <padding>
+                  <Insets bottom="5.0" left="10.0" top="5.0" />
+               </padding></Label>
+            <TextField fx:id="filterField">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </VBox.margin></TextField>
+         </children>
+      </VBox>
+   </right>
 </BorderPane>

@@ -101,9 +101,6 @@
             </padding>
         </GridPane>
     </bottom>
-   <right>
-      <VBox prefHeight="381.0" prefWidth="156.0" BorderPane.alignment="CENTER" />
-   </right>
    <center>
       <HBox prefHeight="100.0" prefWidth="200.0" spacing="15.0" BorderPane.alignment="CENTER">
          <children>
@@ -143,4 +140,7 @@
          </children>
       </HBox>
    </center>
+    <right>
+        <VBox prefHeight="381.0" prefWidth="150.0" BorderPane.alignment="CENTER" />
+    </right>
 </BorderPane>

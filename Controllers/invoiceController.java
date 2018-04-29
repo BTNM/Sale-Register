@@ -8,15 +8,20 @@ import Oblig3.TableViewClass.InvoiceObservable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.StringConverter;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -56,6 +61,8 @@ public class invoiceController implements Initializable {
         invoiceTable.setItems(invoiceData);
         invoiceItemsTable.setItems(invoiceItemsData);
 
+        openClick();
+
         fillTable(dao.allInvoiceObservableList() );
         fillTableII(daoII.allInvoiceItemsObservableList() );
 
@@ -76,9 +83,59 @@ public class invoiceController implements Initializable {
 
         addInvoiceBtn.setOnAction(event -> addInvoice(invoiceIdInput.getText(), customerInput.getText(),datoInput.getText() ));
         deleteInvoiceBtn.setOnAction(event -> delete());
-
         addInvoiceItemsBtn.setOnAction(event -> addInvoiceItems(IIInvoiceInput.getText(), IIProductInput.getText()) );
         deleteInvoiceItemsBtn.setOnAction(event -> deleteII());
+    }
+
+    public void clickDetailInvoice(MouseEvent mouseEvent) {
+//        if (mouseEvent.getClickCount() == 2) {
+//            System.out.println(invoiceTable.getSelectionModel().getSelectedItem());
+//        }
+
+        ObservableList<InvoiceObservable> customerSelected, allCustomer;
+        allCustomer = invoiceTable.getItems();
+        customerSelected = invoiceTable.getSelectionModel().getSelectedItems();
+
+        customerSelected.forEach(allCustomer::remove);
+
+
+//        invoiceTable.setRowFactory(it -> {
+//            TableRow<InvoiceObservable> row = new TableRow();
+//            row.setOnMouseClicked(event -> {
+//                if (event.getClickCount() == 2 && (! row.isEmpty() ) ) {
+//                    InvoiceObservable rowData = row.getItem();
+//                }
+//            });
+//        });
+//        return row;
+    }
+
+    private void openClick () {
+        invoiceTable.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) {
+                System.out.println(invoiceTable.getSelectionModel().getSelectedItem());
+            }
+        });
+    }
+
+    public void clickDetailInvoices(MouseEvent mouseEvent) {
+        String fxmlPath = "../FxmlFiles/invoiceDetails.fxml";
+        try {
+            Parent parent = FXMLLoader.load(getClass().getResource(fxmlPath));
+            Scene scene = new Scene(parent);
+            Stage window = new Stage();
+//            Stage window = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+            window.initModality(Modality.APPLICATION_MODAL); // blocks events from being delivered to other windows
+            window.initStyle(StageStyle.UTILITY);
+            window.setTitle("Invoice Details");
+
+            window.setScene(scene);
+            window.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     private void fillTableII(ArrayList<InvoiceItemsObservable> element) {
@@ -240,9 +297,5 @@ public class invoiceController implements Initializable {
     }
 
 
-    public void clickDetailInvoice(MouseEvent mouseEvent) {
 
-
-
-    }
 }

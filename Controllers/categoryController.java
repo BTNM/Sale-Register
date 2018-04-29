@@ -54,6 +54,8 @@ public class categoryController implements Initializable {
         setupCategoryIdCol();
         setupCategoryNameCol();
 
+        categoryTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
         addBtn.setOnAction(event -> addCategory(categoryIdInput.getText(),categoryNameInput.getText() ) );
         deleteBtn.setOnAction(event -> deleteCustomer());
 
