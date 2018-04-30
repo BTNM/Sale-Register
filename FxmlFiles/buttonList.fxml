@@ -12,7 +12,7 @@
         <Button fx:id="category" onAction="#categoryClicked" text="Categories" />
         <Button fx:id="invoice" onAction="#invoiceClicked" text="Invoice" />
         <Button fx:id="products" onAction="#productsClicked" text="Products" />
-        <Button fx:id="detailInvoice" text="Detailed Invoice Sample" />
+        <Button fx:id="charts" onAction="#chartsClicked" text="Charts" />
     </children>
    <padding>
       <Insets bottom="5.0" left="8.0" right="5.0" top="5.0" />

@@ -3,28 +3,38 @@ package Oblig3.TableViewClass;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class InvoiceProducts { // creates a data model for the product info in the invoice
-    private final SimpleStringProperty categoryId;
+public class InvoiceDetails { // creates a data model for the product info in the invoice
+    private final SimpleIntegerProperty categoryId;
+    private final SimpleStringProperty productName;
     private final SimpleStringProperty description;
     private final SimpleIntegerProperty quantity;
     private final SimpleIntegerProperty pricePerUnit;
     private final SimpleIntegerProperty sumQuantity;
 
 
-    public InvoiceProducts(String categoryId, String description, int quantity, int pricePerUnit, int sumQ) {
-        this.categoryId = new SimpleStringProperty(categoryId );
+    public InvoiceDetails(int categoryId, String productName, String description, int quantity, int pricePerUnit, int sumQ) {
+        this.categoryId = new SimpleIntegerProperty(categoryId );
+        this.productName = new SimpleStringProperty(productName);
         this.description = new SimpleStringProperty(description );
         this.quantity = new SimpleIntegerProperty(quantity );
         this.pricePerUnit = new SimpleIntegerProperty(pricePerUnit );
         this.sumQuantity = new SimpleIntegerProperty(sumQ );
     }
 
-    public String getCategoryId() {
+    public int getCategoryId() {
         return categoryId.get();
     }
 
-    public void setCategoryId(String categoryId) {
+    public void setCategoryId(int categoryId) {
         this.categoryId.set(categoryId);
+    }
+
+    public String getProductName() {
+        return productName.get();
+    }
+
+    public void setProductName(String productName) {
+        this.productName.set(productName);
     }
 
     public String getDescription() {

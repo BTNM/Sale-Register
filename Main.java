@@ -1,10 +1,11 @@
 package Oblig3;
 
+import Oblig3.Controllers.invoiceController;
 import Oblig3.DAOs.*;
 import Oblig3.SQLReadFiles.*;
 import Oblig3.TableViewClass.AllTableviews;
 import Oblig3.TableViewClass.CustomerObservable;
-import Oblig3.TableViewClass.InvoiceProducts;
+import Oblig3.TableViewClass.InvoiceDetails;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -21,7 +22,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.IOException;
 
 public class Main extends Application {
     static ConnectionAdapter adapter = new ConnectionAdapter();
@@ -35,6 +35,9 @@ public class Main extends Application {
     public static void main(String[] args) {
 //        File file = new File("src\\Oblig3\\SaleRegister.db");
         File file = new File(ConnectionAdapter.datebasePath);
+        if(!file.exists()) {
+            adapter.startUpFromSqlFile(ConnectionAdapter.sqlQueryPath);
+        }
 
 //        System.out.println(file.exists());
 //        String current = null;
@@ -45,9 +48,6 @@ public class Main extends Application {
 //            e.printStackTrace();
 //        }
 
-//        if(!file.exists()) {
-//            adapter.startUpFromSqlFile(ConnectionAdapter.sqlQueryPath);
-//        }
 
 
         // i hver scene kan lage filter methode/knapp etc som filtrerer eks all invoice til en kunde eller alle produktene til hver kategori
@@ -64,6 +64,7 @@ public class Main extends Application {
         Scene startScene = new Scene(root,800,600);
         primaryStage.setScene(startScene);
         primaryStage.setTitle("Sale Register System");
+
 
         // øvre del er fxml med user interaction, og nedre delen er individuelle scener med mesteparten av logikk og atferden i programmet. Der man kan endre info i tableview direkte i det grafiske grensesnittet og endringene blir sendt tilbake til databasen
         // klarte ikke å kombinere UI og logikken sammen, men de virker individuelt,
@@ -144,10 +145,10 @@ public class Main extends Application {
         sumOfQuantityInout.setPromptText("Billing Account");
 
         Button addBtn = new Button("Add");
-        addBtn.setOnAction(e -> addDetailedInvoice(cateIdInput.getText(),descInput.getText(),Integer.valueOf(quantityInput.getText()),Integer.valueOf(pericePerUnitInput.getText() ),Integer.valueOf(sumOfQuantityInout.getText()  )));
+//        addBtn.setOnAction(e -> addDetailedInvoice(cateIdInput.getText(),descInput.getText(),Integer.valueOf(quantityInput.getText()),Integer.valueOf(pericePerUnitInput.getText() ),Integer.valueOf(sumOfQuantityInout.getText()  )));
 
         Button deleteBtn = new Button("Delete");
-        deleteBtn.setOnAction(e -> deleteInvoiceProductsFromTable());
+//        deleteBtn.setOnAction(e -> deleteInvoiceProductsFromTable());
 
         HBox bottomLayout1 = new HBox();
         HBox bottomLayout2 = new HBox();
@@ -160,8 +161,8 @@ public class Main extends Application {
         bottomContainer.getChildren().addAll(bottomLayout1, bottomLayout2);
 
         BorderPane mainBp = new BorderPane();
-        mainBp.setTop(addInvoiceProductsToplayout() );
-        mainBp.setCenter(allTables.getInvoiceProductsMiddleTableView() );
+//        mainBp.setTop(addInvoiceProductsToplayout() );
+//        mainBp.setCenter(allTables.getInvoiceProductsMiddleTableView() );
         mainBp.setBottom(bottomContainer);
 
 
@@ -216,37 +217,37 @@ public class Main extends Application {
 //        return customerScene;
 //    }
 
-    private void addDetailedInvoice (String cId, String desc, int qty, int ppu, int sum) {
-        InvoiceProducts detailedInvoice = new InvoiceProducts(cId,desc,qty,ppu,sum);
-        allTables.addInvoiceProductObservableTable(detailedInvoice);
+//    private void addDetailedInvoice (String cId, String desc, int qty, int ppu, int sum) {
+//        InvoiceDetails detailedInvoice = new InvoiceDetails(cId,desc,qty,ppu,sum);
+//        allTables.addInvoiceProductObservableTable(detailedInvoice);
+//
+//    }
+//    private void deleteInvoiceProductsFromTable() {
+//        TableView mainTable = allTables.getMainTable();
+//        ObservableList<InvoiceDetails> invoiceSelected, allInvoices;
+//        allInvoices = mainTable.getItems();
+//        invoiceSelected = mainTable.getSelectionModel().getSelectedItems();
+//
+//        invoiceSelected.forEach(allInvoices::remove);
+//
+//    }
 
-    }
-    private void deleteInvoiceProductsFromTable() {
-        TableView mainTable = allTables.getMainTable();
-        ObservableList<InvoiceProducts> invoiceSelected, allInvoices;
-        allInvoices = mainTable.getItems();
-        invoiceSelected = mainTable.getSelectionModel().getSelectedItems();
+//    private void addCustomerFromTable(int cId, String cName,int add, String phone, String bAccount) {
+//        CustomerObservable c  = new CustomerObservable(cId,cName,add,phone,bAccount);
+//        adapter.insertCustomerIntoDatabase("customer",cId,cName,add, phone,bAccount);
+//        allTables.addToCustomerObservableTable(c);
+//
+//    }
 
-        invoiceSelected.forEach(allInvoices::remove);
-
-    }
-
-    private void addCustomerFromTable(int cId, String cName,int add, String phone, String bAccount) {
-        CustomerObservable c  = new CustomerObservable(cId,cName,add,phone,bAccount);
-        adapter.insertCustomerIntoDatabase("customer",cId,cName,add, phone,bAccount);
-        allTables.addToCustomerObservableTable(c);
-
-    }
-
-    private void deleteCustomerFromTable() {
-        TableView mainTable = allTables.getMainTable();
-        ObservableList<CustomerObservable> customerSelected, allCustomer;
-        allCustomer = mainTable.getItems();
-        customerSelected = mainTable.getSelectionModel().getSelectedItems();
-
-        customerSelected.forEach(allCustomer::remove);
-
-    }
+//    private void deleteCustomerFromTable() {
+//        TableView mainTable = allTables.getMainTable();
+//        ObservableList<CustomerObservable> customerSelected, allCustomer;
+//        allCustomer = mainTable.getItems();
+//        customerSelected = mainTable.getSelectionModel().getSelectedItems();
+//
+//        customerSelected.forEach(allCustomer::remove);
+//
+//    }
 
 
     public Scene getAddressScene () {
@@ -391,37 +392,37 @@ public class Main extends Application {
 //        TableColumn priceCol = new TableColumn("Price per unit");
 //        TableColumn sumQuanityCol = new TableColumn("Sum of quantity");
 //
-//        //associate data with the table columns, through the properties defined for each data element. referencing to the methods of the InvoiceProducts
+//        //associate data with the table columns, through the properties defined for each data element. referencing to the methods of the InvoiceDetails
 //        categoryCol.setCellValueFactory(
-//                new PropertyValueFactory<InvoiceProducts,String>("categoryId")
+//                new PropertyValueFactory<InvoiceDetails,String>("categoryId")
 //        );
 //        categoryCol.setCellFactory(TextFieldTableCell.forTableColumn());
 //        categoryCol.setOnEditCommit(
-//                new EventHandler<TableColumn.CellEditEvent<InvoiceProducts,String>>() {
+//                new EventHandler<TableColumn.CellEditEvent<InvoiceDetails,String>>() {
 //                    @Override
-//                    public void handle (TableColumn.CellEditEvent<InvoiceProducts,String> t) {
-//                        ( (InvoiceProducts) t.getTableView().getItems().get(
+//                    public void handle (TableColumn.CellEditEvent<InvoiceDetails,String> t) {
+//                        ( (InvoiceDetails) t.getTableView().getItems().get(
 //                                t.getTablePosition().getRow())
 //                        ).setCategoryId( t.getNewValue() );
 //                    }
 //                }
 //        );
 //        descriptionCol.setCellValueFactory(
-//                new PropertyValueFactory<InvoiceProducts,String>("description")
+//                new PropertyValueFactory<InvoiceDetails,String>("description")
 //        );
 //        descriptionCol.setCellFactory(TextFieldTableCell.forTableColumn());
 //        descriptionCol.setOnEditCommit(
-//                new EventHandler<TableColumn.CellEditEvent<InvoiceProducts,String>>() {
+//                new EventHandler<TableColumn.CellEditEvent<InvoiceDetails,String>>() {
 //                    @Override
-//                    public void handle (TableColumn.CellEditEvent<InvoiceProducts,String> t) {
-//                        ( (InvoiceProducts) t.getTableView().getItems().get(
+//                    public void handle (TableColumn.CellEditEvent<InvoiceDetails,String> t) {
+//                        ( (InvoiceDetails) t.getTableView().getItems().get(
 //                                t.getTablePosition().getRow())
 //                        ).setCategoryId( t.getNewValue() );
 //                    }
 //                }
 //        );
 //        quantityCol.setCellValueFactory(
-//                new PropertyValueFactory<InvoiceProducts,Integer>("quantity")
+//                new PropertyValueFactory<InvoiceDetails,Integer>("quantity")
 //        );
 //        quantityCol.setCellFactory(TextFieldTableCell.forTableColumn(
 //                new StringConverter<Integer>() {
@@ -437,17 +438,17 @@ public class Main extends Application {
 //                }
 //        ));
 //        quantityCol.setOnEditCommit(
-//                new EventHandler<TableColumn.CellEditEvent<InvoiceProducts,Integer>>() {
+//                new EventHandler<TableColumn.CellEditEvent<InvoiceDetails,Integer>>() {
 //                    @Override
-//                    public void handle (TableColumn.CellEditEvent<InvoiceProducts,Integer> t) {
-//                        ( (InvoiceProducts) t.getTableView().getItems().get(
+//                    public void handle (TableColumn.CellEditEvent<InvoiceDetails,Integer> t) {
+//                        ( (InvoiceDetails) t.getTableView().getItems().get(
 //                                t.getTablePosition().getRow())
 //                        ).setQuantity(t.getNewValue().intValue()  );
 //                    }
 //                }
 //        );
 //        priceCol.setCellValueFactory(
-//                new PropertyValueFactory<InvoiceProducts,Integer>("pricePerUnit")
+//                new PropertyValueFactory<InvoiceDetails,Integer>("pricePerUnit")
 //        );
 //
 //        priceCol.setCellFactory(TextFieldTableCell.forTableColumn(
@@ -464,10 +465,10 @@ public class Main extends Application {
 //                }
 //        ));
 //        priceCol.setOnEditCommit(
-//                new EventHandler<TableColumn.CellEditEvent<InvoiceProducts,Integer>>() {
+//                new EventHandler<TableColumn.CellEditEvent<InvoiceDetails,Integer>>() {
 //                    @Override
-//                    public void handle (TableColumn.CellEditEvent<InvoiceProducts,Integer> t) {
-//                        ( (InvoiceProducts) t.getTableView().getItems().get(
+//                    public void handle (TableColumn.CellEditEvent<InvoiceDetails,Integer> t) {
+//                        ( (InvoiceDetails) t.getTableView().getItems().get(
 //                                t.getTablePosition().getRow())
 //                        ).setPricePerUnit(t.getNewValue().intValue()  );
 //                    }
@@ -476,7 +477,7 @@ public class Main extends Application {
 //
 //        sumQuanityCol.setMaxWidth(100);
 //        sumQuanityCol.setCellValueFactory(
-//                new PropertyValueFactory<InvoiceProducts,Integer>("sumQuantity")
+//                new PropertyValueFactory<InvoiceDetails,Integer>("sumQuantity")
 //        );
 //        sumQuanityCol.setCellFactory(TextFieldTableCell.forTableColumn(
 //                new StringConverter<Integer>() {
@@ -492,10 +493,10 @@ public class Main extends Application {
 //                }
 //        ));
 //        sumQuanityCol.setOnEditCommit(
-//                new EventHandler<TableColumn.CellEditEvent<InvoiceProducts,Integer>>() {
+//                new EventHandler<TableColumn.CellEditEvent<InvoiceDetails,Integer>>() {
 //                    @Override
-//                    public void handle (TableColumn.CellEditEvent<InvoiceProducts,Integer> t) {
-//                        ( (InvoiceProducts) t.getTableView().getItems().get(
+//                    public void handle (TableColumn.CellEditEvent<InvoiceDetails,Integer> t) {
+//                        ( (InvoiceDetails) t.getTableView().getItems().get(
 //                                t.getTablePosition().getRow())
 //                        ).setSumQuantity(t.getNewValue().intValue()  );
 //                    }
@@ -519,10 +520,10 @@ public class Main extends Application {
 //        return table;
 //    }
 //
-//    public ObservableList<InvoiceProducts> getInvoiceProductObservableTable () {
-//        ObservableList<InvoiceProducts> table = FXCollections.observableArrayList(
-//            new InvoiceProducts("test cate","test desc", 3, 5, 15),
-//            new InvoiceProducts("test cate","test desc", 5, 5, 25)
+//    public ObservableList<InvoiceDetails> getInvoiceProductObservableTable () {
+//        ObservableList<InvoiceDetails> table = FXCollections.observableArrayList(
+//            new InvoiceDetails("test cate","test desc", 3, 5, 15),
+//            new InvoiceDetails("test cate","test desc", 5, 5, 25)
 //
 //        );
 //
@@ -531,7 +532,7 @@ public class Main extends Application {
 //    }
 
 
-//    public InvoiceProducts getSqlData () {
+//    public InvoiceDetails getSqlData () {
 //        Customer customer = readSql.getCustomerById(1);
 //        Category category = readSql.getCategoryById(1);
 //        Product product = readSql.getProductById(1);
@@ -540,95 +541,95 @@ public class Main extends Application {
 //
 //
 //
-////        return new InvoiceProducts();
+////        return new InvoiceDetails();
 //    }
 
-    public GridPane addInvoiceProductsToplayout() {
-//        Customer customer = readSql.getCustomerById(1);
-//        Address address = readSql.getAddressById(customer.getAddress()); // 1
-//        Invoice invoice = readSql.getInvoiceById(customer.getCustomer_id());
-//        Product product = readSql.getProductById(customer.getAddress());
-
-        CustomerDAO customerDAO = new CustomerDAO();
-        AddressDao addressDao = new AddressDao();
-        InvoiceDao invoiceDao = new InvoiceDao();
-        ProductDao productDao = new ProductDao();
-
-        Customer customer = customerDAO.getCustomerById(1);
-        Address address = addressDao.getAddressById(customer.getCustomer_id() );
-
-
-        VBox customerInfo = new VBox();
-        customerInfo.setSpacing(5); // gap between nodes
-
-        Label customerName = new Label(customer.getCustomer_name());
-
-        Label customerStreet = new Label(address.getStreet_name()+ " " + address.getStreet_number() );
-        Label customerPostal = new Label(address.getPostal_code()+ " " + address.getPostal_town() );
-
-        Label phoneNumber = new Label(customer.getPhone_number());
-        Label billingAccount = new Label(customer.getBilling_account());
-
-        customerInfo.getChildren().addAll(customerName, customerStreet, customerPostal, phoneNumber, billingAccount);
-
-
-        Invoice invoice = invoiceDao.getInvoiceById(customer.getCustomer_id() );
-
-        VBox fakturaInfo = new VBox();
-        fakturaInfo.setSpacing(5);
-
-//        fakturaInfo.setAlignment(Pos.TOP_RIGHT);
-
-//        String.format("%-5s %-5s","CustomerId: ", invoice.getCustomer());
-
-//        Label customerId = new Label(printLeftAdjusted("CustomerId: ", String .valueOf(invoice.getCustomer()) ));
-//        Label invoiceId = new Label(printLeftAdjusted("InvoiceId: ",String.valueOf(invoice.getInvoice_id()) ));
-//        Label invoiceDate = new Label(printLeftAdjusted("InvoiceDate: ",invoice.getDato() ));
+//    public GridPane addInvoiceProductsToplayout() {
+////        Customer customer = readSql.getCustomerById(1);
+////        Address address = readSql.getAddressById(customer.getAddress()); // 1
+////        Invoice invoice = readSql.getInvoiceById(customer.getCustomer_id());
+////        Product product = readSql.getProductById(customer.getAddress());
 //
-//        fakturaInfo.getChildren().addAll(customerId, invoiceId, invoiceDate);
-
-        Label invoiceTitle = new Label("Invoice/Faktura");
-        invoiceTitle.setFont(Font.font("Times New Roman",FontWeight.BOLD,14));
-
-        HBox row1 = new HBox();
-        Label customerIdLabel = new Label("CustomerId: ");
-        Label customerIdValue = new Label(String.valueOf(invoice.getCustomer() ));
-        row1.getChildren().addAll(customerIdLabel, customerIdValue);
-//        customerIdLabel.setAlignment(Pos.TOP_LEFT);
-//        customerIdValue.setAlignment();
-        row1.setAlignment(Pos.TOP_LEFT);
-
-        HBox row2 = new HBox();
-        Label invoiceIdLabel = new Label("InvoiceId: ");
-        Label invoiceIdValue = new Label(String.valueOf(invoice.getInvoice_id()) );
-        row2.getChildren().addAll(invoiceIdLabel, invoiceIdValue);
-        row2.setAlignment(Pos.TOP_LEFT);
-
-        HBox row3 = new HBox();
-        Label invoiceDateLabel = new Label("InvoiceDate: ");
-        Label invoiceDateValue = new Label(invoice.getDato() );
-        row3.getChildren().addAll(invoiceDateLabel, invoiceDateValue);
-        row3.setAlignment(Pos.TOP_LEFT);
-
-        fakturaInfo.getChildren().addAll(invoiceTitle, row1,row2, row3);
-
-        Product product = productDao.getProductById(customer.getAddress() );
-
-        //category_id, description, quantity, price per unit, sum of quantity
-//        String.format("%s %s %s %s %s", product.getCategory(), product.getDescription(), "0", product.getPrice(),"36" );
-//        Label productDescription = new Label();
-
-
-        GridPane topGridLayout = new GridPane();
-        topGridLayout.setHgap(10);
-        topGridLayout.setVgap(10);
-        topGridLayout.setPadding(new Insets(4)); // padding outer layer around the layout
-
-        topGridLayout.add(customerInfo,0,0);
-        topGridLayout.add(fakturaInfo,14,0);
-
-        return topGridLayout;
-    }
+//        CustomerDAO customerDAO = new CustomerDAO();
+//        AddressDao addressDao = new AddressDao();
+//        InvoiceDao invoiceDao = new InvoiceDao();
+//        ProductDao productDao = new ProductDao();
+//
+//        Customer customer = customerDAO.getCustomerById(1);
+//        Address address = addressDao.getAddressById(customer.getCustomer_id() );
+//
+//
+//        VBox customerInfo = new VBox();
+//        customerInfo.setSpacing(5); // gap between nodes
+//
+//        Label customerName = new Label(customer.getCustomer_name());
+//
+//        Label customerStreet = new Label(address.getStreet_name()+ " " + address.getStreet_number() );
+//        Label customerPostal = new Label(address.getPostal_code()+ " " + address.getPostal_town() );
+//
+//        Label phoneNumber = new Label(customer.getPhone_number());
+//        Label billingAccount = new Label(customer.getBilling_account());
+//
+//        customerInfo.getChildren().addAll(customerName, customerStreet, customerPostal, phoneNumber, billingAccount);
+//
+//
+//        Invoice invoice = invoiceDao.getInvoiceById(customer.getCustomer_id() );
+//
+//        VBox fakturaInfo = new VBox();
+//        fakturaInfo.setSpacing(5);
+//
+////        fakturaInfo.setAlignment(Pos.TOP_RIGHT);
+//
+////        String.format("%-5s %-5s","CustomerId: ", invoice.getCustomer());
+//
+////        Label customerId = new Label(printLeftAdjusted("CustomerId: ", String .valueOf(invoice.getCustomer()) ));
+////        Label invoiceId = new Label(printLeftAdjusted("InvoiceId: ",String.valueOf(invoice.getInvoice_id()) ));
+////        Label invoiceDate = new Label(printLeftAdjusted("InvoiceDate: ",invoice.getDato() ));
+////
+////        fakturaInfo.getChildren().addAll(customerId, invoiceId, invoiceDate);
+//
+//        Label invoiceTitle = new Label("Invoice/Faktura");
+//        invoiceTitle.setFont(Font.font("Times New Roman",FontWeight.BOLD,14));
+//
+//        HBox row1 = new HBox();
+//        Label customerIdLabel = new Label("CustomerId: ");
+//        Label customerIdValue = new Label(String.valueOf(invoice.getCustomer() ));
+//        row1.getChildren().addAll(customerIdLabel, customerIdValue);
+////        customerIdLabel.setAlignment(Pos.TOP_LEFT);
+////        customerIdValue.setAlignment();
+//        row1.setAlignment(Pos.TOP_LEFT);
+//
+//        HBox row2 = new HBox();
+//        Label invoiceIdLabel = new Label("InvoiceId: ");
+//        Label invoiceIdValue = new Label(String.valueOf(invoice.getInvoice_id()) );
+//        row2.getChildren().addAll(invoiceIdLabel, invoiceIdValue);
+//        row2.setAlignment(Pos.TOP_LEFT);
+//
+//        HBox row3 = new HBox();
+//        Label invoiceDateLabel = new Label("InvoiceDate: ");
+//        Label invoiceDateValue = new Label(invoice.getDato() );
+//        row3.getChildren().addAll(invoiceDateLabel, invoiceDateValue);
+//        row3.setAlignment(Pos.TOP_LEFT);
+//
+//        fakturaInfo.getChildren().addAll(invoiceTitle, row1,row2, row3);
+//
+//        Product product = productDao.getProductById(customer.getAddress() );
+//
+//        //category_id, description, quantity, price per unit, sum of quantity
+////        String.format("%s %s %s %s %s", product.getCategory(), product.getDescription(), "0", product.getPrice(),"36" );
+////        Label productDescription = new Label();
+//
+//
+//        GridPane topGridLayout = new GridPane();
+//        topGridLayout.setHgap(10);
+//        topGridLayout.setVgap(10);
+//        topGridLayout.setPadding(new Insets(4)); // padding outer layer around the layout
+//
+//        topGridLayout.add(customerInfo,0,0);
+//        topGridLayout.add(fakturaInfo,14,0);
+//
+//        return topGridLayout;
+//    }
 
     //    public String printLeftAdjusted(String name, String actual) {
 //        int line = 25;

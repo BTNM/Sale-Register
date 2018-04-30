@@ -62,4 +62,10 @@ public class buttonListController  {
     public void productsClicked(ActionEvent event) {
         changeScene("../FxmlFiles/products.fxml", event);
     }
+
+    public void chartsClicked(ActionEvent event) {
+        changeScene("../FxmlFiles/charts.fxml",event);
+
+    }
+
 }

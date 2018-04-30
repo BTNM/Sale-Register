@@ -132,21 +132,6 @@ public class ConnectionAdapter {
 
     }
 
-    public void insertAddress () {
-
-    }
-    public void insertCategory () {
-
-    }
-    public void insertInvoice () {
-
-    }
-    public void insertInvoiceItems () {
-
-    }
-    public void insertProduct () {
-
-    }
 
 //    public void deleteFromDatabase(String tableName) {
 //        try (Connection conn = this.createConnection();

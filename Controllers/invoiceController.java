@@ -111,32 +111,71 @@ public class invoiceController implements Initializable {
     }
 
     private void openClick () {
+        String fxmlPath = "../FxmlFiles/invoiceDetails.fxml";
+
+//        ObservableList<InvoiceObservable> customerSelected, allCustomer;
+//        allCustomer = invoiceTable.getItems();
+//        customerSelected = invoiceTable.getSelectionModel().getSelectedItems();
+//        customerSelected.forEach(allCustomer::remove);
+
+//        TablePosition pos = (TablePosition) invoiceTable.getSelectionModel().getSelectedCells().get(0);
+//        int row = pos.getRow();
+////        InvoiceObservable item = (InvoiceObservable) invoiceTable.getItems().get(row);
+//        TableColumn col = pos.getTableColumn();
+//        String t = (String) col.getCellObservableValue(row).getValue();
+//        System.out.println("test cell:"+t);
+
         invoiceTable.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
-                System.out.println(invoiceTable.getSelectionModel().getSelectedItem());
+
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../FxmlFiles/invoiceDetails.fxml"));
+//                    loader.setController(new invoiceDetailsController(5,customerSelected ) );
+                    Parent parent = loader.load();
+                    invoiceDetailsController controller = loader.getController();
+                    controller.setId(3333);
+//                    cont.setCellID("5555");
+
+                    InvoiceObservable selectedRow = (InvoiceObservable) invoiceTable.getSelectionModel().getSelectedItem();
+                    System.out.println("customer id: "+selectedRow.getCustomerId()+" invoiceId : "+selectedRow.getInvoiceId()+ selectedRow.getDato() );
+
+                    Scene scene = new Scene(parent);
+                    Stage window = new Stage();
+//            Stage window = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+                    window.initModality(Modality.APPLICATION_MODAL); // blocks events from being delivered to other windows
+                    window.initStyle(StageStyle.UTILITY);
+                    window.setTitle("Invoice Details");
+
+                    window.setScene(scene);
+                    window.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
 
-    public void clickDetailInvoices(MouseEvent mouseEvent) {
-        String fxmlPath = "../FxmlFiles/invoiceDetails.fxml";
-        try {
-            Parent parent = FXMLLoader.load(getClass().getResource(fxmlPath));
-            Scene scene = new Scene(parent);
-            Stage window = new Stage();
-//            Stage window = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
-            window.initModality(Modality.APPLICATION_MODAL); // blocks events from being delivered to other windows
-            window.initStyle(StageStyle.UTILITY);
-            window.setTitle("Invoice Details");
-
-            window.setScene(scene);
-            window.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-    }
+//    public void clickDetailInvoices(MouseEvent mouseEvent) {
+//        String fxmlPath = "../FxmlFiles/invoiceDetails.fxml";
+//        try {
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("../FxmlFiles/invoiceDetails.fxml"));
+////            loader.setController(new invoiceDetailsController(5) );
+//
+//            Parent parent = loader.load();
+//            Scene scene = new Scene(parent);
+//            Stage window = new Stage();
+////            Stage window = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+//            window.initModality(Modality.APPLICATION_MODAL); // blocks events from being delivered to other windows
+//            window.initStyle(StageStyle.UTILITY);
+//            window.setTitle("Invoice Details");
+//
+//            window.setScene(scene);
+//            window.show();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 
     private void fillTableII(ArrayList<InvoiceItemsObservable> element) {
         element.forEach(e -> invoiceItemsData.add(new InvoiceItemsObservable(e)) );

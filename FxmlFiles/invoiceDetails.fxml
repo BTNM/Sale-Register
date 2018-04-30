@@ -1,24 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-
-<BorderPane prefHeight="800.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Oblig3.Controllers.invoiceDetails">
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<BorderPane prefHeight="800.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Oblig3.Controllers.invoiceDetailsController">
    <top>
-      <GridPane BorderPane.alignment="CENTER">
+      <GridPane prefHeight="122.0" prefWidth="500.0" BorderPane.alignment="CENTER">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="162.0" minWidth="10.0" prefWidth="156.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="182.0" minWidth="10.0" prefWidth="166.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="117.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="87.0" minWidth="10.0" prefWidth="62.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
         </rowConstraints>
+         <children>
+            <Label fx:id="customerNameLabel" text="customerName" />
+            <Label fx:id="customerStreetLabel" text="customerStreet" GridPane.rowIndex="1" />
+            <Label fx:id="customerPostalLabel" text="customerPostal" GridPane.rowIndex="2" />
+            <Label fx:id="phoneNumberLabel" text="phoneNumber" GridPane.rowIndex="3" />
+            <Label fx:id="billingAccountLabel" text="billingAccount" GridPane.rowIndex="4" />
+            <Label prefWidth="119.0" text="Invoice/Faktura" GridPane.columnIndex="2">
+               <font>
+                  <Font name="Times New Roman Bold" size="16.0" />
+               </font></Label>
+            <Label fx:id="customerIdLabel" text="CustomerId" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Label fx:id="invoiceIdLabel" text="InvoiceId" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Label fx:id="invoiceDateLabel" text="InvoiceDate" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <Label text="Label" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Label text="Label" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <Label text="Label" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+         </children>
+         <BorderPane.margin>
+            <Insets left="10.0" right="10.0" />
+         </BorderPane.margin>
       </GridPane>
    </top>
+   <center>
+       <TableView fx:id="table" prefHeight="200.0" prefWidth="356.0">
+           <columns>
+               <TableColumn fx:id="categoryCol" prefWidth="75.0" text="Category">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="categoryId" />
+                   </cellValueFactory>
+               </TableColumn>
+               <TableColumn fx:id="descriptionCol" prefWidth="100.0" text="Description">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="description" />
+                   </cellValueFactory>
+               </TableColumn>
+               <TableColumn fx:id="quantityCol" prefWidth="100.0" text="Quantity">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="quantity" />
+                   </cellValueFactory>
+               </TableColumn>
+               <TableColumn fx:id="priceCol" prefWidth="100.0" text="Price per unit">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="pricePerUnit" />
+                   </cellValueFactory>
+               </TableColumn>
+               <TableColumn fx:id="sumQuantityCol" prefWidth="100.0" text="Sum of quantity">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="sumQuantity" />
+                   </cellValueFactory>
+               </TableColumn>
+           </columns>
+       </TableView>
+   </center>
 
 </BorderPane>

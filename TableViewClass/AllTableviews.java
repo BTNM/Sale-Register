@@ -1,8 +1,6 @@
 package Oblig3.TableViewClass;
 
-import Oblig3.DAOs.AddressDao;
 import Oblig3.DAOs.ConnectionAdapter;
-import Oblig3.DAOs.CustomerDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -10,7 +8,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 
@@ -143,19 +140,20 @@ public class AllTableviews {
 //
 //    }
 
-    public TableView getCategoryTableView () {
-        String databaseTableName = "category";
-        TableView categoryTable = new TableView();
-        categoryTable.setEditable(true);
+//    public TableView getCategoryTableView () {
+//        String databaseTableName = "category";
+//        TableView categoryTable = new TableView();
+//        categoryTable.setEditable(true);
+//
+//        TableColumn<CustomerObservable,Integer> customerIdCol = new TableColumn("Customer Id");
+//        TableColumn customerNameCol = new TableColumn("Customer Name");
+//        TableColumn<CustomerObservable,Integer>  addressCol = new TableColumn("Address");
+//        TableColumn phoneCol = new TableColumn("Phone Nummer");
+//        TableColumn billingAccountCol = new TableColumn("Billing Account");
+//
+//        return categoryTable;
+//    }
 
-        TableColumn<CustomerObservable,Integer> customerIdCol = new TableColumn("Customer Id");
-        TableColumn customerNameCol = new TableColumn("Customer Name");
-        TableColumn<CustomerObservable,Integer>  addressCol = new TableColumn("Address");
-        TableColumn phoneCol = new TableColumn("Phone Nummer");
-        TableColumn billingAccountCol = new TableColumn("Billing Account");
-
-        return categoryTable;
-    }
 //
 //    public TableView getCustomerTableView () {
 //        String databaseTableName = "customer";
@@ -291,208 +289,208 @@ public class AllTableviews {
 //        return mainTable;
 //    }
 
-    public TableView getInvoiceTableView () {
-        String databaseTableName = "invoice";
-        TableView invoiceTable = new TableView();
-        invoiceTable.setEditable(true);
+//    public TableView getInvoiceTableView () {
+//        String databaseTableName = "invoice";
+//        TableView invoiceTable = new TableView();
+//        invoiceTable.setEditable(true);
+//
+//        TableColumn<CustomerObservable,Integer> customerIdCol = new TableColumn("Customer Id");
+//        TableColumn customerNameCol = new TableColumn("Customer Name");
+//        TableColumn<CustomerObservable,Integer>  addressCol = new TableColumn("Address");
+//        TableColumn phoneCol = new TableColumn("Phone Nummer");
+//        TableColumn billingAccountCol = new TableColumn("Billing Account");
+//
+//        return invoiceTable;
+//    }
+//
+//    public TableView getInvoiceItemsTableView () {
+//        String databaseTableName = "invoice_items";
+//        TableView invoiceItemsTable = new TableView();
+//        invoiceItemsTable.setEditable(true);
+//
+//        TableColumn<CustomerObservable,Integer> customerIdCol = new TableColumn("Customer Id");
+//        TableColumn customerNameCol = new TableColumn("Customer Name");
+//        TableColumn<CustomerObservable,Integer>  addressCol = new TableColumn("Address");
+//        TableColumn phoneCol = new TableColumn("Phone Nummer");
+//        TableColumn billingAccountCol = new TableColumn("Billing Account");
+//
+//        return invoiceItemsTable;
+//    }
+//
+//    public TableView getProductTableView () {
+//        String databaseTableName = "product";
+//        TableView productTable = new TableView();
+//        productTable.setEditable(true);
+//
+//        TableColumn<CustomerObservable,Integer> customerIdCol = new TableColumn("Customer Id");
+//        TableColumn customerNameCol = new TableColumn("Customer Name");
+//        TableColumn<CustomerObservable,Integer>  addressCol = new TableColumn("Address");
+//        TableColumn phoneCol = new TableColumn("Phone Nummer");
+//        TableColumn billingAccountCol = new TableColumn("Billing Account");
+//
+//        return productTable;
+//    }
 
-        TableColumn<CustomerObservable,Integer> customerIdCol = new TableColumn("Customer Id");
-        TableColumn customerNameCol = new TableColumn("Customer Name");
-        TableColumn<CustomerObservable,Integer>  addressCol = new TableColumn("Address");
-        TableColumn phoneCol = new TableColumn("Phone Nummer");
-        TableColumn billingAccountCol = new TableColumn("Billing Account");
-
-        return invoiceTable;
-    }
-
-    public TableView getInvoiceItemsTableView () {
-        String databaseTableName = "invoice_items";
-        TableView invoiceItemsTable = new TableView();
-        invoiceItemsTable.setEditable(true);
-
-        TableColumn<CustomerObservable,Integer> customerIdCol = new TableColumn("Customer Id");
-        TableColumn customerNameCol = new TableColumn("Customer Name");
-        TableColumn<CustomerObservable,Integer>  addressCol = new TableColumn("Address");
-        TableColumn phoneCol = new TableColumn("Phone Nummer");
-        TableColumn billingAccountCol = new TableColumn("Billing Account");
-
-        return invoiceItemsTable;
-    }
-
-    public TableView getProductTableView () {
-        String databaseTableName = "product";
-        TableView productTable = new TableView();
-        productTable.setEditable(true);
-
-        TableColumn<CustomerObservable,Integer> customerIdCol = new TableColumn("Customer Id");
-        TableColumn customerNameCol = new TableColumn("Customer Name");
-        TableColumn<CustomerObservable,Integer>  addressCol = new TableColumn("Address");
-        TableColumn phoneCol = new TableColumn("Phone Nummer");
-        TableColumn billingAccountCol = new TableColumn("Billing Account");
-
-        return productTable;
-    }
-
-
-    public TableView getInvoiceProductsMiddleTableView() {
-        mainTable = new TableView();
-        mainTable.setEditable(true);
-
-        // table col names for the tableview
-        TableColumn categoryCol = new TableColumn("Category");
-        TableColumn descriptionCol = new TableColumn("Description");
-        TableColumn<InvoiceProducts,Integer> quantityCol = new TableColumn("Quantity");
-        TableColumn<InvoiceProducts,Integer> priceCol = new TableColumn("Price per unit");
-        TableColumn<InvoiceProducts,Integer> sumQuanityCol = new TableColumn("Sum of quantity");
-
-        //associate data with the table columns, through the properties defined for each data element. referencing to the methods of the InvoiceProducts
-        categoryCol.setCellValueFactory(
-                new PropertyValueFactory<InvoiceProducts,String>("categoryId")
-        );
-        categoryCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        categoryCol.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<InvoiceProducts,String>>() {
-                    @Override
-                    public void handle (TableColumn.CellEditEvent<InvoiceProducts,String> t) {
-                        ( (InvoiceProducts) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setCategoryId( t.getNewValue() );
-                    }
-                }
-        );
-        descriptionCol.setCellValueFactory(
-                new PropertyValueFactory<InvoiceProducts,String>("description")
-        );
-        descriptionCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        descriptionCol.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<InvoiceProducts,String>>() {
-                    @Override
-                    public void handle (TableColumn.CellEditEvent<InvoiceProducts,String> t) {
-                        ( (InvoiceProducts) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setCategoryId( t.getNewValue() );
-                    }
-                }
-        );
-        quantityCol.setCellValueFactory(
-                new PropertyValueFactory<InvoiceProducts,Integer>("quantity")
-        );
-        quantityCol.setCellFactory(TextFieldTableCell.forTableColumn(
-                new StringConverter<Integer>() {
-                    @Override
-                    public String toString(Integer object) {
-                        return object.toString();
-                    }
-
-                    @Override
-                    public Integer fromString(String string) {
-                        return Integer.parseInt(string);
-                    }
-                }
-        ));
-        quantityCol.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<InvoiceProducts,Integer>>() {
-                    @Override
-                    public void handle (TableColumn.CellEditEvent<InvoiceProducts,Integer> t) {
-                        ( (InvoiceProducts) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setQuantity(t.getNewValue().intValue()  );
-                    }
-                }
-        );
-        priceCol.setCellValueFactory(
-                new PropertyValueFactory<InvoiceProducts,Integer>("pricePerUnit")
-        );
-
-        priceCol.setCellFactory(TextFieldTableCell.forTableColumn(
-                new StringConverter<Integer>() {
-                    @Override
-                    public String toString(Integer object) {
-                        return object.toString();
-                    }
-
-                    @Override
-                    public Integer fromString(String string) {
-                        return Integer.parseInt(string);
-                    }
-                }
-        ));
-        priceCol.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<InvoiceProducts,Integer>>() {
-                    @Override
-                    public void handle (TableColumn.CellEditEvent<InvoiceProducts,Integer> t) {
-                        ( (InvoiceProducts) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setPricePerUnit(t.getNewValue().intValue()  );
-                    }
-                }
-        );
-
-        sumQuanityCol.setMaxWidth(100);
-        sumQuanityCol.setCellValueFactory(
-                new PropertyValueFactory<InvoiceProducts,Integer>("sumQuantity")
-        );
-        sumQuanityCol.setCellFactory(TextFieldTableCell.forTableColumn(
-                new StringConverter<Integer>() {
-                    @Override
-                    public String toString(Integer object) {
-                        return object.toString();
-                    }
-
-                    @Override
-                    public Integer fromString(String string) {
-                        return Integer.parseInt(string);
-                    }
-                }
-        ));
-        sumQuanityCol.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<InvoiceProducts,Integer>>() {
-                    @Override
-                    public void handle (TableColumn.CellEditEvent<InvoiceProducts,Integer> t) {
-                        ( (InvoiceProducts) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setSumQuantity(t.getNewValue().intValue()  );
-                    }
-                }
-        );
-
-        //  data model is defined, and the data is added and associated with the columns, you can add the data to the table by using the setItems()
-        mainTable.setItems(getTestInvoiceProductObservableTable() );
-        mainTable.getColumns().addAll(categoryCol,descriptionCol,quantityCol,priceCol,sumQuanityCol);
-
-
-        return mainTable;
-    }
-
-
-    public void addToCustomerObservableTable (CustomerObservable customer) {
-
-        mainTable.getItems().add(customer);
-
-//        ObservableList<CustomerObservable> table = FXCollections.observableArrayList(
-//                new CustomerObservable(77,"test name",4,"0040 0000","test account")
+//
+//    public TableView getInvoiceProductsMiddleTableView() {
+//        mainTable = new TableView();
+//        mainTable.setEditable(true);
+//
+//        // table col names for the tableview
+//        TableColumn categoryCol = new TableColumn("Category");
+//        TableColumn descriptionCol = new TableColumn("Description");
+//        TableColumn<InvoiceDetails,Integer> quantityCol = new TableColumn("Quantity");
+//        TableColumn<InvoiceDetails,Integer> priceCol = new TableColumn("Price per unit");
+//        TableColumn<InvoiceDetails,Integer> sumQuanityCol = new TableColumn("Sum of quantity");
+//
+//        //associate data with the table columns, through the properties defined for each data element. referencing to the methods of the InvoiceDetails
+//        categoryCol.setCellValueFactory(
+//                new PropertyValueFactory<InvoiceDetails,String>("categoryId")
 //        );
+//        categoryCol.setCellFactory(TextFieldTableCell.forTableColumn());
+//        categoryCol.setOnEditCommit(
+//                new EventHandler<TableColumn.CellEditEvent<InvoiceDetails,String>>() {
+//                    @Override
+//                    public void handle (TableColumn.CellEditEvent<InvoiceDetails,String> t) {
+//                        ( (InvoiceDetails) t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).setCategoryId( t.getNewValue() );
+//                    }
+//                }
+//        );
+//        descriptionCol.setCellValueFactory(
+//                new PropertyValueFactory<InvoiceDetails,String>("description")
+//        );
+//        descriptionCol.setCellFactory(TextFieldTableCell.forTableColumn());
+//        descriptionCol.setOnEditCommit(
+//                new EventHandler<TableColumn.CellEditEvent<InvoiceDetails,String>>() {
+//                    @Override
+//                    public void handle (TableColumn.CellEditEvent<InvoiceDetails,String> t) {
+//                        ( (InvoiceDetails) t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).setCategoryId( t.getNewValue() );
+//                    }
+//                }
+//        );
+//        quantityCol.setCellValueFactory(
+//                new PropertyValueFactory<InvoiceDetails,Integer>("quantity")
+//        );
+//        quantityCol.setCellFactory(TextFieldTableCell.forTableColumn(
+//                new StringConverter<Integer>() {
+//                    @Override
+//                    public String toString(Integer object) {
+//                        return object.toString();
+//                    }
+//
+//                    @Override
+//                    public Integer fromString(String string) {
+//                        return Integer.parseInt(string);
+//                    }
+//                }
+//        ));
+//        quantityCol.setOnEditCommit(
+//                new EventHandler<TableColumn.CellEditEvent<InvoiceDetails,Integer>>() {
+//                    @Override
+//                    public void handle (TableColumn.CellEditEvent<InvoiceDetails,Integer> t) {
+//                        ( (InvoiceDetails) t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).setQuantity(t.getNewValue().intValue()  );
+//                    }
+//                }
+//        );
+//        priceCol.setCellValueFactory(
+//                new PropertyValueFactory<InvoiceDetails,Integer>("pricePerUnit")
+//        );
+//
+//        priceCol.setCellFactory(TextFieldTableCell.forTableColumn(
+//                new StringConverter<Integer>() {
+//                    @Override
+//                    public String toString(Integer object) {
+//                        return object.toString();
+//                    }
+//
+//                    @Override
+//                    public Integer fromString(String string) {
+//                        return Integer.parseInt(string);
+//                    }
+//                }
+//        ));
+//        priceCol.setOnEditCommit(
+//                new EventHandler<TableColumn.CellEditEvent<InvoiceDetails,Integer>>() {
+//                    @Override
+//                    public void handle (TableColumn.CellEditEvent<InvoiceDetails,Integer> t) {
+//                        ( (InvoiceDetails) t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).setPricePerUnit(t.getNewValue().intValue()  );
+//                    }
+//                }
+//        );
+//
+//        sumQuanityCol.setMaxWidth(100);
+//        sumQuanityCol.setCellValueFactory(
+//                new PropertyValueFactory<InvoiceDetails,Integer>("sumQuantity")
+//        );
+//        sumQuanityCol.setCellFactory(TextFieldTableCell.forTableColumn(
+//                new StringConverter<Integer>() {
+//                    @Override
+//                    public String toString(Integer object) {
+//                        return object.toString();
+//                    }
+//
+//                    @Override
+//                    public Integer fromString(String string) {
+//                        return Integer.parseInt(string);
+//                    }
+//                }
+//        ));
+//        sumQuanityCol.setOnEditCommit(
+//                new EventHandler<TableColumn.CellEditEvent<InvoiceDetails,Integer>>() {
+//                    @Override
+//                    public void handle (TableColumn.CellEditEvent<InvoiceDetails,Integer> t) {
+//                        ( (InvoiceDetails) t.getTableView().getItems().get(
+//                                t.getTablePosition().getRow())
+//                        ).setSumQuantity(t.getNewValue().intValue()  );
+//                    }
+//                }
+//        );
+//
+//        //  data model is defined, and the data is added and associated with the columns, you can add the data to the table by using the setItems()
+//        mainTable.setItems(getTestInvoiceProductObservableTable() );
+//        mainTable.getColumns().addAll(categoryCol,descriptionCol,quantityCol,priceCol,sumQuanityCol);
+//
+//
+//        return mainTable;
+//    }
 
+//
+//    public void addToCustomerObservableTable (CustomerObservable customer) {
+//
+//        mainTable.getItems().add(customer);
+//
+////        ObservableList<CustomerObservable> table = FXCollections.observableArrayList(
+////                new CustomerObservable(77,"test name",4,"0040 0000","test account")
+////        );
+//
+////        return table;
+//    }
+//
+//    public TableView getMainTable () {
+//        return mainTable;
+//    }
+//
+//    public void addInvoiceProductObservableTable (InvoiceDetails invoiceDetails) {
+//        mainTable.getItems().add(invoiceDetails);
+//    }
+
+//    public ObservableList<InvoiceDetails> getTestInvoiceProductObservableTable () {
+//        ObservableList<InvoiceDetails> table = FXCollections.observableArrayList(
+//                new InvoiceDetails("test cate","test desc", 3, 5, 15),
+//                new InvoiceDetails("test cate","test desc", 5, 5, 25)
+//
+//        );
+//
+//
 //        return table;
-    }
-
-    public TableView getMainTable () {
-        return mainTable;
-    }
-
-    public void addInvoiceProductObservableTable (InvoiceProducts invoiceProducts) {
-        mainTable.getItems().add(invoiceProducts);
-    }
-
-    public ObservableList<InvoiceProducts> getTestInvoiceProductObservableTable () {
-        ObservableList<InvoiceProducts> table = FXCollections.observableArrayList(
-                new InvoiceProducts("test cate","test desc", 3, 5, 15),
-                new InvoiceProducts("test cate","test desc", 5, 5, 25)
-
-        );
-
-
-        return table;
-    }
+//    }
 
 }
