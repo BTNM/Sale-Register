@@ -44,7 +44,9 @@ public class invoiceDetailsController implements Initializable {
     @FXML Label invoiceDateLabel;
 
 
-    public int invoiceId = 0;
+    int invoiceId;
+    @FXML Label sentId;
+
     CustomerAddressDetails details;
 
     ObservableList<InvoiceDetails> data = FXCollections.observableArrayList();
@@ -80,6 +82,7 @@ public class invoiceDetailsController implements Initializable {
 
     private void setupInvoiceDetails() {
 //        details = dao.getCustomerAddressDetails(invoiceId);
+        System.out.println("the id: "+invoiceId);
         details = dao.getCustomerAddressDetails(1);
 
         customerNameLabel.setText(details.getCustomerName());
@@ -94,10 +97,17 @@ public class invoiceDetailsController implements Initializable {
 
     }
 
-    public void setId (int id) {
+    public void setSentId (int id) {
+        System.out.println("the id3: "+id);
+//        sentId.setText(String.valueOf(id) );
         this.invoiceId = id;
-//        System.out.println("id: "+id);
     }
+
+//    public void setId (int id) {
+//        System.out.println("the id2: "+invoiceId);
+//        this.invoiceId = id;
+////        System.out.println("id: "+id);
+//    }
 
     private void fillTable(ArrayList<InvoiceDetails> element) {
         element.forEach(e -> data.add(new InvoiceDetails(e)) );

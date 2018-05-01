@@ -151,9 +151,11 @@ public class invoiceController implements Initializable {
 //                controller.setId(3333);
 
                 InvoiceObservable selectedRow = (InvoiceObservable) invoiceTable.getSelectionModel().getSelectedItem();
-//                System.out.println("customer id: "+selectedRow.getCustomerId()+" invoiceId : "+selectedRow.getInvoiceId()+ selectedRow.getDato() );
+                System.out.println("customer id: "+selectedRow.getCustomerId()+" invoiceId : "+selectedRow.getInvoiceId()+" "+ selectedRow.getDato() );
 
-                controller.setId(selectedRow.getInvoiceId() ); // send invoice of selected cell to the new window
+//                controller.setId(selectedRow.getInvoiceId() ); // send invoice of selected cell to the new window
+//                controller.setId(selectedRow.getInvoiceId() ); // send invoice of selected cell to the new window
+                controller.setSentId(selectedRow.getInvoiceId() );
 
                 Scene scene = new Scene(parent);
                 Stage window = new Stage();
