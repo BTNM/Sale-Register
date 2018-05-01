@@ -58,7 +58,8 @@ public class customerController implements Initializable {
 //        mainPane.setCenter(centerTable);
 
         // add observablelist to tableview
-//        customerTable.setItems(data);
+        customerTable.setItems(data);
+//        customerTable.setItems(filterFunction() );
 
         // get the data from the database added to observablelist
         fillTable(customerDAO.allCustomerObservableList() );
@@ -71,39 +72,37 @@ public class customerController implements Initializable {
         setupPhoneNumberCol();
         setupBillingAccoount();
 
-        customerTable.setItems(filterFunction() );
-
         addBtn.setOnAction(event -> addCustomer(customerIdInput.getText(),customerNameInput.getText(),addressInput.getText(),phoneNrInput.getText(),billingAccountInput.getText() ) );
         deleteBtn.setOnAction(event -> deleteCustomer());
     }
 
-    private SortedList<CustomerObservable> filterFunction () {
-        FilteredList<CustomerObservable> filteredList = new FilteredList<>(data, p ->true);
-
-        filterField.textProperty().addListener(((observable, oldValue, newValue) -> {
-            filteredList.setPredicate(customerObservable -> {
-                if (newValue == null || newValue.isEmpty() ) {
-                    return true;
-                }
-                String lowerCaseFilter = newValue.toLowerCase();
-
-                // first check id then name
-                if ( String.valueOf(customerObservable.getCustomerId()).contains(newValue)  ) {
-                    return true;
-                }
-                if (customerObservable.getCustomerName().toLowerCase().contains(lowerCaseFilter)) {
-                    return true;
-                }
-
-                return false;
-            });
-        }));
-
-        SortedList<CustomerObservable> sortedData = new SortedList<>(filteredList);
-        sortedData.comparatorProperty().bind(customerTable.comparatorProperty() );
-
-        return sortedData;
-    }
+//    private SortedList<CustomerObservable> filterFunction () {
+//        FilteredList<CustomerObservable> filteredList = new FilteredList<>(data, p ->true);
+//
+//        filterField.textProperty().addListener(((observable, oldValue, newValue) -> {
+//            filteredList.setPredicate(customerObservable -> {
+//                if (newValue == null || newValue.isEmpty() ) {
+//                    return true;
+//                }
+//                String lowerCaseFilter = newValue.toLowerCase();
+//
+//                // first check id then name
+//                if ( String.valueOf(customerObservable.getCustomerId()).contains(newValue)  ) {
+//                    return true;
+//                }
+//                if (customerObservable.getCustomerName().toLowerCase().contains(lowerCaseFilter)) {
+//                    return true;
+//                }
+//
+//                return false;
+//            });
+//        }));
+//
+//        SortedList<CustomerObservable> sortedData = new SortedList<>(filteredList);
+//        sortedData.comparatorProperty().bind(customerTable.comparatorProperty() );
+//
+//        return sortedData;
+//    }
 
     private void fillTable(ArrayList<CustomerObservable> customer) {
         customer.forEach(c -> data.add(new CustomerObservable(c)) );

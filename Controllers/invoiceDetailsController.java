@@ -1,25 +1,37 @@
 package Oblig3.Controllers;
 
+import Oblig3.DAOs.ConnectionAdapter;
+import Oblig3.DAOs.CustomerDAO;
+import Oblig3.DAOs.InvoiceDao;
+import Oblig3.SQLReadFiles.CustomerAddressDetails;
+import Oblig3.TableViewClass.CategoryObservable;
 import Oblig3.TableViewClass.InvoiceDetails;
 import Oblig3.TableViewClass.InvoiceObservable;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class invoiceDetailsController implements Initializable {
+    ConnectionAdapter sqlAdapter = new ConnectionAdapter();
+    InvoiceDao dao = new InvoiceDao();
 
     @FXML TableView table;
-    @FXML TableColumn<InvoiceDetails,String> categoryCol;
+    @FXML TableColumn<InvoiceDetails,Integer> productIdCol;
+    @FXML TableColumn<InvoiceDetails,String> productNameCol;
+    @FXML TableColumn<InvoiceDetails,Integer> categoryCol;
     @FXML TableColumn<InvoiceDetails,String> descriptionCol;
     @FXML TableColumn<InvoiceDetails,Integer> quantityCol;
     @FXML TableColumn<InvoiceDetails,Integer> priceCol;
-    @FXML TableColumn<InvoiceDetails,Integer> sumQuantityCol;
+    @FXML TableColumn<InvoiceDetails,Integer> sumCol;
 
     @FXML Label customerNameLabel;
     @FXML Label customerStreetLabel;
@@ -32,35 +44,70 @@ public class invoiceDetailsController implements Initializable {
     @FXML Label invoiceDateLabel;
 
 
-    @FXML Label cellID;
-    int id;
+    int invoiceId = 0;
+    CustomerAddressDetails details;
 
-//    private ObservableList<InvoiceObservable> test;
-//
-//    public invoiceDetailsController(int id, ObservableList<InvoiceObservable> test)
-//    {
-//        this.id=id;
-//        this.test = test;
-//    }
+    ObservableList<InvoiceDetails> data = FXCollections.observableArrayList();
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        System.out.println(id);
-//        System.out.println(test);
+        table.setItems(data);
 
+        fillTable(dao.allInvoiceDetails());
+        table.setEditable(true);
+
+        setupCol();
+        setupInvoiceDetails();
+//        setupProductIdCol();
+//        setupProductNameCol();
+//        setupCategoryCol();
+//        setupDescriptionCol();
+//        seutpQuantityCol();
+//        setupPriceCol();
+
+    }
+
+    private void setupCol() {
+        productIdCol.setCellValueFactory(new PropertyValueFactory<InvoiceDetails,Integer>("productId") );
+
+        productNameCol.setCellValueFactory(new PropertyValueFactory<InvoiceDetails,String>("productName"));
+
+        categoryCol.setCellValueFactory(new PropertyValueFactory<InvoiceDetails,Integer>("categoryId") );
+
+        descriptionCol.setCellValueFactory(new PropertyValueFactory<InvoiceDetails,String>("description"));
+
+        quantityCol.setCellValueFactory(new PropertyValueFactory<InvoiceDetails,Integer>("quantity") );
+
+        priceCol.setCellValueFactory(new PropertyValueFactory<InvoiceDetails,Integer>("pricePerUnit") );
+
+        sumCol.setCellValueFactory(new PropertyValueFactory<InvoiceDetails,Integer>("sumQuantity") );
+    }
+
+    private void setupInvoiceDetails() {
+//        details = dao.getCustomerAddressDetails(invoiceId);
+        details = dao.getCustomerAddressDetails(1);
+
+        customerNameLabel.setText(details.getCustomerName());
+        customerStreetLabel.setText(details.getStreetName()+" "+details.getStreetNumber() );
+        customerPostalLabel.setText(details.getPostalCode()+" "+details.getPostalTown() );
+        phoneNumberLabel.setText(details.getPhoneNumber() );
+        billingAccountLabel.setText(details.getBillingAccount() );
+
+        customerIdLabel.setText(String.valueOf(details.getCustomerId() ));
+        invoiceIdLabel.setText(String.valueOf(details.getInvoiceId() ));
+        invoiceDateLabel.setText(details.getInvoiceDato() );
 
     }
 
     public void setId (int id) {
-        this.id = id;
-        System.out.println("id: "+id);
+        this.invoiceId = id;
+//        System.out.println("id: "+id);
     }
 
-//    public void setCellID (String id) {
-//        cellID.setText(id);
-//        System.out.println("cell id: "+id);
-//    }
+    private void fillTable(ArrayList<InvoiceDetails> element) {
+        element.forEach(e -> data.add(new InvoiceDetails(e)) );
+    }
 
 
 }

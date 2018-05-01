@@ -10,7 +10,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -61,7 +60,7 @@ public class invoiceController implements Initializable {
         invoiceTable.setItems(invoiceData);
         invoiceItemsTable.setItems(invoiceItemsData);
 
-        openClick();
+//        tableDoubleClick();
 
         fillTable(dao.allInvoiceObservableList() );
         fillTableII(daoII.allInvoiceItemsObservableList() );
@@ -87,75 +86,85 @@ public class invoiceController implements Initializable {
         deleteInvoiceItemsBtn.setOnAction(event -> deleteII());
     }
 
-    public void clickDetailInvoice(MouseEvent mouseEvent) {
-//        if (mouseEvent.getClickCount() == 2) {
-//            System.out.println(invoiceTable.getSelectionModel().getSelectedItem());
-//        }
+//    public void clickDetailInvoice(MouseEvent mouseEvent) {
+////        if (mouseEvent.getClickCount() == 2) {
+////            System.out.println(invoiceTable.getSelectionModel().getSelectedItem());
+////        }
+//
+////        invoiceTable.setRowFactory(it -> {
+////            TableRow<InvoiceObservable> row = new TableRow();
+////            row.setOnMouseClicked(event -> {
+////                if (event.getClickCount() == 2 && (! row.isEmpty() ) ) {
+////                    InvoiceObservable rowData = row.getItem();
+////                }
+////            });
+////        });
+////        return row;
+//    }
 
-        ObservableList<InvoiceObservable> customerSelected, allCustomer;
-        allCustomer = invoiceTable.getItems();
-        customerSelected = invoiceTable.getSelectionModel().getSelectedItems();
-
-        customerSelected.forEach(allCustomer::remove);
-
-
-//        invoiceTable.setRowFactory(it -> {
-//            TableRow<InvoiceObservable> row = new TableRow();
-//            row.setOnMouseClicked(event -> {
-//                if (event.getClickCount() == 2 && (! row.isEmpty() ) ) {
-//                    InvoiceObservable rowData = row.getItem();
+//    private void tableDoubleClick() {
+//        invoiceTable.setOnMouseClicked(event -> {
+//            if (event.getClickCount() == 2) {
+//
+//                try {
+//                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../FxmlFiles/invoiceDetails.fxml"));
+////                    loader.setController(new invoiceDetailsController(5,customerSelected ) );
+//                    Parent parent = loader.load();
+//                    invoiceDetailsController controller = loader.getController();
+//                    controller.setId(3333);
+////                    cont.setCellID("5555");
+//
+//                    InvoiceObservable selectedRow = (InvoiceObservable) invoiceTable.getSelectionModel().getSelectedItem();
+//                    System.out.println("customer id: "+selectedRow.getCustomerId()+" invoiceId : "+selectedRow.getInvoiceId()+ selectedRow.getDato() );
+//
+//                    Scene scene = new Scene(parent);
+//                    Stage window = new Stage();
+////            Stage window = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+//                    window.initModality(Modality.APPLICATION_MODAL); // blocks events from being delivered to other windows
+//                    window.initStyle(StageStyle.UTILITY);
+//                    window.setTitle("Invoice Details");
+//
+//                    window.setScene(scene);
+//                    window.show();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
 //                }
-//            });
+//            }
 //        });
-//        return row;
-    }
+//    }
 
-    private void openClick () {
-        String fxmlPath = "../FxmlFiles/invoiceDetails.fxml";
-
-//        ObservableList<InvoiceObservable> customerSelected, allCustomer;
-//        allCustomer = invoiceTable.getItems();
-//        customerSelected = invoiceTable.getSelectionModel().getSelectedItems();
-//        customerSelected.forEach(allCustomer::remove);
-
-//        TablePosition pos = (TablePosition) invoiceTable.getSelectionModel().getSelectedCells().get(0);
-//        int row = pos.getRow();
-////        InvoiceObservable item = (InvoiceObservable) invoiceTable.getItems().get(row);
-//        TableColumn col = pos.getTableColumn();
-//        String t = (String) col.getCellObservableValue(row).getValue();
-//        System.out.println("test cell:"+t);
-
-        invoiceTable.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 2) {
-
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../FxmlFiles/invoiceDetails.fxml"));
+    public void clickDetailInvoice(MouseEvent mouseEvent) {
+        if (mouseEvent.getClickCount() == 2) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../FxmlFiles/invoiceDetails.fxml"));
 //                    loader.setController(new invoiceDetailsController(5,customerSelected ) );
-                    Parent parent = loader.load();
-                    invoiceDetailsController controller = loader.getController();
-                    controller.setId(3333);
-//                    cont.setCellID("5555");
+                Parent parent = loader.load();
+                invoiceDetailsController controller = loader.getController();
+//                controller.setId(3333);
 
-                    InvoiceObservable selectedRow = (InvoiceObservable) invoiceTable.getSelectionModel().getSelectedItem();
-                    System.out.println("customer id: "+selectedRow.getCustomerId()+" invoiceId : "+selectedRow.getInvoiceId()+ selectedRow.getDato() );
+                InvoiceObservable selectedRow = (InvoiceObservable) invoiceTable.getSelectionModel().getSelectedItem();
+//                System.out.println("customer id: "+selectedRow.getCustomerId()+" invoiceId : "+selectedRow.getInvoiceId()+ selectedRow.getDato() );
 
-                    Scene scene = new Scene(parent);
-                    Stage window = new Stage();
+                controller.setId(selectedRow.getInvoiceId() ); // send invoice of selected cell to the new window
+
+                Scene scene = new Scene(parent);
+                Stage window = new Stage();
 //            Stage window = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
-                    window.initModality(Modality.APPLICATION_MODAL); // blocks events from being delivered to other windows
-                    window.initStyle(StageStyle.UTILITY);
-                    window.setTitle("Invoice Details");
+                window.initModality(Modality.APPLICATION_MODAL); // blocks events from being delivered to other windows
+                window.initStyle(StageStyle.UTILITY);
+                window.setTitle("Invoice Details");
 
-                    window.setScene(scene);
-                    window.show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                window.setScene(scene);
+                window.show();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        });
+        }
+
     }
 
-//    public void clickDetailInvoices(MouseEvent mouseEvent) {
+//    public void clickDetailInvoice(MouseEvent mouseEvent) {
+//
 //        String fxmlPath = "../FxmlFiles/invoiceDetails.fxml";
 //        try {
 //            FXMLLoader loader = new FXMLLoader(getClass().getResource("../FxmlFiles/invoiceDetails.fxml"));
@@ -334,7 +343,5 @@ public class invoiceController implements Initializable {
         customerSelected.forEach(allCustomer::remove);
 
     }
-
-
 
 }
