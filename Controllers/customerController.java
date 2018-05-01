@@ -11,10 +11,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import javafx.scene.control.cell.TextFieldTableCell;
 
@@ -25,7 +22,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class customerController implements Initializable {
-//    AllTableviews allTables = new AllTableviews();
+    //    AllTableviews allTables = new AllTableviews();
     ConnectionAdapter sqlAdapter = new ConnectionAdapter();
     CustomerDAO customerDAO = new CustomerDAO();
     String databaseTableName = "customer";
@@ -50,6 +47,7 @@ public class customerController implements Initializable {
     @FXML Button deleteBtn;
 
     @FXML TextField filterField;
+    @FXML Label notice;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -58,8 +56,8 @@ public class customerController implements Initializable {
 //        mainPane.setCenter(centerTable);
 
         // add observablelist to tableview
-        customerTable.setItems(data);
-//        customerTable.setItems(filterFunction() );
+//        customerTable.setItems(data);
+        customerTable.setItems(filterFunction() );
 
         // get the data from the database added to observablelist
         fillTable(customerDAO.allCustomerObservableList() );
@@ -76,33 +74,33 @@ public class customerController implements Initializable {
         deleteBtn.setOnAction(event -> deleteCustomer());
     }
 
-//    private SortedList<CustomerObservable> filterFunction () {
-//        FilteredList<CustomerObservable> filteredList = new FilteredList<>(data, p ->true);
-//
-//        filterField.textProperty().addListener(((observable, oldValue, newValue) -> {
-//            filteredList.setPredicate(customerObservable -> {
-//                if (newValue == null || newValue.isEmpty() ) {
-//                    return true;
-//                }
-//                String lowerCaseFilter = newValue.toLowerCase();
-//
-//                // first check id then name
-//                if ( String.valueOf(customerObservable.getCustomerId()).contains(newValue)  ) {
-//                    return true;
-//                }
-//                if (customerObservable.getCustomerName().toLowerCase().contains(lowerCaseFilter)) {
-//                    return true;
-//                }
-//
-//                return false;
-//            });
-//        }));
-//
-//        SortedList<CustomerObservable> sortedData = new SortedList<>(filteredList);
-//        sortedData.comparatorProperty().bind(customerTable.comparatorProperty() );
-//
-//        return sortedData;
-//    }
+    private SortedList<CustomerObservable> filterFunction () {
+        FilteredList<CustomerObservable> filteredList = new FilteredList<>(data, p ->true);
+
+        filterField.textProperty().addListener(((observable, oldValue, newValue) -> {
+            filteredList.setPredicate(obs -> {
+                if (newValue == null || newValue.isEmpty() ) {
+                    return true;
+                }
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                // first check id then name
+                if ( String.valueOf(obs.getCustomerId()).contains(newValue)  ) {
+                    return true;
+                }
+                if (obs.getCustomerName().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+
+                return false;
+            });
+        }));
+
+        SortedList<CustomerObservable> sortedData = new SortedList<>(filteredList);
+        sortedData.comparatorProperty().bind(customerTable.comparatorProperty() );
+
+        return sortedData;
+    }
 
     private void fillTable(ArrayList<CustomerObservable> customer) {
         customer.forEach(c -> data.add(new CustomerObservable(c)) );
@@ -199,19 +197,30 @@ public class customerController implements Initializable {
     }
 
     private void addCustomer(String cId, String cName,String add, String phone, String bAccount) {
-        sqlAdapter.insertIntoDatabase("customer",cId,cName,add, phone,bAccount);
+        notice.setText("");
+        if (allTextfieldsValid() ) {
+            sqlAdapter.insertIntoDatabase("customer",cId,cName,add, phone,bAccount);
 
-        CustomerObservable c  = new CustomerObservable(Integer.valueOf(cId),cName,Integer.valueOf(add),phone,bAccount);
-        // have to write a check so that the unique primary keys dont overlap in the database
-        data.add(c);
-        customerIdInput.clear();
-        customerNameInput.clear();
-        addressInput.clear();
-        phoneNrInput.clear();
-        billingAccountInput.clear();
+            CustomerObservable c  = new CustomerObservable(Integer.valueOf(cId),cName,Integer.valueOf(add),phone,bAccount);
+            // have to write a check so that the unique primary keys dont overlap in the database
+            data.add(c);
+            customerIdInput.clear();
+            customerNameInput.clear();
+            addressInput.clear();
+            phoneNrInput.clear();
+            billingAccountInput.clear();
+        } else {
+            notice.setText("Invalid input, empty fields");
+        }
 
-//        allTables.addToCustomerObservableTable(c);
+    }
 
+    private boolean allTextfieldsValid() {
+        return !customerIdInput.getText().isEmpty() &&
+                !customerNameInput.getText().isEmpty() &&
+                !addressInput.getText().isEmpty() &&
+                !phoneNrInput.getText().isEmpty() &&
+                !billingAccountInput.getText().isEmpty();
     }
 
     private void deleteCustomer() {
@@ -221,7 +230,6 @@ public class customerController implements Initializable {
 
         // have to delete from database, for now it only removes from tableview
         customerSelected.forEach(allCustomer::remove);
-
 
     }
 

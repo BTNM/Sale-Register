@@ -44,7 +44,7 @@ public class invoiceDetailsController implements Initializable {
     @FXML Label invoiceDateLabel;
 
 
-    int invoiceId = 0;
+    public int invoiceId = 0;
     CustomerAddressDetails details;
 
     ObservableList<InvoiceDetails> data = FXCollections.observableArrayList();
@@ -57,18 +57,12 @@ public class invoiceDetailsController implements Initializable {
         fillTable(dao.allInvoiceDetails());
         table.setEditable(true);
 
-        setupCol();
+        setupColumns();
         setupInvoiceDetails();
-//        setupProductIdCol();
-//        setupProductNameCol();
-//        setupCategoryCol();
-//        setupDescriptionCol();
-//        seutpQuantityCol();
-//        setupPriceCol();
 
     }
 
-    private void setupCol() {
+    private void setupColumns() {
         productIdCol.setCellValueFactory(new PropertyValueFactory<InvoiceDetails,Integer>("productId") );
 
         productNameCol.setCellValueFactory(new PropertyValueFactory<InvoiceDetails,String>("productName"));

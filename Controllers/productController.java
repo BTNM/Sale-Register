@@ -8,14 +8,13 @@ import Oblig3.TableViewClass.ProductObservable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 
 import javafx.fxml.Initializable;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import javafx.scene.control.cell.TextFieldTableCell;
 
@@ -44,12 +43,15 @@ public class productController implements Initializable {
     @FXML TextField categoryInput;
     @FXML Button addBtn;
     @FXML Button deleteBtn;
+    @FXML TextField filterField;
+    @FXML Label notice;
 
     ObservableList<ProductObservable> data = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        productTable.setItems(data);
+//        productTable.setItems(data);
+        productTable.setItems(filterFunction());
 
         fillTable(dao.allProductObservableList() );
 
@@ -65,6 +67,34 @@ public class productController implements Initializable {
         addBtn.setOnAction(event -> addProduct(productIdInput.getText(), productNameInput.getText(),descriptionInput.getText(), priceInput.getText(), categoryInput.getText() ));
         deleteBtn.setOnAction(event -> deleteCustomer());
 
+    }
+
+    private SortedList<ProductObservable> filterFunction () {
+        FilteredList<ProductObservable> filteredList = new FilteredList<>(data, p ->true);
+
+        filterField.textProperty().addListener(((observable, oldValue, newValue) -> {
+            filteredList.setPredicate(obs -> {
+                if (newValue == null || newValue.isEmpty() ) {
+                    return true;
+                }
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                // first check id then name
+                if ( String.valueOf(obs.getProductId() ).contains(newValue)  ) {
+                    return true;
+                }
+                if (obs.getProductName().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+
+                return false;
+            });
+        }));
+
+        SortedList<ProductObservable> sortedData = new SortedList<>(filteredList);
+        sortedData.comparatorProperty().bind(productTable.comparatorProperty() );
+
+        return sortedData;
     }
 
     private void fillTable(ArrayList<ProductObservable> element) {
@@ -166,18 +196,32 @@ public class productController implements Initializable {
 
 
     private void addProduct(String col1, String col2, String col3, String col4, String col5) {
-        sqlAdapter.insertIntoDatabase("product",col1,col2,col3,col4,col5);
+        notice.setText("");
+        if (allTextfieldsValid() ) {
+            sqlAdapter.insertIntoDatabase("product",col1,col2,col3,col4,col5);
 
-        ProductObservable e  = new ProductObservable(Integer.valueOf(col1),col2,col3,Float.valueOf(col4),Integer.valueOf(col5) );
-        // have to write a check so that the unique primary keys dont overlap in the database
-        data.add(e);
+            ProductObservable e  = new ProductObservable(Integer.valueOf(col1),col2,col3,Float.valueOf(col4),Integer.valueOf(col5) );
+            // have to write a check so that the unique primary keys dont overlap in the database
+            data.add(e);
 
-        productIdInput.clear();
-        productNameInput.clear();
-        descriptionInput.clear();
-        priceInput.clear();
-        categoryInput.clear();
+            productIdInput.clear();
+            productNameInput.clear();
+            descriptionInput.clear();
+            priceInput.clear();
+            categoryInput.clear();
 
+        } else {
+            notice.setText("Invalid input, empty fields");
+        }
+
+    }
+
+    private boolean allTextfieldsValid() {
+        return !productIdInput.getText().isEmpty() &&
+                !productNameInput.getText().isEmpty() &&
+                !descriptionInput.getText().isEmpty() &&
+                !priceInput.getText().isEmpty() &&
+                !categoryInput.getText().isEmpty();
     }
 
     private void deleteCustomer() {

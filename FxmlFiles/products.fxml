@@ -11,8 +11,8 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.control.cell.PropertyValueFactory?>
 
 <BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Oblig3.Controllers.productController">
     <top>
@@ -33,27 +33,27 @@
         <columns>
             <TableColumn fx:id="productIdCol" prefWidth="75.0" text="Product ID">
                 <cellValueFactory>
-                    <PropertyValueFactory property="productId"/>
+                    <PropertyValueFactory property="productId" />
                 </cellValueFactory>
             </TableColumn>
             <TableColumn fx:id="productNameCol" prefWidth="75.0" text="Product Name">
                 <cellValueFactory>
-                    <PropertyValueFactory property="productName"/>
+                    <PropertyValueFactory property="productName" />
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn fx:id="descriptionCol" prefWidth="75.0" text="Description">
+            <TableColumn fx:id="descriptionCol" prefWidth="126.0" text="Description">
                 <cellValueFactory>
-                    <PropertyValueFactory property="description"/>
+                    <PropertyValueFactory property="description" />
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn fx:id="priceCol" prefWidth="75.0" text="Price">
+            <TableColumn fx:id="priceCol" prefWidth="48.0" text="Price">
                 <cellValueFactory>
-                    <PropertyValueFactory property="price"/>
+                    <PropertyValueFactory property="price" />
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn fx:id="categoryCol" prefWidth="75.0" text="Category">
+            <TableColumn fx:id="categoryCol" prefWidth="74.0" text="Category">
                 <cellValueFactory>
-                    <PropertyValueFactory property="categoryId"/>
+                    <PropertyValueFactory property="categoryId" />
                 </cellValueFactory>
             </TableColumn>
         </columns>
@@ -114,10 +114,32 @@
                     <font>
                         <Font size="14.0" />
                     </font></Button>
+                <Label fx:id="notice" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Label>
             </children>
             <padding>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
         </GridPane>
     </bottom>
+    <right>
+        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label text="Filter">
+                    <font>
+                        <Font name="Baskerville Old Face" size="16.0" />
+                    </font>
+                    <padding>
+                        <Insets bottom="5.0" left="10.0" top="5.0" />
+                    </padding></Label>
+                <TextField fx:id="filterField">
+                    <VBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                    </VBox.margin></TextField>
+            </children>
+        </VBox>
+    </right>
 </BorderPane>

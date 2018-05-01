@@ -7,6 +7,8 @@ import Oblig3.TableViewClass.InvoiceItemsObservable;
 import Oblig3.TableViewClass.InvoiceObservable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -52,13 +54,19 @@ public class invoiceController implements Initializable {
     @FXML Button addInvoiceItemsBtn;
     @FXML Button deleteInvoiceItemsBtn;
 
+    @FXML TextField filterField;
+    @FXML TextField filterFieldII;
+    @FXML Label notice;
+
     ObservableList<InvoiceObservable> invoiceData = FXCollections.observableArrayList();
     ObservableList<InvoiceItemsObservable> invoiceItemsData = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        invoiceTable.setItems(invoiceData);
-        invoiceItemsTable.setItems(invoiceItemsData);
+//        invoiceTable.setItems(invoiceData);
+//        invoiceItemsTable.setItems(invoiceItemsData);
+        invoiceTable.setItems(filterFunction());
+        invoiceItemsTable.setItems(filterFunctionII());
 
 //        tableDoubleClick();
 
@@ -186,6 +194,31 @@ public class invoiceController implements Initializable {
 //
 //    }
 
+    private SortedList<InvoiceObservable> filterFunction () {
+        FilteredList<InvoiceObservable> filteredList = new FilteredList<>(invoiceData, p ->true);
+
+        filterField.textProperty().addListener(((observable, oldValue, newValue) -> {
+            filteredList.setPredicate(obs -> {
+                if (newValue == null || newValue.isEmpty() ) {
+                    return true;
+                }
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                // first check id then name
+                if ( String.valueOf(obs.getInvoiceId() ).contains(newValue)  ) {
+                    return true;
+                }
+
+                return false;
+            });
+        }));
+
+        SortedList<InvoiceObservable> sortedData = new SortedList<>(filteredList);
+        sortedData.comparatorProperty().bind(invoiceTable.comparatorProperty() );
+
+        return sortedData;
+    }
+
     private void fillTableII(ArrayList<InvoiceItemsObservable> element) {
         element.forEach(e -> invoiceItemsData.add(new InvoiceItemsObservable(e)) );
     }
@@ -237,14 +270,24 @@ public class invoiceController implements Initializable {
     }
 
     private void addInvoiceItems(String col1, String col2) {
-        sqlAdapter.insertIntoDatabase("invoice_items",col1,col2,"","","");
+        notice.setText("");
+        if (allTextfieldsValidII() ) {
+            sqlAdapter.insertIntoDatabase("invoice_items",col1,col2,"","","");
 
-        InvoiceItemsObservable e  = new InvoiceItemsObservable(Integer.valueOf(col1),Integer.valueOf(col2) );
-        // have to write a check so that the unique primary keys dont overlap in the database
-        invoiceItemsData.add(e);
-        IIInvoiceInput.clear();
-        IIProductInput.clear();
+            InvoiceItemsObservable e  = new InvoiceItemsObservable(Integer.valueOf(col1),Integer.valueOf(col2) );
+            // have to write a check so that the unique primary keys dont overlap in the database
+            invoiceItemsData.add(e);
+            IIInvoiceInput.clear();
+            IIProductInput.clear();
 
+        } else {
+            notice.setText("Invalid input, empty fields");
+        }
+    }
+
+    private boolean allTextfieldsValidII() {
+        return !IIInvoiceInput.getText().isEmpty() &&
+                !IIProductInput.getText().isEmpty();
     }
 
     private void deleteII() {
@@ -257,7 +300,28 @@ public class invoiceController implements Initializable {
 
     }
 
+    private SortedList<InvoiceItemsObservable> filterFunctionII () {
+        FilteredList<InvoiceItemsObservable> filteredList = new FilteredList<>(invoiceItemsData, p ->true);
 
+        filterFieldII.textProperty().addListener(((observable, oldValue, newValue) -> {
+            filteredList.setPredicate(obs -> {
+                if (newValue == null || newValue.isEmpty() ) {
+                    return true;
+                }
+
+                if ( String.valueOf(obs.getInvoiceId() ).contains(newValue)  ) {
+                    return true;
+                }
+
+                return false;
+            });
+        }));
+
+        SortedList<InvoiceItemsObservable> sortedData = new SortedList<>(filteredList);
+        sortedData.comparatorProperty().bind(invoiceItemsTable.comparatorProperty() );
+
+        return sortedData;
+    }
 
     private void fillTable(ArrayList<InvoiceObservable> element) {
         element.forEach(e -> invoiceData.add(new InvoiceObservable(e)) );
@@ -323,15 +387,27 @@ public class invoiceController implements Initializable {
     }
 
     private void addInvoice(String col1, String col2, String col3) {
-        sqlAdapter.insertIntoDatabase("invoice",col1,col2,col3,"","");
+        notice.setText("");
+        if (allTextfieldsValidI() ) {
+            sqlAdapter.insertIntoDatabase("invoice",col1,col2,col3,"","");
 
-        InvoiceObservable c  = new InvoiceObservable(Integer.valueOf(col1),Integer.valueOf(col2), col3);
-        // have to write a check so that the unique primary keys dont overlap in the database
-        invoiceData.add(c);
-        invoiceIdInput.clear();
-        customerInput.clear();
-        datoInput.clear();
+            InvoiceObservable c  = new InvoiceObservable(Integer.valueOf(col1),Integer.valueOf(col2), col3);
+            // have to write a check so that the unique primary keys dont overlap in the database
+            invoiceData.add(c);
+            invoiceIdInput.clear();
+            customerInput.clear();
+            datoInput.clear();
 
+        } else {
+            notice.setText("Invalid input, empty fields");
+        }
+
+    }
+
+    private boolean allTextfieldsValidI() {
+        return !invoiceIdInput.getText().isEmpty() &&
+                !customerInput.getText().isEmpty() &&
+                !datoInput.getText().isEmpty();
     }
 
     private void delete() {

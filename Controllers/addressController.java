@@ -6,6 +6,8 @@ import Oblig3.TableViewClass.AddressObservable;
 import Oblig3.TableViewClass.InvoiceObservable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,10 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -49,11 +48,15 @@ public class addressController implements Initializable {
     @FXML Button addBtn;
     @FXML Button deleteBtn;
 
+    @FXML TextField filterField;
+    @FXML Label notice;
+
     ObservableList<AddressObservable> data = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        addressTable.setItems(data);
+//        addressTable.setItems(data);
+        addressTable.setItems(filterFunction() );
 
         fillTable(dao.allAddressObservableList() );
 
@@ -69,6 +72,34 @@ public class addressController implements Initializable {
         addBtn.setOnAction(event -> addAddress(addressInput.getText(), streetNumberInput.getText(), streetNameInput.getText(), postalCodeInput.getText(), postalTownInput.getText() ));
         deleteBtn.setOnAction(event -> delete());
 
+    }
+
+    private SortedList<AddressObservable> filterFunction () {
+        FilteredList<AddressObservable> filteredList = new FilteredList<>(data, p ->true);
+
+        filterField.textProperty().addListener(((observable, oldValue, newValue) -> {
+            filteredList.setPredicate(obs -> {
+                if (newValue == null || newValue.isEmpty() ) {
+                    return true;
+                }
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                // first check id then name
+                if ( String.valueOf(obs.getAddressId()).contains(newValue)  ) {
+                    return true;
+                }
+                if (obs.getStreetName().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+
+                return false;
+            });
+        }));
+
+        SortedList<AddressObservable> sortedData = new SortedList<>(filteredList);
+        sortedData.comparatorProperty().bind(addressTable.comparatorProperty() );
+
+        return sortedData;
     }
 
     private void fillTable(ArrayList<AddressObservable> element) {
@@ -145,17 +176,31 @@ public class addressController implements Initializable {
 
 
     private void addAddress(String col1, String col2, String col3, String col4, String col5) {
-        sqlAdapter.insertIntoDatabase("address",col1,col2,col3,col4,col5);
+        notice.setText("");
+        if (allTextfieldsValid() ) {
+            sqlAdapter.insertIntoDatabase("address",col1,col2,col3,col4,col5);
 
-        AddressObservable c  = new AddressObservable(Integer.valueOf(col1),col2, col3, col4, col5);
+            AddressObservable c  = new AddressObservable(Integer.valueOf(col1),col2, col3, col4, col5);
 
-        data.add(c);
-        addressInput.clear();
-        streetNumberInput.clear();
-        streetNameInput.clear();
-        postalCodeInput.clear();
-        postalTownInput.clear();
+            data.add(c);
+            addressInput.clear();
+            streetNumberInput.clear();
+            streetNameInput.clear();
+            postalCodeInput.clear();
+            postalTownInput.clear();
 
+        } else {
+            notice.setText("Invalid input, empty fields");
+        }
+
+    }
+
+    private boolean allTextfieldsValid() {
+        return !addressInput.getText().isEmpty() &&
+                !streetNumberInput.getText().isEmpty() &&
+                !streetNameInput.getText().isEmpty() &&
+                !postalCodeInput.getText().isEmpty() &&
+                !postalTownInput.getText().isEmpty();
     }
 
     private void delete() {
